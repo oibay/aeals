@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Requests\AdminGuest;
+use App\Http\Requests\GuestEditRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,10 +35,10 @@ class Guest extends Model
     }
 
     /**
-     * @param \App\Http\Requests\AdminGuest $request
+     * @param \App\Http\Requests\GuestEditRequest $request
      * @param $id
      */
-    public static function updateGuest(\App\Http\Requests\AdminGuest $request, $id)
+    public static function updateGuest(\App\Http\Requests\GuestEditRequest $request, $id)
     {
         $guest = Guest::find($id);
 

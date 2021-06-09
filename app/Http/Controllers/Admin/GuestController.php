@@ -7,6 +7,7 @@ use App\entities\Search\SearchGuest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddGuestRequest;
 use App\Http\Requests\AdminGuest;
+use App\Http\Requests\GuestEditRequest;
 use App\Models\Guest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class GuestController extends Controller
         ]);
     }
 
-    public function postEditGuest(AdminGuest $request,$id)
+    public function postEditGuest(GuestEditRequest $request,$id)
     {
         $create = Guest::updateGuest($request,$request->id);
 
