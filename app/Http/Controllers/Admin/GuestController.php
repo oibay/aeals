@@ -32,6 +32,16 @@ class GuestController extends Controller
         ]);
     }
 
+    public function showAddGuest()
+    {
+        $companies = User::companies();
+        $guestCount = Guest::where(['status' => 2])->count();
+        return view('admin.guest-add',[
+            'companies' => $companies,
+            'guestCount' => $guestCount
+        ]);
+    }
+
     public function postGuest(AdminGuest $request)
     {
 

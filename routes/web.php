@@ -29,6 +29,7 @@ Route::prefix('admin')->group(function () {
     Route::prefix('guests')->group(function () {
         Route::get('/',[GuestController::class,'index']);
         Route::get('stlng',[GuestController::class,'stlng']);
+        Route::get('/add/new',[GuestController::class,'showAddGuest']);
         Route::post('/new',[GuestController::class,'postGuest'])->name('postGuest');
         Route::get('/edit/{id}',[GuestController::class,'editShow']);
         Route::post('/editGuest/{id}',[GuestController::class,'postEditGuest'])->name('postEditGuest');
