@@ -68,11 +68,6 @@
                                                 <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
                                                     <i class="zmdi zmdi-edit " style="color:green;"></i>
                                                 </a>
-                                                <button class="item" data-toggle="tooltip" data-placement="top" title="Выселить">
-                                                    <i class="zmdi zmdi-minus" style="color:red;"></i>
-                                                </button>
-
-
                                             </div>
                                         </td>
                                     </tr>

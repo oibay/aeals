@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\entities\SearchGuest;
+use App\entities\Search\SearchActiveGuest;
+use App\entities\Search\SearchGuest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddGuestRequest;
 use App\Http\Requests\AdminGuest;
 use App\Models\Guest;
 use App\Models\User;
@@ -21,25 +23,32 @@ class GuestController extends Controller
     {
         $guests = Guest::guests();
         $companies = User::companies();
-
+        $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.guests',[
             'companies' => $companies,
-            'guests' => $guests
+            'guests' => $guests,
+            'guestCount' => $guestCount
         ]);
     }
 
     public function postGuest(AdminGuest $request)
     {
-        Guest::createGuest();
+
+        if (Guest::createGuest($request)) {
+            return redirect()->back()->with('success','Успешно добавлено');
+        }
+        return redirect()->back()->with('danger','Повторите позже!');
     }
 
     public function editShow(int $id)
     {
         $guest = Guest::findOrFail($id);
         $companies = User::companies();
+        $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.guest-edit',[
             'guest' => $guest,
-            'companies' => $companies
+            'companies' => $companies,
+            'guestCount' => $guestCount
         ]);
     }
 
@@ -47,19 +56,37 @@ class GuestController extends Controller
     {
         $create = Guest::updateGuest($request,$request->id);
 
-        return redirect()->back();
+        return redirect()->back()->with('success','Успешно добавлено');
     }
 
     public function searchGuest(Request $request)
     {
-        $search = (new SearchGuest())
-                    ->setCompany($request->company)
-                    ->setLocation($request->location)
-                    ->setRoomType($request->room_type)
-                    ->setEntry($request->entry)
-                    ->setDeparture($request->departure)
-                    ->setVouchers($request->vouchers);
 
-        dd($search->searchGuest());
+        $search = new SearchGuest($request);
+        $search = new SearchActiveGuest($search);
+
+        $guest = $search->getQuery()->get();
+        $companies = User::companies();
+        $guestCount = Guest::where(['status' => 2])->count();
+
+        return view('admin.search-guests',[
+            'companies' => $companies,
+            'guests' => $guest,
+            'guestCount' => $guestCount
+        ]);
+    }
+
+    public function stlng()
+    {
+        $guests = Guest::where(['status' => 2])
+            ->get();
+        $companies = User::companies();
+        $guestCount = Guest::where(['status' => 2])->count();
+        return view('admin.stlng',[
+            'guests' => $guests,
+            'companies' => $companies,
+            'guestCount' => $guestCount,
+
+        ]);
     }
 }

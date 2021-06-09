@@ -27,12 +27,14 @@ class AdminGuest extends FormRequest
             'name' => 'required|max:255',
             'user_id' => 'required|integer',
             'phone' => 'required',
-            'passport' => [ 'required', 'integer'],
+            'location' => 'required',
+            'passport' => [ 'required', 'integer','unique:guests'],
             'entry' => 'required|date_format:"Y-m-d\TH:i"',
             'departure' => 'required|date_format:"Y-m-d\TH:i"|after:entry',
             'breakfast' => 'in:Завтрак',
             'lunch' => 'in:Обед',
             'supper' => 'in:Ужин',
+            'room_type' => 'required',
         ];
     }
 

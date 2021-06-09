@@ -14,6 +14,8 @@
                         <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
                             <i class="zmdi zmdi-search"></i> Фильтр поиск
                         </button>
+
+                        <span>Найдено : <strong>{{ $guests->count() }}</strong></span>
                     </div>
                 </div>
             </div>
@@ -48,7 +50,7 @@
                                         {{ $item->name }}
                                     </a></td>
                                 <td>{{ $item->passport }}</td>
-                                <td>{{ $item->company['name'] }}</td>
+                                <td>{{ $item->company }}</td>
                                 <td>{{ $item->phone }}</td>
                                 <td>
 
@@ -69,8 +71,8 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->room_type }}</td>
-                                <td>{{ $item->guestTime['entry'] }}</td>
-                                <td>{{ $item->guestTime['departure'] }}</td>
+                                <td>{{ $item->entry }}</td>
+                                <td>{{ $item->departure }}</td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">

@@ -27,26 +27,18 @@
                             <tr>
                                 <th>#</th>
                                 <th>Название</th>
-                                <th>E-mail</th>
-                                <th>Роль</th>
-                                <th>Дата создана</th>
-
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            @if($companies->count() > 0)
-                                @foreach($companies as $item)
+                            @if($event->count() > 0)
+                                @foreach($event as $item)
                             <tr>
 
                                         <td>{{ $loop->index + 1 }}</td>
-                                        <td><a href="{{ url('admin/companies/edit',$item->id) }}">
-                                                {{ $item->name }}
-                                            </a></td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ $item->role == 'company' ? 'Компания':'' }}</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        <td></td>
+                                        <td>Питание #{{ $item->title }}</td>
+                                        <td><a href="{{ url('admin/event/view',$item->id) }}">Открыть</a></td>
+
 
                             </tr>
                                 @endforeach
@@ -70,7 +62,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('postCompany') }}" method="post">
+                <form action="{{ route('postEvent') }}" method="post">
                 <div class="modal-body">
 
                         @csrf
@@ -80,37 +72,17 @@
                                 <div class="form-group">
                                     <label for="name" class="form-control-label">Название </label>
 
-                                    <input id="name" type="text" class="form-control" name="name" value="" placeholder="Введите название" >
+                                    <input id="name" type="text" class="form-control" name="title" value="{{ date('Y-m-d H:i:s') }}"  disabled>
 
                                 </div>
                             </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="name" class="form-control-label">Email </label>
-
-                                    <input id="name" type="text" class="form-control" name="email" value="" placeholder="Введите email" >
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="name" class="form-control-label">Пароль </label>
-
-                                    <input id="name" type="password" class="form-control" name="password" value=""  >
-
-                                </div>
-                            </div>
-
-
 
                         </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
                 </div>
                 </form>
             </div>

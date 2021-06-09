@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    public function index()
+    {
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
+
+        return redirect('/'.Auth::user()->role);
+    }
+
     public function logout()
     {
         Auth::logout();

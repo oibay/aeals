@@ -18,6 +18,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xl-12">
+                        @include('message')
                         <form action="{{ route('postEditGuest',$guest->id) }}" method="post">
                             @csrf
                             <div class="row">
@@ -165,6 +166,7 @@
                                 <div class="form-group">
                                     <label for="status">Статус</label>
                                     <select id="status" class="form-control" name="status" value="{{ $guest->status }}" >
+                                        <option value="2" {{ ($guest->status == 2) ? 'selected' : ''}}> К заселению </option>
                                         <option value="1" {{ ($guest->status == 1) ? 'selected' : ''}}> Проживает </option>
                                         <option value="0" {{ ($guest->status == 0) ? 'selected' : ''}}> Выселен </option>
                                     </select>

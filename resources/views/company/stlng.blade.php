@@ -46,7 +46,7 @@
                             <tr>
                                 <td>
                                         {{ $item->name }}
-                                    </td>
+                                   </td>
                                 <td>{{ $item->passport }}</td>
                                 <td>{{ $item->company['name'] }}</td>
                                 <td>{{ $item->phone }}</td>
@@ -69,8 +69,8 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->room_type }}</td>
-                                <td>{{ $item->guestTime['entry'] }}</td>
-                                <td>{{ $item->guestTime['departure'] }}</td>
+                                <td>{{ $item->guestTime['entry'] ?? '' }}</td>
+                                <td>{{ $item->guestTime['departure'] ?? ''}}</td>
 
                             </tr>
                             @endforeach

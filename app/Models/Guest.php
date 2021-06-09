@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\Concerns\Has;
 
 class Guest extends Model
@@ -19,6 +20,15 @@ class Guest extends Model
     {
         return self::where('status',1)
             ->where('room','<>',null)
+            ->with('guestTime')
+            ->get();
+    }
+
+    public static function eventGuests($location = null)
+    {
+        return self::where('status',1)
+            ->where('room','<>',null)
+            ->where('location',$location ?? 'apec')
             ->with('guestTime')
             ->get();
     }
@@ -45,6 +55,7 @@ class Guest extends Model
 
 
         $guestTime = GuestTime::where('guest_id',$guest->id)->first();
+
         GuestTimeLog::create([
             'guest_id' => $guest->id,
             'entry' => $guestTime->entry,
@@ -88,12 +99,13 @@ class Guest extends Model
      * @param $id
      * @return Guest
      */
-    public static function createGuest(AdminGuest $request, $id):Guest
+    public static function createGuest(AdminGuest $request):Guest
     {
+        if (Auth::user()->role == 'company') { $userId = Auth::id();} else { $userId = $request->user_id; }
         $guest = Guest::create([
             'name' => $request->name,
             'passport' => $request->passport,
-            'user_id' => $request->user_id,
+            'user_id' => $userId,
             'room' => $request->room ?? null,
             'room_type' => $request->room_type,
             'phone' => $request->phone,
@@ -102,6 +114,19 @@ class Guest extends Model
             'vouchers' => Guest::stringVouchers([$request->breakfast, $request->lunch, $request->supper])
         ]);
 
+        $guestTime = GuestTime::create([
+            'guest_id' => $guest->id,
+            'entry' => $request->entry,
+            'departure' => $request->departure,
+        ]);
+        GuestTimeLog::create([
+            'guest_id' => $guest->id,
+            'entry' => $guestTime->entry,
+            'departure' => $guestTime->departure
+        ]);
+
         return $guest;
     }
+
+
 }

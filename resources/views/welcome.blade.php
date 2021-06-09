@@ -1,8 +1,20 @@
 @extends('layouts.layouts')
 @section('content')
-        <section class="statistic">
-            <div class="section__content section__content--p30">
-                <div class="container-fluid">
+    <section class="au-breadcrumb m-t-75">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+
+                       <h4>Главная страница</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        <section class="statistic " >
+            <div class="section__content section__content--p30" >
+                <div class="container-fluid ">
                     <div class="row">
                         <div class="col-md-6 col-lg-3">
                             <div class="statistic__item">
@@ -53,7 +65,7 @@
                         <div class="col-xl-8">
                             <!-- RECENT REPORT 2-->
                             <div class="recent-report2">
-                                <h3 class="title-3">recent reports</h3>
+                                <h3 class="title-3">За неделю</h3>
                                 <div class="chart-info">
                                     <div class="chart-info__left">
                                         <div class="chart-note">
