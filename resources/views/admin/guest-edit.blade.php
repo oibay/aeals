@@ -17,7 +17,7 @@
         <div class="section__content section__content--p30">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-12">
+                    <div class="col-xl-6">
                         @include('message')
                         <form action="{{ route('postEditGuest',$guest->id) }}" method="post">
                             @csrf
@@ -208,6 +208,17 @@
                             </div>
                         </form>
                     </div>
+                   <!--- <div class="col-md-6">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name" class="form-control-label">ФИО</label>
+                                    <input type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>---->
 
                     </div>
                 </div>

@@ -7,9 +7,9 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#mediumModal">
+                        <a  class="btn btn-primary mb-1" href="{{ url('company/guests/add/new') }}">
                             <i class="zmdi zmdi-plus"></i> Добавить
-                        </button>
+                        </a>
 
                         <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
                             <i class="zmdi zmdi-import-export"></i> Импорт

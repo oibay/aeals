@@ -7,6 +7,7 @@ use App\Http\Requests\AdminGuest;
 use App\Http\Requests\ImportGuest;
 use App\Imports\GuestImport;
 use App\Models\Guest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -60,6 +61,15 @@ class GuestController extends Controller
             return redirect()->back()->with('success','Успешно загружено');
         }
         return redirect()->back()->with('danger','Повторите позже!');
+    }
+
+    public function showAddGuest()
+    {
+        $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
+
+        return view('company.guest-add',[
+            'guestCount' => $guestCount
+        ]);
     }
 
 
