@@ -39,6 +39,7 @@
                                 <th>Тип комнаты</th>
                                 <th>Въезд</th>
                                 <th>Отъезд</th>
+                                <th>Регистрационный лист</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -73,6 +74,7 @@
                                 <td>{{ $item->room_type }}</td>
                                 <td>{{ $item->entry }}</td>
                                 <td>{{ $item->departure }}</td>
+                                <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">

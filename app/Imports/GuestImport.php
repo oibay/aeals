@@ -13,7 +13,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-
 class GuestImport implements ToCollection
 {
     protected ImportGuest $request;
@@ -27,10 +26,10 @@ class GuestImport implements ToCollection
     {
 
         $rows->forget(0);
-
+		
+		
         foreach ($rows as $row) {
-
-
+			
             $guest = Guest::create([
                 'name' => $row[0],
                 'passport' => $row[1],
@@ -57,6 +56,8 @@ class GuestImport implements ToCollection
 
         }
     }
+	
+
 
 
     private function checkImport($file)

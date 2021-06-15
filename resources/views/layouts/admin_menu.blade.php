@@ -19,6 +19,7 @@
              </span>
         @endif
     </li>
+
     <li>
         <a href="{{ url('/admin/event') }}">
             <i class="fas fa-chevron-circle-right"></i>Питание</a>
@@ -26,6 +27,10 @@
     <li>
         <a href="{{ url('/admin/companies') }}">
             <i class="fas fa-user"></i>Компании</a>
+    </li>
+    <li>
+        <a href="{{ url('/admin/report') }}">
+            <i class="fas fa-file-excel"></i>Репорт</a>
     </li>
     <li>
         <a href="{{ url('/admin/archive') }}">

@@ -100,4 +100,13 @@ class GuestController extends Controller
 
         ]);
     }
+	
+	public function remove($id)
+	{
+		$guest = Guest::find($id);
+		$guest->status = 3; 
+		$guest->save();
+		
+		return redirect()->back()->with('success','Успешно удалено');
+	}
 }

@@ -21,7 +21,7 @@
         <div class="section__content section__content--p30">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-12">
+                    <div class="col-md-12">
                         @include('message')
                         <table id="table_id" class="display">
                             <thead>
@@ -35,6 +35,7 @@
                                 <th>Тип комнаты</th>
                                 <th>Въезд</th>
                                 <th>Отъезд</th>
+                                <th>Регистрационный лист</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -69,11 +70,13 @@
                                         <td>{{ $item->room_type }}</td>
                                         <td>{{ $item->guestTime['entry'] }}</td>
                                         <td>{{ $item->guestTime['departure'] }}</td>
+                                        <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
                                         <td>
                                             <div class="table-data-feature">
                                                 <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
                                                     <i class="zmdi zmdi-edit " style="color:green;"></i>
                                                 </a>
+
                                             </div>
                                         </td>
                                     </tr>

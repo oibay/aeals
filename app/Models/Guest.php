@@ -42,15 +42,22 @@ class Guest extends Model
     {
         $guest = Guest::find($id);
 
-
+		if(Auth::user()->role == 'admin') {
+			$userId = $request->user_id;
+			$guest->room = $request->room ?? null;
+			$guest->status = $request->status;
+		}else {
+			$userId = Auth::id();
+			$guest->status = 2;
+		}
         $guest->name = $request->name;
         $guest->passport = $request->passport;
-        $guest->user_id = $request->user_id;
-        $guest->room = $request->room ?? null;
+        $guest->user_id = $userId;
+
         $guest->phone = $request->phone;
         $guest->room_type = $request->room_type;
         $guest->location = $request->location;
-        $guest->status = $request->status;
+
         $guest->vouchers = Guest::stringVouchers([$request->breakfast, $request->lunch, $request->supper]);
         $guest->save();
 
@@ -127,6 +134,20 @@ class Guest extends Model
         ]);
 
         return $guest;
+    }
+
+    public static function reportMonth()
+    {
+        return Guest::whereYear('guests.created_at',2021)
+                ->join('guest_times','guests.id','=','guest_times.guest_id')
+                ->join('users','users.id','=','guests.user_id')
+                ->select('guests.name','users.name as company',
+                        'guests.room_type',
+                        'guest_times.entry',
+                        'guest_times.departure')
+                ->where('location','apec')
+                ->whereMonth('entry',05)
+                ->get();
     }
 
 

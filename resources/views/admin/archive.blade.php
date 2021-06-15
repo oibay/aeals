@@ -40,7 +40,7 @@
                                                 {{ $item->name }}
                                             </a></td>
                                         <td>{{ $item->passport }}</td>
-                                        <td>{{ $item->company['name'] }}</td>
+                                        <td>{{ $item->company['name'] ?? '' }}</td>
                                         <td>{{ $item->phone }}</td>
                                         <td>
 

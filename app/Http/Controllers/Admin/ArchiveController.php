@@ -17,8 +17,10 @@ class ArchiveController extends Controller
     public function index()
     {
         $guests = Guest::where('status', 0)
-            ->whereYear('created_at',2020)
-            ->orderBy('created_at', 'DESC')->get();
+			->whereYear('created_at',2021)
+			->orderBy('created_at', 'DESC')
+			->get();
+	
         $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.archive',[
             'guests' => $guests,

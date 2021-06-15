@@ -10,6 +10,7 @@ use App\Models\Guest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\GuestEditRequest;
 use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
@@ -46,6 +47,25 @@ class GuestController extends Controller
             'guestCount' => $guestCount
         ]);
     }
+	
+	public function editShow(int $id)
+    {
+        $guest = Guest::findOrFail($id);
+        $companies = User::companies();
+         $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
+        return view('company.guests-edit',[
+            'guest' => $guest,
+            'companies' => $companies,
+            'guestCount' => $guestCount
+        ]);
+    }
+
+    public function postEditGuest(GuestEditRequest $request,$id)
+    {
+        $create = Guest::updateGuest($request,$request->id);
+
+        return redirect()->back()->with('success','Успешно добавлено');
+    }
 
     public function postGuest(AdminGuest $request)
     {
@@ -57,6 +77,7 @@ class GuestController extends Controller
 
     public function importGuest(ImportGuest $request)
     {
+		
         if (Excel::import(new GuestImport($request), $request->file)) {
             return redirect()->back()->with('success','Успешно загружено');
         }

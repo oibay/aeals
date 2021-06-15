@@ -20,14 +20,16 @@ Route::get('/logout', [\App\Http\Controllers\HomeController::class,'logout']);
 
 
 Route::prefix('admin')->group(function () {
-
+    Route::get('/pdf/{id}', [\App\Http\Controllers\PdfController::class,'index']);
     Route::get('/',[\App\Http\Controllers\Admin\MainController::class,'index']);
+    Route::get('/reportmonth',[\App\Http\Controllers\PdfController::class,'monthReport']);
     Route::get('/event',[\App\Http\Controllers\Admin\EventFoodController::class,'index']);
     Route::get('/event/food',[\App\Http\Controllers\Admin\EventFoodController::class,'eventFoods']);
     Route::get('/event/view/{id}',[\App\Http\Controllers\Admin\EventFoodController::class,'show']);
     Route::post('/postEvent',[\App\Http\Controllers\Admin\EventFoodController::class,'postEvent'])->name('postEvent');
     Route::prefix('guests')->group(function () {
         Route::get('/',[GuestController::class,'index']);
+        Route::get('/remove/{id}',[GuestController::class,'remove']);
         Route::get('stlng',[GuestController::class,'stlng']);
         Route::get('/add/new',[GuestController::class,'showAddGuest']);
         Route::post('/new',[GuestController::class,'postGuest'])->name('postGuest');
@@ -59,6 +61,8 @@ Route::prefix('company')->group(function () {
         Route::get('stlng',[\App\Http\Controllers\Company\GuestController::class,'stlng']);
         Route::post('/import',[\App\Http\Controllers\Company\GuestController::class,'importGuest'])->name('importGuest');
         Route::post('/new',[\App\Http\Controllers\Company\GuestController::class,'postGuest'])->name('postGuestCompany');
+        Route::get('/edit/{id}',[\App\Http\Controllers\Company\GuestController::class,'editShow']);
+        Route::post('/editGuest/{id}',[\App\Http\Controllers\Company\GuestController::class,'postEditGuest'])->name('postEditGuestCompany');
     });
 
     Route::prefix('companies')->group(function () {
