@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Exports\GuestExport;
 use App\Models\Guest;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Illuminate\Http\Request;
 
@@ -21,12 +23,5 @@ class PdfController extends Controller
         ]);
     }
 
-    public function monthReport()
-    {
-        $db = Guest::reportMonth();
 
-        return view('reportmonth',[
-            'db' => $db
-        ]);
-    }
 }

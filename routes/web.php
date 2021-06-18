@@ -22,7 +22,7 @@ Route::get('/logout', [\App\Http\Controllers\HomeController::class,'logout']);
 Route::prefix('admin')->group(function () {
     Route::get('/pdf/{id}', [\App\Http\Controllers\PdfController::class,'index']);
     Route::get('/',[\App\Http\Controllers\Admin\MainController::class,'index']);
-    Route::get('/reportmonth',[\App\Http\Controllers\PdfController::class,'monthReport']);
+
     Route::get('/event',[\App\Http\Controllers\Admin\EventFoodController::class,'index']);
     Route::get('/event/food',[\App\Http\Controllers\Admin\EventFoodController::class,'eventFoods']);
     Route::get('/event/view/{id}',[\App\Http\Controllers\Admin\EventFoodController::class,'show']);
@@ -48,6 +48,14 @@ Route::prefix('admin')->group(function () {
     Route::prefix('archive')->group(function () {
         Route::get('/',[\App\Http\Controllers\Admin\ArchiveController::class,'index']);
 
+    });
+
+    Route::prefix('report')->group(function () {
+        Route::get('/',[\App\Http\Controllers\ReportController::class,'index']);
+        Route::post('/reportmonth',[\App\Http\Controllers\ReportController::class,'monthReport'])->name('reportMonth');
+        Route::get('/weekly',[\App\Http\Controllers\ReportController::class,'weeklyReport']);
+        Route::get('/dailyReport',[\App\Http\Controllers\ReportController::class,'dailyReport']);
+        Route::get('/export',[\App\Http\Controllers\ReportController::class,'export']);
     });
 });
 

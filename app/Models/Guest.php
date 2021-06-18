@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\Concerns\Has;
 
@@ -75,6 +77,8 @@ class Guest extends Model
 
     }
 
+
+
     /**
      * @return HasOne
      */
@@ -136,18 +140,63 @@ class Guest extends Model
         return $guest;
     }
 
-    public static function reportMonth()
+    public static function reportMonth(Request $request)
     {
-        return Guest::whereYear('guests.created_at',2021)
+        return Guest::whereYear('guests.created_at',date('Y'))
                 ->join('guest_times','guests.id','=','guest_times.guest_id')
                 ->join('users','users.id','=','guests.user_id')
+                ->leftJoin('company_price','company_price.company_id','=','users.id')
                 ->select('guests.name','users.name as company',
                         'guests.room_type',
                         'guest_times.entry',
-                        'guest_times.departure')
+                        'guest_times.departure',
+                        'company_price.price as companyprice',
+                        'company_price.type_room as company_room')
                 ->where('location','apec')
-                ->whereMonth('entry',05)
+                ->where('room','<>',null)
+                ->whereMonth('entry',date('m',strtotime($request->month)))
+                ->whereMonth('departure',date('m',strtotime($request->month)))
                 ->get();
+    }
+
+    public static function reportWeek()
+    {
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+
+        return Guest::whereYear('guests.created_at',date('Y'))
+            ->join('guest_times','guests.id','=','guest_times.guest_id')
+            ->join('users','users.id','=','guests.user_id')
+            ->leftJoin('company_price','company_price.company_id','=','users.id')
+            ->select('guests.name','users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure',
+                'company_price.price as companyprice','company_price.type_room as company_room','guests.room')
+            ->where('location','apec')
+            ->where('room','<>',null)
+            ->whereMonth('entry',date('m'))
+            ->where('guest_times.entry','>=',$startOfWeek)
+            ->where('guest_times.departure','<=',$endOfWeek)
+            ->get();
+    }
+
+    public static function reportDays()
+    {
+        return Guest::whereYear('guests.created_at',date('Y'))
+            ->join('guest_times','guests.id','=','guest_times.guest_id')
+            ->join('users','users.id','=','guests.user_id')
+            ->leftJoin('company_price','company_price.company_id','=','users.id')
+            ->select('guests.name','users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure',
+                'company_price.price as companyprice',
+                'company_price.type_room as company_room','guests.status','guests.room')
+            ->where('location','apec')
+            ->where('room','<>',null)
+            ->where('status',1)
+            ->get();
     }
 
 

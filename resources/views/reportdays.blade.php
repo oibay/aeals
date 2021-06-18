@@ -16,11 +16,6 @@
         <th>Nights</th>
         <th>Room rate</th>
         <th>Total amount</th>
-        <?php
-       /** for($i=1;$i<32;$i++) {
-            echo "<th>".$i."</th>";
-        }*/
-        ?>
 
     </tr>
     @foreach($db as $item)
@@ -63,28 +58,7 @@
                 {{ ($item->companyprice * $countHoursToday) }}
             </td>
 
-            <?php
-           /** $x = date('d',strtotime($item->entry));
-            $y = date('d',strtotime($item->departure));
-            $count = 1;
 
-            for($i=1;$i<32;$i++) {
-                echo "<td>";
-                if($i >= $x && $i <= $y) {
-
-                    if (round($hour) <= 24) {
-                        echo 1;
-                        break;
-                    }
-                    if (round($hour) > 24) {
-                        echo 1;
-                    }
-
-                }
-                echo "</td>";
-            }*/
-
-            ?>
 
         </tr>
     @endforeach

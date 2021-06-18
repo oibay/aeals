@@ -65,6 +65,11 @@ class GuestController extends Controller
 
     public function postEditGuest(GuestEditRequest $request,$id)
     {
+        if($request->status == 1) {
+            if(is_null($request->room)) {
+                return redirect()->back()->with('warning','Пустое поле (комната)');
+            }
+        }
         $create = Guest::updateGuest($request,$request->id);
 
         return redirect()->back()->with('success','Успешно добавлено');
@@ -100,13 +105,13 @@ class GuestController extends Controller
 
         ]);
     }
-	
+
 	public function remove($id)
 	{
 		$guest = Guest::find($id);
-		$guest->status = 3; 
+		$guest->status = 3;
 		$guest->save();
-		
+
 		return redirect()->back()->with('success','Успешно удалено');
 	}
 }

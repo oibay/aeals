@@ -28,7 +28,7 @@ class AdminGuest extends FormRequest
             'user_id' => 'required|integer',
             'phone' => 'required',
             'location' => 'required',
-            'passport' => [ 'required', 'integer','unique:guests'],
+            'passport' => [ 'required','unique:guests'],
             'entry' => 'required|date_format:"Y-m-d\TH:i"',
             'departure' => 'required|date_format:"Y-m-d\TH:i"|after:entry',
             'breakfast' => 'in:Завтрак',
