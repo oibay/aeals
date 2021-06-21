@@ -14,8 +14,7 @@
         <th>Departure</th>
         <th>Hours</th>
         <th>Nights</th>
-        <th>Room rate</th>
-        <th>Total amount</th>
+
         <?php
        /** for($i=1;$i<32;$i++) {
             echo "<th>".$i."</th>";
@@ -51,17 +50,7 @@
                 @endif
             </td>
 
-            <td>
-                {{ $item->companyprice }}
-            </td>
 
-            <td>
-                <?php
-                $countHoursToday = round($hour) <= 24 ? 1 : round($hour / 24);
-
-                ?>
-                {{ ($item->companyprice * $countHoursToday) }}
-            </td>
 
             <?php
            /** $x = date('d',strtotime($item->entry));

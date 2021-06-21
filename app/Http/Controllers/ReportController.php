@@ -21,12 +21,12 @@ class ReportController extends Controller
 
     public function dailyReport(Request $request)
     {
-        return Excel::download(new GuestExport($request,'day'), 'dailyreport.xlsx');
+        return Excel::download(new GuestExport($request,'day'), date('Y-m-d').'_dailyreport.xlsx');
     }
 
     public function weeklyReport(Request $request)
     {
-        return Excel::download(new GuestExport($request,'week'), 'weekreport.xlsx');
+        return Excel::download(new GuestExport($request,'week'), date('Y-m-d').'_weekreport.xlsx');
     }
 
     public function monthReport(Request $request)
@@ -34,12 +34,12 @@ class ReportController extends Controller
         $request->validate([
             'month' => 'required'
         ]);
-        return Excel::download(new GuestExport($request,'month'), 'monthreport.xlsx');
+        return Excel::download(new GuestExport($request,'month'), date('Y-m-d').'_monthreport.xlsx');
     }
 
     public function stlngReport(Request $request)
     {
-        return Excel::download(new GuestExport($request,'stlng'), 'bron_report.xlsx');
+        return Excel::download(new GuestExport($request,'stlng'), date('Y-m-d').'_bron_report.xlsx');
     }
 
     public function export(Request $request)
@@ -49,6 +49,6 @@ class ReportController extends Controller
 
     public function guestReport(Request $request)
     {
-        return Excel::download(new GuestExport($request,'guests'), 'guests_report.xlsx');
+        return Excel::download(new GuestExport($request,'guests'), date('Y-m-d').'_guests_report.xlsx');
     }
 }

@@ -13,8 +13,7 @@
         <th>Entry</th>
         <th>Departure</th>
         <th>Nights</th>
-        <th>Room rate</th>
-        <th>Total amount</th>
+
 
     </tr>
     @foreach($db as $item)
@@ -38,14 +37,7 @@
                1
             </td>
 
-            <td>
-                {{ $item->companyprice }}
-            </td>
 
-            <td>
-
-                {{ ($item->companyprice * 1) }}
-            </td>
 
 
 
