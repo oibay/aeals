@@ -26,38 +26,64 @@ class GuestImport implements ToCollection
     {
 
         $rows->forget(0);
-		
-		
-        foreach ($rows as $row) {
-			
-            $guest = Guest::create([
-                'name' => $row[0],
-                'passport' => $row[1],
-                'user_id' => Auth::id(),
-                'room' => null,
-                'room_type' => $this->request->room_type,
-                'phone' => $row[2],
-                'location' => $this->request->location,
-                'status' => 2,
-                'vouchers' => Guest::stringVouchers([$this->request->breakfast, $this->request->lunch, $this->request->supper])
-            ]);
 
-            $guestTime = GuestTime::create([
-                'guest_id' => $guest->id,
-                'entry' => $this->request->entry,
-                'departure' => $this->request->departure,
-            ]);
-            GuestTimeLog::create([
-                'guest_id' => $guest->id,
-                'entry' => $guestTime->entry,
-                'departure' => $guestTime->departure
-            ]);
+
+        foreach ($rows as $row) {
+            $checkGuest = Guest::where('passport', $row[1]);
+            if ($checkGuest->exists()) {
+
+                $guestEdit = $checkGuest->first();
+                $guestEdit->update([
+                    'name' => $row[0],
+                    'passport' => $row[1],
+                    'user_id' => Auth::id(),
+                    'room' => null,
+                    'room_type' => $this->request->room_type,
+                    'phone' => $row[2],
+                    'location' => $this->request->location,
+                    'status' => 2,
+                    'vouchers' => Guest::stringVouchers([$this->request->breakfast, $this->request->lunch, $this->request->supper])
+                ]);
+                $guestTime = GuestTime::where(['guest_id' => $guestEdit->id,])->first();
+                $guestTime->update([
+                    'entry' => $this->request->entry,
+                    'departure' => $this->request->departure,
+                ]);
+                GuestTimeLog::create([
+                    'guest_id' => $guestEdit->id,
+                    'entry' => $guestTime->entry,
+                    'departure' => $guestTime->departure
+                ]);
+            } else {
+                $guest = Guest::create([
+                    'name' => $row[0],
+                    'passport' => $row[1],
+                    'user_id' => Auth::id(),
+                    'room' => null,
+                    'room_type' => $this->request->room_type,
+                    'phone' => $row[2],
+                    'location' => $this->request->location,
+                    'status' => 2,
+                    'vouchers' => Guest::stringVouchers([$this->request->breakfast, $this->request->lunch, $this->request->supper])
+                ]);
+
+                $guestTime = GuestTime::create([
+                    'guest_id' => $guest->id,
+                    'entry' => $this->request->entry,
+                    'departure' => $this->request->departure,
+                ]);
+                GuestTimeLog::create([
+                    'guest_id' => $guest->id,
+                    'entry' => $guestTime->entry,
+                    'departure' => $guestTime->departure
+                ]);
+
+            }
 
 
         }
-    }
-	
 
+    }
 
 
     private function checkImport($file)

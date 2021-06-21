@@ -47,7 +47,7 @@ class GuestController extends Controller
             'guestCount' => $guestCount
         ]);
     }
-	
+
 	public function editShow(int $id)
     {
         $guest = Guest::findOrFail($id);
@@ -77,7 +77,6 @@ class GuestController extends Controller
 
     public function importGuest(ImportGuest $request)
     {
-		
         if (Excel::import(new GuestImport($request), $request->file)) {
             return redirect()->back()->with('success','Успешно загружено');
         }
