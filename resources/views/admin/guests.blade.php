@@ -14,6 +14,10 @@
                         <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
                             <i class="zmdi zmdi-search"></i> Фильтр поиск
                         </button>
+
+                        <a  class="btn btn-warning mb-1" href="{{ url('admin/report/guests') }}">
+                            <i class="zmdi zmdi-download"></i> Скачать репорт
+                        </a>
                     </div>
                 </div>
             </div>
@@ -112,7 +116,7 @@
 
                         @csrf
                         <div class="row">
-
+                            <input type="hidden" name="search_s" value="1">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="user_id">Компания</label>

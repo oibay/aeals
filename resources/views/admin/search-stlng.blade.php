@@ -10,12 +10,15 @@
                         <a  class="btn btn-primary mb-1" href="{{ url('admin/guests/add/new') }}">
                             <i class="zmdi zmdi-plus"></i> Добавить
                         </a>
+
                         <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
                             <i class="zmdi zmdi-search"></i> Фильтр поиск
                         </button>
+
                         <a  class="btn btn-warning mb-1" href="{{ url('admin/report/stlng') }}">
                             <i class="zmdi zmdi-download"></i> Скачать репорт
                         </a>
+                        <span>Найдено : <strong>{{ $guests->count() }}</strong></span>
                     </div>
                 </div>
             </div>
@@ -25,7 +28,7 @@
         <div class="section__content section__content--p30">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-xl-12">
                         @include('message')
                         <table id="table_id" class="display">
                             <thead>
@@ -46,54 +49,55 @@
                             <tbody>
                             @if($guests->count() > 0)
                                 @foreach($guests as $item)
-                                    <tr>
-                                        <td><a href="{{ url('admin/guests/edit',$item->id) }}">
-                                                {{ $item->name }}
-                                            </a></td>
-                                        <td>{{ $item->passport }}</td>
-                                        <td>{{ $item->company['name'] }}</td>
-                                        <td>{{ $item->phone }}</td>
-                                        <td>
+                            <tr>
+                                <td><a href="{{ url('admin/guests/edit',$item->id) }}">
+                                        {{ $item->name }}
+                                    </a></td>
+                                <td>{{ $item->passport }}</td>
+                                <td>{{ $item->company }}</td>
+                                <td>{{ $item->phone }}</td>
+                                <td>
 
-                                            @if($item->location == 'apec')
-                                                Apec Petrotechnic
-                                            @elseif($item->location == 'bpark')
-                                                Жангырхан 72Б 1 БЛОК
-                                            @elseif($item->location == 'bpark-2')
-                                                Жангырхан 72Б 2 БЛОК
-                                            @endif
-                                        </td>
-                                        <td>
+                                    @if($item->location == 'apec')
+                                        Apec Petrotechnic
+                                    @elseif($item->location == 'bpark')
+                                        Жангырхан 72Б 1 БЛОК
+                                    @elseif($item->location == 'bpark-2')
+                                        Жангырхан 72Б 2 БЛОК
+                                    @endif
+                                </td>
+                                <td>
 
-                                            @if($item->room)
-                                                {{ $item->room }}
-                                            @else
-                                                <span class='badge badge-danger'>Не Указано</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->room_type }}</td>
-                                        <td>{{ $item->guestTime['entry'] }}</td>
-                                        <td>{{ $item->guestTime['departure'] }}</td>
-                                        <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
-                                        <td>
-                                            <div class="table-data-feature">
-                                                <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
-                                                    <i class="zmdi zmdi-edit " style="color:green;"></i>
-                                                </a>
+                                    @if($item->room)
+                                        {{ $item->room }}
+                                    @else
+                                        <span class='badge badge-danger'>Не Указано</span>
+                                    @endif
+                                </td>
+                                <td>{{ $item->room_type }}</td>
+                                <td>{{ $item->entry }}</td>
+                                <td>{{ $item->departure }}</td>
+                                <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
+                                <td>
+                                    <div class="table-data-feature">
+                                        <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
+                                            <i class="zmdi zmdi-edit " style="color:green;"></i>
+                                        </a>
 
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
+
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                                @endif
 
                             </tbody>
                         </table>
                     </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
     <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
@@ -106,7 +110,7 @@
                     </button>
                 </div>
                 <form action="{{ route('postGuest') }}" method="POST">
-                    <div class="modal-body">
+                <div class="modal-body">
 
                         @csrf
                         <div class="row">
@@ -234,117 +238,15 @@
 
                         </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary">Отправить</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mediumModalLabel">Поиск по фильтрам</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
-                <form action="{{ route('searchGuest') }}" method="post">
-                    <div class="modal-body">
-
-                        @csrf
-                        <div class="row">
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="user_id">Компания</label>
-                                    <select class="js-example-basic-single" name="company">
-                                        <option value="">Не выбрано</option>
-                                        @foreach($companies as $item)
-                                            <option value="{{ $item->id }}"> {{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label >Локация</label>
-                                    <select class="form-control" name="location" >
-                                        <option value="">Не выбрано</option>
-                                        <option value="bpark" >Жангырхан 72Б 1-БЛОК</option>
-                                        <option value="bpark-2" >Жангырхан 72Б 2-БЛОК</option>
-                                        <option value="apec">Apec Petrotechnic</option>
-
-                                    </select>
-                                </div>
-
-                            </div>
-
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="room_type">Тип комнаты</label>
-                                    <select id="room_type" class="form-control" name="room_type">
-                                        <option value="" >Не выбрано</option>
-                                        <option value="Общежитие" >Общежитие</option>
-                                        <option value="Гостиница стандарт">Гостиница стандарт </option>
-                                        <option value="Гостиница полулюкс">Гостиница полулюкс</option>
-                                        <option value="Гостиница люкс">Гостиница люкс</option>
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="entry" class="form-control-label">Въезд</label>
-
-                                    <input id="entry" type="datetime-local" class="form-control" name="entry" value="" >
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="departure" class="form-control-label">Отъезд</label>
-
-                                    <input id="departure" type="datetime-local" class="form-control" name="departure" value="" >
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="room_type">Питание</label>
-                                    <select id="room_type" class="form-control" name="vouchers">
-                                        <option value="" >Не выбрано</option>
-                                        <option value="1" >Есть</option>
-
-
-                                    </select>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Confirm</button>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- END PAGE CONTAINER-->
 
     <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -356,11 +258,11 @@
                     </button>
                 </div>
                 <form action="{{ route('searchGuest') }}" method="post">
-                    <div class="modal-body">
+                <div class="modal-body">
 
                         @csrf
                         <div class="row">
-                            <input type="hidden" name="search_s" value="2">
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="user_id">Компания</label>
@@ -424,15 +326,17 @@
 
                         </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary">Поиск</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Поиск</button>
+                </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <!-- END PAGE CONTAINER-->
     </div>
 
     </div>

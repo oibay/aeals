@@ -40,6 +40,7 @@
     ------------------------------------- */
     body {
         background-color: #f6f6f6;
+
     }
 
     .body-wrap {
@@ -49,14 +50,14 @@
 
     .container {
         display: block !important;
-        max-width: 600px !important;
+        max-width: 700px !important;
         margin: 0 auto !important;
         /* makes it centered */
         clear: both !important;
     }
 
     .content {
-        max-width: 600px;
+        max-width: 700px;
         margin: 0 auto;
         display: block;
         padding: 20px;
@@ -276,7 +277,7 @@
 <table class="body-wrap" id="tables">
     <tbody><tr>
         <td></td>
-        <td class="container" width="600">
+        <td class="container" width="700">
             <div class="content">
                 <table class="main" width="100%" cellpadding="0" cellspacing="0">
                     <tbody><tr>
@@ -284,30 +285,38 @@
                             <table width="100%" cellpadding="0" cellspacing="0">
                                 <tbody><tr>
                                     <td class="content-block">
-                                        <img src="{{ asset('logo.png') }}" width="200">
+                                        <img src="{{ asset('logo.png') }}" width="200"><br><br><br>
+                                        <h3>Регистрационный лист №________</h3>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="content-block">
                                         <table class="invoice">
                                             <tbody><tr>
-                                                <td>
-                                                    <strong>ФИО : {{ $guest->name }}</strong>
-                                                    <br>Компания : {{ $guest->company['name'] }}
+                                                <td style="font-size:16px;">
+                                                    <strong style="font-size:16px;">ФИО : {{ $guest->name }}</strong><br><br>
+                                                    Номер телефона : <strong>{{ $guest->phone }}</strong>
+                                                    <br>Компания : {{ $guest->company['name'] }}<br>
+                                                    <br>Локация : @if($guest->location == 'apec')
+                                                        Apec Petrotechnic
+                                                    @elseif($guest->location == 'bpark')
+                                                        Жангырхана 1-БЛОК
+                                                    @else Жангырхана 2-БЛОК @endif
 
                                                     <br>Комната : {{ $guest->room ?? ''}}
                                                     <br>Дата заезда : {{ $guest->guestTime['entry'] }}
-                                                    <br>Дата въезда : {{ $guest->guestTime['departure'] }}</td>
+                                                    <br>Дата выезда :
+                                                    <br><br><strong style="font-size:16px;">С правилами проживания по техники безопасности жильцов общежития и гостиницы.</strong>
+                                                </td>
+
+
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <table class="invoice-items" cellpadding="0" cellspacing="0">
-                                                        <tbody><tr>
-                                                            <td>Дата</td>
-                                                            <td class="alignright" style="border: 1px solid #eee;width: 100px;"></td>
-                                                        </tr>
+                                                        <tbody>
                                                         <tr>
-                                                            <td>Подпись</td>
+                                                            <td style="font-size:16px;">Подпись</td>
                                                             <td class="alignright" style="border: 1px solid #eee;width: 100px;"></td>
                                                         </tr>
 
@@ -320,7 +329,7 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="content-block">
+                                    <td class="content-block" style="font-size:16px;">
                                         info@apec-tc.kz
                                     </td>
                                 </tr>
@@ -328,7 +337,7 @@
                         </td>
                     </tr>
                     </tbody></table>
-                </div>
+            </div>
         </td>
         <td></td>
     </tr>

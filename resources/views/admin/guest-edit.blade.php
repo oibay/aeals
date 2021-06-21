@@ -208,17 +208,19 @@
                             </div>
                         </form>
                     </div>
-                   <!--- <div class="col-md-6">
+                   <div class="col-md-6 mt-3">
                         <div class="row">
 
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="name" class="form-control-label">ФИО</label>
-                                    <input type="text">
+                                <div class="card">
+                                    <h5 class="card-header">Регистрационный лист</h5>
+                                    <div class="card-body">
+                                     <a href="{{ url('admin/pdf',$guest->id) }}" target="__blank" class="btn btn-primary">Скачать</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>---->
+                    </div>
 
                     </div>
                 </div>

@@ -79,6 +79,7 @@ class Guest extends Model
 
 
 
+
     /**
      * @return HasOne
      */
@@ -193,6 +194,43 @@ class Guest extends Model
                 'guest_times.departure',
                 'company_price.price as companyprice',
                 'company_price.type_room as company_room','guests.status','guests.room')
+            ->where('location','apec')
+            ->where('room','<>',null)
+            ->where('status',1)
+            ->get();
+    }
+
+    public static function reportBron()
+    {
+        return Guest::whereYear('guests.created_at',date('Y'))
+            ->join('guest_times','guests.id','=','guest_times.guest_id')
+            ->join('users','users.id','=','guests.user_id')
+            ->leftJoin('company_price','company_price.company_id','=','users.id')
+            ->select('guests.name','users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure',
+                'company_price.price as companyprice',
+                'company_price.type_room as company_room','guests.status','guests.room')
+            ->where('location','apec')
+            ->where('status',2)
+            ->get();
+    }
+
+    public static function reportGuests()
+    {
+        return Guest::whereYear('guests.created_at',date('Y'))
+            ->join('guest_times','guests.id','=','guest_times.guest_id')
+            ->join('users','users.id','=','guests.user_id')
+            ->leftJoin('company_price','company_price.company_id','=','users.id')
+            ->select('guests.name','users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure',
+                'company_price.price as companyprice',
+                'company_price.type_room as company_room','guests.status','guests.room',
+                'guests.phone'
+            )
             ->where('location','apec')
             ->where('room','<>',null)
             ->where('status',1)

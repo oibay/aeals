@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\entities\Search\SearchActiveGuest;
+use App\entities\Search\SearchBron;
 use App\entities\Search\SearchGuest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddGuestRequest;
@@ -77,19 +78,35 @@ class GuestController extends Controller
 
     public function searchGuest(Request $request)
     {
+        if ($request->search_s == 1) {
+            $search = new SearchGuest($request);
+            $search = new SearchActiveGuest($search);
 
-        $search = new SearchGuest($request);
-        $search = new SearchActiveGuest($search);
+            $guest = $search->getQuery()->get();
+            $companies = User::companies();
+            $guestCount = Guest::where(['status' => 2])->count();
 
-        $guest = $search->getQuery()->get();
-        $companies = User::companies();
-        $guestCount = Guest::where(['status' => 2])->count();
+            return view('admin.search-guests',[
+                'companies' => $companies,
+                'guests' => $guest,
+                'guestCount' => $guestCount
+            ]);
+        }else {
+            $search = new SearchBron($request);
+            $search = new SearchActiveGuest($search);
 
-        return view('admin.search-guests',[
-            'companies' => $companies,
-            'guests' => $guest,
-            'guestCount' => $guestCount
-        ]);
+            $guest = $search->getQuery()->get();
+            $companies = User::companies();
+            $guestCount = Guest::where(['status' => 2])->count();
+
+            return view('admin.search-stlng',[
+                'companies' => $companies,
+                'guests' => $guest,
+                'guestCount' => $guestCount
+            ]);
+        }
+
+
     }
 
     public function stlng()

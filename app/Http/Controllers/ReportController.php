@@ -37,8 +37,18 @@ class ReportController extends Controller
         return Excel::download(new GuestExport($request,'month'), 'monthreport.xlsx');
     }
 
+    public function stlngReport(Request $request)
+    {
+        return Excel::download(new GuestExport($request,'stlng'), 'bron_report.xlsx');
+    }
+
     public function export(Request $request)
     {
         return Excel::download(new GuestExport($request), 'invoices.xlsx');
+    }
+
+    public function guestReport(Request $request)
+    {
+        return Excel::download(new GuestExport($request,'guests'), 'guests_report.xlsx');
     }
 }
