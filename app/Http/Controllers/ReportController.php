@@ -39,6 +39,7 @@ class ReportController extends Controller
 
     public function stlngReport(Request $request)
     {
+
         return Excel::download(new GuestExport($request,'stlng'), date('Y-m-d').'_bron_report.xlsx');
     }
 

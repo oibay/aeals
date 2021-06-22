@@ -150,9 +150,7 @@ class Guest extends Model
                 ->select('guests.name','users.name as company',
                         'guests.room_type',
                         'guest_times.entry',
-                        'guest_times.departure',
-                        'company_price.price as companyprice',
-                        'company_price.type_room as company_room')
+                        'guest_times.departure')
                 ->where('location','apec')
                 ->where('room','<>',null)
                 ->whereMonth('entry',date('m',strtotime($request->month)))
@@ -173,7 +171,7 @@ class Guest extends Model
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'company_price.price as companyprice','company_price.type_room as company_room','guests.room')
+                'guests.room')
             ->where('location','apec')
             ->where('room','<>',null)
             ->whereMonth('entry',date('m'))
@@ -192,49 +190,48 @@ class Guest extends Model
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'company_price.price as companyprice',
-                'company_price.type_room as company_room','guests.status','guests.room')
+                'guests.status','guests.room')
             ->where('location','apec')
             ->where('room','<>',null)
             ->where('status',1)
             ->get();
     }
 
-    public static function reportBron()
+    public static function reportBron(Request $request)
     {
         return Guest::whereYear('guests.created_at',date('Y'))
-            ->join('guest_times','guests.id','=','guest_times.guest_id')
-            ->join('users','users.id','=','guests.user_id')
-            ->leftJoin('company_price','company_price.company_id','=','users.id')
-            ->select('guests.name','users.name as company',
-                'guests.room_type',
-                'guest_times.entry',
-                'guest_times.departure',
-                'company_price.price as companyprice',
-                'company_price.type_room as company_room','guests.status','guests.room')
-            ->where('location','apec')
-            ->where('status',2)
-            ->get();
+                    ->join('guest_times','guests.id','=','guest_times.guest_id')
+                    ->join('users','users.id','=','guests.user_id')
+                    ->leftJoin('company_price','company_price.company_id','=','users.id')
+                    ->select('guests.name','users.name as company',
+                        'guests.room_type',
+                        'guest_times.entry',
+                        'guest_times.departure',
+                        'guests.status','guests.room')
+                    ->where('location','apec')
+                    ->whereDate('guest_times.entry',Carbon::parse($request->entry))
+                    ->where('status',2)
+                    ->get();
     }
 
     public static function reportGuests()
     {
-        return Guest::whereYear('guests.created_at',date('Y'))
+       return  Guest::whereYear('guests.created_at',date('Y'))
             ->join('guest_times','guests.id','=','guest_times.guest_id')
             ->join('users','users.id','=','guests.user_id')
-            ->leftJoin('company_price','company_price.company_id','=','users.id')
+
             ->select('guests.name','users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'company_price.price as companyprice',
-                'company_price.type_room as company_room','guests.status','guests.room',
+                'guests.status','guests.room',
                 'guests.phone'
             )
-            ->where('location','apec')
-            ->where('room','<>',null)
-            ->where('status',1)
+            ->where('guests.location','apec')
+            ->where('guests.room','<>',null)
+            ->where('guests.status',1)
             ->get();
+
     }
 
 

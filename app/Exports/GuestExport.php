@@ -42,7 +42,7 @@ class GuestExport implements FromView
                 ]);
                 break;
             case 'stlng':
-                $db = Guest::reportBron();
+                $db = Guest::reportBron($this->request);
                 return view('reportbron',[
                     'db' => $db
                 ]);
