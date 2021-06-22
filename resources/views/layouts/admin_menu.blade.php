@@ -29,6 +29,14 @@
             <i class="fas fa-user"></i>Компании</a>
     </li>
     <li>
+        <a href="{{ url('/admin/materials') }}">
+            <i class="fas fa-bed"></i>Мебель</a>
+    </li>
+    <li>
+        <a href="{{ url('/admin/room-number') }}">
+            <i class="fas fa-sort-numeric-up"></i>Номер комнаты</a>
+    </li>
+    <li>
         <a href="{{ url('/admin/report') }}">
             <i class="fas fa-file-excel"></i>Репорт</a>
     </li>

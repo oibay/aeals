@@ -20,6 +20,7 @@ Route::get('/logout', [\App\Http\Controllers\HomeController::class,'logout']);
 
 
 Route::prefix('admin')->group(function () {
+
     Route::get('/pdf/{id}', [\App\Http\Controllers\PdfController::class,'index']);
     Route::get('/',[\App\Http\Controllers\Admin\MainController::class,'index']);
 
@@ -27,6 +28,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/event/food',[\App\Http\Controllers\Admin\EventFoodController::class,'eventFoods']);
     Route::get('/event/view/{id}',[\App\Http\Controllers\Admin\EventFoodController::class,'show']);
     Route::post('/postEvent',[\App\Http\Controllers\Admin\EventFoodController::class,'postEvent'])->name('postEvent');
+
     Route::prefix('guests')->group(function () {
         Route::get('/',[GuestController::class,'index']);
         Route::get('/remove/{id}',[GuestController::class,'remove']);
@@ -49,6 +51,24 @@ Route::prefix('admin')->group(function () {
         Route::get('/',[\App\Http\Controllers\Admin\ArchiveController::class,'index']);
 
     });
+
+    Route::prefix('materials')->group(function () {
+        Route::get('/',[\App\Http\Controllers\Admin\MaterialController::class,'index']);
+        Route::get('/edit/{id}',[\App\Http\Controllers\Admin\MaterialController::class,'showEdit']);
+        Route::post('/add',[\App\Http\Controllers\Admin\MaterialController::class,'addPost'])->name('addPostMaterial');
+        Route::post('/postEdit/{id}',[\App\Http\Controllers\Admin\MaterialController::class,'postEdit'])->name('postEditMaterial');
+        Route::post('/userMaterial/{id}',[\App\Http\Controllers\Admin\MaterialController::class,'userPost'])->name('userMaterial');
+
+    });
+
+    Route::prefix('room-number')->group(function () {
+        Route::get('/',[\App\Http\Controllers\Admin\RoomNumberController::class,'index']);
+        Route::get('/edit/{id}',[\App\Http\Controllers\Admin\RoomNumberController::class,'showEdit']);
+        Route::post('/postAdd',[\App\Http\Controllers\Admin\RoomNumberController::class,'postAdd'])->name('postAddNumber');
+        Route::post('/postEditNumber/{id}',[\App\Http\Controllers\Admin\RoomNumberController::class,'postEdit'])->name('postEditNumber');
+
+    });
+
 
     Route::prefix('report')->group(function () {
         Route::get('/',[\App\Http\Controllers\ReportController::class,'index']);
@@ -82,6 +102,5 @@ Route::prefix('company')->group(function () {
 
     Route::prefix('archive')->group(function () {
         Route::get('/',[\App\Http\Controllers\Admin\ArchiveController::class,'index']);
-
     });
 });

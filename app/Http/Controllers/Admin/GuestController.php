@@ -10,6 +10,7 @@ use App\Http\Requests\AddGuestRequest;
 use App\Http\Requests\AdminGuest;
 use App\Http\Requests\GuestEditRequest;
 use App\Models\Guest;
+use App\Models\Material;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -57,10 +58,13 @@ class GuestController extends Controller
         $guest = Guest::findOrFail($id);
         $companies = User::companies();
         $guestCount = Guest::where(['status' => 2])->count();
+        $materials = Material::all();
+
         return view('admin.guest-edit',[
             'guest' => $guest,
             'companies' => $companies,
-            'guestCount' => $guestCount
+            'guestCount' => $guestCount,
+            'materials' => $materials
         ]);
     }
 

@@ -219,8 +219,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <h5 class="card-header">Чеклист</h5>
+                                    <div class="card-body">
+                                        <form action="{{ route('userMaterial',$guest->id) }}" method="POST">
+                                            @csrf
+                                            <ul style="list-style-type:none;">
+                                                @foreach($materials as $item)
+                                                    <li><input type="checkbox" name="materials[{{ $item->id }}]" <?php
+                                                            $materialIsnull = $guest->material($guest->id, $item->id)->material_id ?? null;
+                                                        ?>@if(!is_null($materialIsnull) && $materialIsnull == $item->id) checked @else @endif> {{ $item->title }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <input type="submit" class="btn btn-warning">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+
 
                     </div>
                 </div>

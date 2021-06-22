@@ -7,6 +7,7 @@ use App\Http\Requests\GuestEditRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -232,6 +233,11 @@ class Guest extends Model
             ->where('guests.status',1)
             ->get();
 
+    }
+
+    public function material($guestID,$materialID)
+    {
+        return GuestMaterial::where(['guest_id' => $guestID,'material_id' => $materialID])->first();
     }
 
 
