@@ -119,7 +119,7 @@
                                             <label for="room_type">Тип комнаты</label>
                                             <select id="room_type" class="form-control" name="room_type">
 
-                                                <option value="Общежитие" >Общежитие</option>
+
                                                 <option value="Гостиница стандарт">Гостиница стандарт </option>
                                                 <option value="Гостиница полулюкс">Гостиница полулюкс</option>
                                                 <option value="Гостиница люкс">Гостиница люкс</option>

@@ -121,7 +121,6 @@
                                     <label for="room_type">Тип комнаты</label>
                                     <select id="room_type" class="form-control{{ $errors->has('room_type') ? ' is-invalid' : '' }}" name="room_type" value="{{ old('room_type') }}" >
                                         <option value="">Не выбрано</option>
-                                        <option value="Общежитие" {{ ($guest->room_type === 'Общежитие') ? 'selected' : ''}}>Общежитие</option>
                                         <option value="Гостиница стандарт" {{ ($guest->room_type === 'Гостиница стандарт') ? 'selected' : ''}}>Гостиница стандарт </option>
                                         <option value="Гостиница полулюкс" {{ ($guest->room_type === 'Гостиница полулюкс') ? 'selected' : ''}}>Гостиница полулюкс</option>
                                         <option value="Гостиница люкс" {{ ($guest->room_type === 'Гостиница люкс') ? 'selected' : ''}}>Гостиница люкс</option>
