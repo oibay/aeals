@@ -152,12 +152,12 @@ class Guest extends Model
             ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
             ->select('guests.name', 'users.name as company',
                 'guests.room_type',
+                'guests.room',
+                'guests.location',
                 'guest_times.entry',
                 'guest_times.departure')
-            ->where('location', 'apec')
             ->where('room', '<>', null)
             ->whereMonth('entry', date('m', strtotime($request->month)))
-            ->whereMonth('departure', date('m', strtotime($request->month)))
             ->get();
     }
 
@@ -275,5 +275,5 @@ class Guest extends Model
         return false;
     }
 
-
 }
+

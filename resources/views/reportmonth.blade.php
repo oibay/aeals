@@ -9,11 +9,14 @@
         <th>#</th>
         <th>Name</th>
         <th>Company</th>
+        <th>Room</th>
         <th>Room Type</th>
+        <th>Location</th>
         <th>Entry</th>
         <th>Departure</th>
-        <th>Hours</th>
-        <th>Nights</th>
+
+        <!---<th>Hours</th>
+        <th>Nights</th>--->
 
         <?php
        /** for($i=1;$i<32;$i++) {
@@ -30,7 +33,18 @@
             <td> {{ $loop->index + 1}}</td>
             <td>{{ $item->name }}</td>
             <td>{{ $item->company }}</td>
+            <td>{{ $item->room }}</td>
             <td>{{ $item->room_type}}</td>
+            <td>
+
+                @if($item->location == 'apec')
+                    Apec Petrotechnic
+                @elseif($item->location == 'bpark')
+                    Жангырхан 72Б 1 БЛОК
+                @elseif($item->location == 'bpark-2')
+                    Жангырхан 72Б 2 БЛОК
+                @endif
+            </td>
             <td>
                 {{ $item->entry }}
 
@@ -38,17 +52,10 @@
             <td>
                 {{ $item->departure}}
             </td>
-            <td>
-               {{ $hour }}
-            </td>
+            <!---<td>
+               <?php //$hour;?>
+            </td>--->
 
-            <td>
-                @if(round($hour) <= 24)
-                    1
-                @else
-                        {{ round($hour / 24)  }}
-                @endif
-            </td>
 
 
 
