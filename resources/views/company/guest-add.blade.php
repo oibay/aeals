@@ -65,7 +65,12 @@
 
                                             @if ($errors->has('passport'))
                                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('passport') }}</strong>
+                                                    <strong>
+                                                        <?php
+                                                        $guest = \App\Models\Guest::where('passport',old('passport'))->first();
+                                                        ?>
+                                                        <p style="font-size: 18px;">Найдено : <a href="{{ url('company/guests/edit',$guest->id) }}">{{ $guest->name }}</a></p>
+                                                    </strong>
                                                 </span>
                                             @endif
                                         </div>

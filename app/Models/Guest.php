@@ -22,17 +22,17 @@ class Guest extends Model
 
     public static function guests()
     {
-        return self::where('status',1)
-            ->where('room','<>',null)
+        return self::where('status', 1)
+            ->where('room', '<>', null)
             ->with('guestTime')
             ->get();
     }
 
     public static function eventGuests($location = null)
     {
-        return self::where('status',1)
-            ->where('room','<>',null)
-            ->where('location',$location ?? 'apec')
+        return self::where('status', 1)
+            ->where('room', '<>', null)
+            ->where('location', $location ?? 'apec')
             ->with('guestTime')
             ->get();
     }
@@ -45,14 +45,14 @@ class Guest extends Model
     {
         $guest = Guest::find($id);
 
-		if(Auth::user()->role == 'admin') {
-			$userId = $request->user_id;
-			$guest->room = $request->room ?? null;
-			$guest->status = $request->status;
-		}else {
-			$userId = Auth::id();
-			$guest->status = 2;
-		}
+        if (Auth::user()->role == 'admin') {
+            $userId = $request->user_id;
+            $guest->room = $request->room ?? null;
+            $guest->status = $request->status;
+        } else {
+            $userId = Auth::id();
+            $guest->status = 2;
+        }
         $guest->name = $request->name;
         $guest->passport = $request->passport;
         $guest->user_id = $userId;
@@ -65,7 +65,7 @@ class Guest extends Model
         $guest->save();
 
 
-        $guestTime = GuestTime::where('guest_id',$guest->id)->first();
+        $guestTime = GuestTime::where('guest_id', $guest->id)->first();
 
         GuestTimeLog::create([
             'guest_id' => $guest->id,
@@ -79,12 +79,10 @@ class Guest extends Model
     }
 
 
-
-
     /**
      * @return HasOne
      */
-    public function guestTime():HasOne
+    public function guestTime(): HasOne
     {
         return $this->hasOne(GuestTime::class);
     }
@@ -96,16 +94,16 @@ class Guest extends Model
     public static function stringVouchers($vouchers)
     {
         $string = '';
-        foreach($vouchers as $voucher){
-            if($voucher) $string .= $voucher.',';
+        foreach ($vouchers as $voucher) {
+            if ($voucher) $string .= $voucher . ',';
         }
 
         return substr($string, 0, -1);
     }
 
-    public function company():BelongsTo
+    public function company(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id','');
+        return $this->belongsTo(User::class, 'user_id', '');
     }
 
     /**
@@ -113,9 +111,13 @@ class Guest extends Model
      * @param $id
      * @return Guest
      */
-    public static function createGuest(AdminGuest $request):Guest
+    public static function createGuest(AdminGuest $request): Guest
     {
-        if (Auth::user()->role == 'company') { $userId = Auth::id();} else { $userId = $request->user_id; }
+        if (Auth::user()->role == 'company') {
+            $userId = Auth::id();
+        } else {
+            $userId = $request->user_id;
+        }
         $guest = Guest::create([
             'name' => $request->name,
             'passport' => $request->passport,
@@ -144,19 +146,19 @@ class Guest extends Model
 
     public static function reportMonth(Request $request)
     {
-        return Guest::whereYear('guests.created_at',date('Y'))
-                ->join('guest_times','guests.id','=','guest_times.guest_id')
-                ->join('users','users.id','=','guests.user_id')
-                ->leftJoin('company_price','company_price.company_id','=','users.id')
-                ->select('guests.name','users.name as company',
-                        'guests.room_type',
-                        'guest_times.entry',
-                        'guest_times.departure')
-                ->where('location','apec')
-                ->where('room','<>',null)
-                ->whereMonth('entry',date('m',strtotime($request->month)))
-                ->whereMonth('departure',date('m',strtotime($request->month)))
-                ->get();
+        return Guest::whereYear('guests.created_at', date('Y'))
+            ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
+            ->join('users', 'users.id', '=', 'guests.user_id')
+            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+            ->select('guests.name', 'users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure')
+            ->where('location', 'apec')
+            ->where('room', '<>', null)
+            ->whereMonth('entry', date('m', strtotime($request->month)))
+            ->whereMonth('departure', date('m', strtotime($request->month)))
+            ->get();
     }
 
     public static function reportWeek()
@@ -164,80 +166,101 @@ class Guest extends Model
         $startOfWeek = Carbon::now()->startOfWeek();
         $endOfWeek = Carbon::now()->endOfWeek();
 
-        return Guest::whereYear('guests.created_at',date('Y'))
-            ->join('guest_times','guests.id','=','guest_times.guest_id')
-            ->join('users','users.id','=','guests.user_id')
-            ->leftJoin('company_price','company_price.company_id','=','users.id')
-            ->select('guests.name','users.name as company',
+        return Guest::whereYear('guests.created_at', date('Y'))
+            ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
+            ->join('users', 'users.id', '=', 'guests.user_id')
+            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+            ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
                 'guests.room')
-            ->where('location','apec')
-            ->where('room','<>',null)
-            ->whereMonth('entry',date('m'))
-            ->where('guest_times.entry','>=',$startOfWeek)
-            ->where('guest_times.departure','<=',$endOfWeek)
+            ->where('location', 'apec')
+            ->where('room', '<>', null)
+            ->whereMonth('entry', date('m'))
+            ->where('guest_times.entry', '>=', $startOfWeek)
+            ->where('guest_times.departure', '<=', $endOfWeek)
             ->get();
     }
 
     public static function reportDays()
     {
-        return Guest::whereYear('guests.created_at',date('Y'))
-            ->join('guest_times','guests.id','=','guest_times.guest_id')
-            ->join('users','users.id','=','guests.user_id')
-            ->leftJoin('company_price','company_price.company_id','=','users.id')
-            ->select('guests.name','users.name as company',
+        return Guest::whereYear('guests.created_at', date('Y'))
+            ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
+            ->join('users', 'users.id', '=', 'guests.user_id')
+            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+            ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'guests.status','guests.room')
-            ->where('location','apec')
-            ->where('room','<>',null)
-            ->where('status',1)
+                'guests.status', 'guests.room')
+            ->where('location', 'apec')
+            ->where('room', '<>', null)
+            ->where('status', 1)
             ->get();
     }
 
     public static function reportBron(Request $request)
     {
-        return Guest::whereYear('guests.created_at',date('Y'))
-                    ->join('guest_times','guests.id','=','guest_times.guest_id')
-                    ->join('users','users.id','=','guests.user_id')
-                    ->leftJoin('company_price','company_price.company_id','=','users.id')
-                    ->select('guests.name','users.name as company',
-                        'guests.room_type',
-                        'guest_times.entry',
-                        'guest_times.departure',
-                        'guests.status','guests.room')
-                    ->where('location','apec')
-                    ->whereDate('guest_times.entry',Carbon::parse($request->entry))
-                    ->where('status',2)
-                    ->get();
+        return Guest::whereYear('guests.created_at', date('Y'))
+            ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
+            ->join('users', 'users.id', '=', 'guests.user_id')
+            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+            ->select('guests.name', 'users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure',
+                'guests.status', 'guests.room')
+            ->where('location', 'apec')
+            ->whereDate('guest_times.entry', Carbon::parse($request->entry))
+            ->where('status', 2)
+            ->get();
     }
 
     public static function reportGuests()
     {
-       return  Guest::whereYear('guests.created_at',date('Y'))
-            ->join('guest_times','guests.id','=','guest_times.guest_id')
-            ->join('users','users.id','=','guests.user_id')
-
-            ->select('guests.name','users.name as company',
+        return Guest::whereYear('guests.created_at', date('Y'))
+            ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
+            ->join('users', 'users.id', '=', 'guests.user_id')
+            ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'guests.status','guests.room',
+                'guests.status', 'guests.room',
                 'guests.phone'
             )
-            ->where('guests.location','apec')
-            ->where('guests.room','<>',null)
-            ->where('guests.status',1)
+            ->where('guests.location', 'apec')
+            ->where('guests.room', '<>', null)
+            ->where('guests.status', 1)
             ->get();
 
     }
 
-    public function material($guestID,$materialID)
+    public function material($guestID, $materialID)
     {
-        return GuestMaterial::where(['guest_id' => $guestID,'material_id' => $materialID])->first();
+        return GuestMaterial::where(['guest_id' => $guestID, 'material_id' => $materialID])->first();
+    }
+
+    public static function reportArchive(Request $request)
+    {
+        $data = Guest::whereYear('guests.created_at', date('Y'))
+            ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
+            ->join('users', 'users.id', '=', 'guests.user_id')
+            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+            ->select('guests.name', 'users.name as company',
+                'guests.room_type',
+                'guest_times.entry',
+                'guest_times.departure',
+                'guests.status', 'guests.room')
+            ->where('location', 'apec')
+            ->where('guests.room', '<>', null)
+            ->where('status', 0);
+        if ($request->entry) {
+            $data->whereDate('guest_times.entry', Carbon::parse($request->entry));
+        } elseif ($request->departure) {
+            $data->whereDate('guest_times.departure', Carbon::parse($request->departure));
+        }
+        return $data->get();
     }
 
 

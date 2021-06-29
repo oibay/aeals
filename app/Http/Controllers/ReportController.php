@@ -52,4 +52,9 @@ class ReportController extends Controller
     {
         return Excel::download(new GuestExport($request,'guests'), date('Y-m-d').'_guests_report.xlsx');
     }
+
+    public function archiveReport(Request $request)
+    {
+        return Excel::download(new GuestExport($request,'archive'), date('Y-m-d').'_archivereport.xlsx');
+    }
 }

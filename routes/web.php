@@ -77,6 +77,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/dailyReport',[\App\Http\Controllers\ReportController::class,'dailyReport']);
         Route::get('/export',[\App\Http\Controllers\ReportController::class,'export']);
         Route::post('/stlng',[\App\Http\Controllers\ReportController::class,'stlngReport'])->name('stlngReport');
+        Route::post('/archiveReport',[\App\Http\Controllers\ReportController::class,'archiveReport'])->name('archiveReport');
         Route::get('/guests',[\App\Http\Controllers\ReportController::class,'guestReport']);
     });
 });

@@ -54,6 +54,12 @@ class GuestExport implements FromView
                     'db' => $db
                 ]);
                 break;
+            case 'archive':
+                $db = Guest::reportArchive($this->request);
+                return view('reportArchive',[
+                    'db' => $db
+                ]);
+                break;
         }
 
     }
