@@ -263,5 +263,17 @@ class Guest extends Model
         return $data->get();
     }
 
+    /**
+     * @param $departure
+     */
+    public function expired($departure)
+    {
+        if (time() > strtotime($departure)) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

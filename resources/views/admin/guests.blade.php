@@ -51,7 +51,12 @@
                             <tr>
                                 <td><a href="{{ url('admin/guests/edit',$item->id) }}">
                                         {{ $item->name }}
-                                    </a></td>
+                                    </a>
+
+                                    @if($item->expired($item->guestTime['departure']))
+                                        <h4><span class="badge badge-danger">Истёк</span></h4>
+                                    @endif
+                                </td>
                                 <td>{{ $item->passport }}</td>
                                 <td>{{ $item->company['name'] }}</td>
                                 <td>{{ $item->phone }}</td>
