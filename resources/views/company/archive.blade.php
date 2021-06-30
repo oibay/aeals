@@ -38,10 +38,8 @@
                                 @foreach($guests as $item)
                             <tr>
                                 <td>
-                                       <a href="{{ url('company/guests/edit',$item->id) }}">
-                                        {{ $item->name }}
-                                    </a>
-                                   </td>
+                                    {{ $item->name }}
+                                </td>
                                 <td>{{ $item->passport }}</td>
                                 <td>{{ $item->company['name'] }}</td>
                                 <td>{{ $item->phone }}</td>
