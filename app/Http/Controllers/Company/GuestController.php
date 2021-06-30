@@ -97,7 +97,7 @@ class GuestController extends Controller
 
         $guests = Guest::where('room','<>',null)
                         ->whereYear('created_at',date('Y'))
-                        ->where('user_id',Auth::id())
+                        ->where(['user_id' => Auth::id(),'status' => 0])
                         ->get();
         $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
 
