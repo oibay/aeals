@@ -18,6 +18,10 @@
             @endif
         </span>
     </li>
+    <li>
+        <a href="{{ url('/company/guests/archive') }}">
+            <i class="fas fa-archive"></i>Архив</a>
+    </li>
 
 
 

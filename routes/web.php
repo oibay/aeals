@@ -86,8 +86,10 @@ Route::prefix('admin')->group(function () {
 Route::prefix('company')->group(function () {
 
     Route::get('/',[\App\Http\Controllers\Company\GuestController::class,'index']);
+
     Route::prefix('guests')->group(function () {
         Route::get('/',[\App\Http\Controllers\Company\GuestController::class,'index']);
+        Route::get('archive',[\App\Http\Controllers\Company\GuestController::class,'archive']);
         Route::get('/add/new',[\App\Http\Controllers\Company\GuestController::class,'showAddGuest']);
         Route::get('stlng',[\App\Http\Controllers\Company\GuestController::class,'stlng']);
         Route::post('/import',[\App\Http\Controllers\Company\GuestController::class,'importGuest'])->name('importGuest');

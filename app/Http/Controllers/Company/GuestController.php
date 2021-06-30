@@ -92,5 +92,20 @@ class GuestController extends Controller
         ]);
     }
 
+    public function archive()
+    {
+
+        $guests = Guest::where('room','<>',null)
+                        ->whereYear('created_at',date('Y'))
+                        ->where('user_id',Auth::id())
+                        ->get();
+        $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
+
+        return view('company.archive',[
+            'guests' => $guests,
+            'guestCount' => $guestCount
+        ]);
+    }
+
 
 }
