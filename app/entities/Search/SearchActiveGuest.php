@@ -14,6 +14,7 @@ class SearchActiveGuest implements SearchInterface
         $this->query = $filterData->getQuery();
         $this->filterData = $filterData->getFilterData();
     }
+
     public function getQuery()
     {
         if ($this->filterData['company']) {

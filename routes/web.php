@@ -49,7 +49,8 @@ Route::prefix('admin')->group(function () {
 
     Route::prefix('archive')->group(function () {
         Route::get('/',[\App\Http\Controllers\Admin\ArchiveController::class,'index']);
-
+        Route::get('deleted',[\App\Http\Controllers\Admin\ArchiveController::class,'deleted']);
+        Route::get('deleted/rec/{id}',[\App\Http\Controllers\Admin\ArchiveController::class,'deletedRecovery']);
     });
 
     Route::prefix('materials')->group(function () {
@@ -105,6 +106,7 @@ Route::prefix('company')->group(function () {
 
     Route::prefix('archive')->group(function () {
         Route::get('/',[\App\Http\Controllers\Admin\ArchiveController::class,'index']);
+
     });
 });
 
@@ -116,3 +118,4 @@ Route::prefix('tickets')->group(function () {
     Route::post('/postAddDepartment',[\App\Http\Controllers\Ticket\MainController::class,'postAddDepartment'])->name('postAddDepartment');
     Route::get('/approve/{id}',[\App\Http\Controllers\Ticket\MainController::class,'approve']);
 });
+

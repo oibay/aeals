@@ -20,11 +20,31 @@ class ArchiveController extends Controller
 			->whereYear('created_at',2021)
 			->orderBy('created_at', 'DESC')
 			->get();
-	
+
         $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.archive',[
             'guests' => $guests,
             'guestCount' => $guestCount
         ]);
+    }
+    public function deleted()
+    {
+        $guests = Guest::where('status', 3)
+            ->get();
+        $guestCount = Guest::where(['status' => 2])->count();
+
+        return view('admin.deleted',[
+            'guests' => $guests,
+            'guestCount' => $guestCount
+        ]);
+    }
+
+    public function deletedRecovery($id)
+    {
+        $guest = Guest::find($id);
+        $guest->status = 2;
+        $guest->save();
+
+        return redirect()->back()->with('success','Успешно восстановлен');
     }
 }
