@@ -7,13 +7,16 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <a  class="btn btn-primary mb-1" href="{{ url('company/guests/add/new') }}">
+                        <!----<a  class="btn btn-primary mb-1" href="{{ url('company/guests/add/new') }}">
                             <i class="zmdi zmdi-plus"></i> Добавить
-                        </a>
+                        </a>---->
 
-                        <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
-                            <i class="zmdi zmdi-import-export"></i> Импорт
-                        </button>
+                            <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#blockedImport">
+                                <i class="zmdi zmdi-plus"></i> Добавить
+                            </button>
+                            <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#blockedImport">
+                                <i class="zmdi zmdi-import-export"></i> Импорт
+                            </button>
                     </div>
                 </div>
             </div>
@@ -430,6 +433,43 @@
     <!-- END PAGE CONTAINER-->
     </div>
 
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="blockedImport" tabindex="-1" role="dialog" aria-labelledby="blockedImportLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Құрметті серіктестер!
+                    </p>
+                    <p>
+                        Бөлмелерді броньдауды үйлестіруші арқылы +7 771 311 2321 телефоны арқылы немесе Reservations@apec-tc.kz электрондық поштасы арқылы алуға болады.
+
+                    </p>
+                    <p>--------------------------------------------------</p>
+                    <p>
+                        Уважаемые Партнеры!
+                    </p>
+                    <p>
+                        Бронирование номеров доступно через координатора по тел.+7 771 311 2321 или емэйлу:Reservations@apec-tc.kz.
+
+                    </p>
+                    <p>--------------------------------------------------</p>
+                    <p>
+                        Dear partners!
+                    </p>
+                    <p>
+                        Room reservations are available through the coordinator by phone +7 771 311 2321 or email: Reservations@apec-tc.kz.
+                    </p>
+                </div>
+
+            </div>
+        </div>
     </div>
 @endsection
 @push('js')

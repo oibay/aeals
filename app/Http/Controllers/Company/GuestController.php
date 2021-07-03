@@ -69,6 +69,7 @@ class GuestController extends Controller
 
     public function postGuest(AdminGuest $request)
     {
+        return redirect()->back()->with('warning','Временно недоступен');
         if (Guest::createGuest($request)) {
             return redirect()->back()->with('success','Успешно добавлено');
         }
@@ -85,6 +86,7 @@ class GuestController extends Controller
 
     public function showAddGuest()
     {
+        return redirect()->back()->with('warning','Временно недоступен');
         $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
 
         return view('company.guest-add',[

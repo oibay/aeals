@@ -107,3 +107,10 @@ Route::prefix('company')->group(function () {
         Route::get('/',[\App\Http\Controllers\Admin\ArchiveController::class,'index']);
     });
 });
+
+Route::prefix('tickets')->group(function () {
+
+    Route::get('/',[\App\Http\Controllers\Ticket\MainController::class,'index']);
+    Route::post('/postAddTicket',[\App\Http\Controllers\Ticket\MainController::class,'postAddTicket'])->name('postAddRequestToForm');
+    Route::get('/approve/{id}',[\App\Http\Controllers\Ticket\MainController::class,'approve']);
+});

@@ -56,7 +56,9 @@
                     @include('layouts.admin_menu')
                @elseif(Auth::user()->role == 'company')
                     @include('layouts.company_menu')
-               @endif
+                @elseif(Auth::user()->role == 'tickets')
+                    @include('layouts.tickets_menu')
+                @endif
             </nav>
         </div>
     </aside>
@@ -104,6 +106,8 @@
                         @include('layouts.admin_menu')
                     @elseif(Auth::user()->role == 'company')
                         @include('layouts.company_menu')
+                    @elseif(Auth::user()->role == 'tickets')
+                        @include('layouts.tickets_menu')
                     @endif
                 </nav>
             </div>
