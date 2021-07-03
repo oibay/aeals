@@ -49,7 +49,7 @@
 
     @if(\Illuminate\Support\Facades\Auth::user()->super == 1)
         <li>
-            <a href="{{ url('/admin/deleted') }}">
+            <a href="{{ url('/admin/archive/deleted') }}">
                 <i class="fas fa-trash"></i>Удаленные</a>
         </li>
     @endif
