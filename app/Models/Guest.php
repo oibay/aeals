@@ -120,9 +120,9 @@ class Guest extends Model
         }
         $guest = Guest::create([
             'name' => $request->name,
-            'passport' => $request->passport,
+            'passport' => null,
             'user_id' => $userId,
-            'room' => $request->room ?? null,
+            'room' => null,
             'room_type' => $request->room_type,
             'phone' => $request->phone,
             'location' => $request->location,

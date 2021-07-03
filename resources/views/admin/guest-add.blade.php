@@ -73,24 +73,7 @@
                                         </div>
 
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="passport" class="form-control-label">ИИН</label>
 
-                                            <input id="passport" type="number" class="form-control{{ $errors->has('passport') ? ' is-invalid' : '' }}" name="passport" value="{{ old('passport') }}" placeholder="Введите ИИН" >
-
-                                            @if ($errors->has('passport'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>
-                                                        <?php
-                                                        $guest = \App\Models\Guest::where('passport',old('passport'))->first();
-                                                        ?>
-                                                        <p style="font-size: 18px;">Найдено : <a href="{{ url('admin/guests/edit',$guest->id) }}">{{ $guest->name }}</a></p>
-                                                    </strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -101,20 +84,6 @@
                                             @if ($errors->has('phone'))
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $errors->first('phone') }}</strong>
-                                                </span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="room" class="form-control-label">Комната</label>
-
-                                            <input id="room" type="text" class="form-control{{ $errors->has('room') ? ' is-invalid' : '' }}" name="room" value="{{ old('room') }}" placeholder="Номер комнаты" >
-
-                                            @if ($errors->has('room'))
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('room') }}</strong>
                                                 </span>
                                             @endif
                                         </div>

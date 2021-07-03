@@ -30,6 +30,8 @@
 
                                 <th>Дата</th>
                                 <th>Отдел</th>
+                                <th>Локация</th>
+                                <th>Фотография</th>
                                 <th>Описание</th>
                                 <th>Статус</th>
                                 <th>Время</th>
@@ -43,8 +45,18 @@
                             <tr>
 
                                         <td>{{ $item->created_at }}</td>
-                                        <td>{{ $item->dep['title'] }}</td>
-                                        <td>{{ $item->description }}</td>
+                                        <td>
+                                            <h3><span class="badge bg-dark" style="color:White;border-radius: 100px;">{{ $item->dep['title'] }}</span></h3>
+                                        </td>
+                                        <td>
+                                            <h3><span class="badge bg-info" style="color:White;border-radius: 100px;">{{ $item->location }}</span></h3>
+                                        </td>
+                                        <td>
+                                            @if($item->photo != '0')
+                                                <img src="{{ asset('images/'.$item->photo) }}" alt="">
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->description ?? '' }}</td>
                                         <td>
                                             @if($item->status == 0)
                                                 <h3><span class="badge bg-danger" style="color:White;border-radius: 100px;">Ожидает</span></h3>
@@ -85,7 +97,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('postAddRequestToForm') }}" method="post">
+                <form action="{{ route('postAddRequestToForm') }}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
 
                         @csrf
@@ -100,6 +112,36 @@
                                             <option value="{{ $dep->id }}"> {{ $dep->title }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label >Локация</label>
+                                    <select class="form-control" name="location" required>
+                                        <option value="">Не выбрано</option>
+                                        <option value="Гостиница #1" >Гостиница #1</option>
+                                        <option value="Гостиница #2" >Гостиница #2</option>
+                                        <option value="Офис #1" >Офис #1</option>
+                                        <option value="Офис #2" >Офис #2</option>
+                                        <option value="Офис #3" >Офис #3</option>
+                                        <option value="Тренинг центр">Тренинг центр</option>
+
+                                    </select>
+                                    @if ($errors->has('location'))
+                                        <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('location') }}</strong>
+                                                </span>
+                                    @endif
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name" class="form-control-label">Картинка </label>
+
+                                    <input type="file" name="file" class="form-control">
                                 </div>
                             </div>
 

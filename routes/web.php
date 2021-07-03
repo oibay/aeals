@@ -111,6 +111,8 @@ Route::prefix('company')->group(function () {
 Route::prefix('tickets')->group(function () {
 
     Route::get('/',[\App\Http\Controllers\Ticket\MainController::class,'index']);
+    Route::get('department',[\App\Http\Controllers\Ticket\MainController::class,'department']);
     Route::post('/postAddTicket',[\App\Http\Controllers\Ticket\MainController::class,'postAddTicket'])->name('postAddRequestToForm');
+    Route::post('/postAddDepartment',[\App\Http\Controllers\Ticket\MainController::class,'postAddDepartment'])->name('postAddDepartment');
     Route::get('/approve/{id}',[\App\Http\Controllers\Ticket\MainController::class,'approve']);
 });

@@ -45,10 +45,21 @@ class MainController extends Controller
 
     public function postAddTicket(Request $request)
     {
+        $request->validate([
+            'file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'location' => 'required',
+        ]);
+        $fileName = 0;
+        if ($request->hasFile('file')) {
+            $fileName = time().'.'.$request->file->extension();
+            $request->file->move(public_path('images'), $fileName);
+        }
         $ticket  = Ticket::create([
             'department_id' => $request->dep_id,
             'user_id' => Auth::id(),
-            'description' => $request->description,
+            'description' => $request->description ?? null,
+            'photo' => $fileName,
+            'location' => $request->location,
         ]);
 
         return redirect()->back()->with('success','Успешно добавлено!');
@@ -62,5 +73,24 @@ class MainController extends Controller
             return redirect()->back()->with('success','Статус успешно изменено!');
         }
         return redirect()->back()->with('danger','Попробуйте заново!');
+    }
+
+    public function department()
+    {
+        $dep = TicketDepartment::all();
+
+        return view('tickets.department_index',[
+            'dep' => $dep
+        ]);
+    }
+
+    public function postAddDepartment(Request $request)
+    {
+        $dep = new TicketDepartment();
+        $dep->title = $request->title;
+
+        if ($dep->save()) {
+            return redirect()->back()->with('success','Успешно добавлено');
+        }
     }
 }

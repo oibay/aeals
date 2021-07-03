@@ -81,7 +81,11 @@
                                                 <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
                                                     <i class="zmdi zmdi-edit " style="color:green;"></i>
                                                 </a>
-
+                                                @if(\Illuminate\Support\Facades\Auth::user()->super == 1)
+                                                    <a href="{{ url('admin/guests/remove',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Удалить">
+                                                        <i class="zmdi zmdi-delete " style="color:red;"></i>
+                                                    </a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
