@@ -174,6 +174,9 @@
 
     </div>
 @endsection
+@push('css')
+    <link rel="stylesheet" href="{{ asset('css/lightgallery.css') }}" type="text/css">
+@endpush
 @push('js')
     <script>
         $(document).ready( function () {

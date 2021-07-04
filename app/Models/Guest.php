@@ -155,6 +155,7 @@ class Guest extends Model
                 'guests.room',
                 'guests.location',
                 'guest_times.entry',
+
                 'guest_times.departure')
             ->where('room', '<>', null)
             ->whereMonth('entry', date('m', strtotime($request->month)))
@@ -174,8 +175,9 @@ class Guest extends Model
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
+                'guests.location',
                 'guests.room')
-            ->where('location', 'apec')
+
             ->where('room', '<>', null)
             ->whereMonth('entry', date('m'))
             ->where('guest_times.entry', '>=', $startOfWeek)
@@ -193,8 +195,8 @@ class Guest extends Model
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'guests.status', 'guests.room')
-            ->where('location', 'apec')
+                'guests.status', 'guests.room','guests.location')
+
             ->where('room', '<>', null)
             ->where('status', 1)
             ->get();
@@ -210,8 +212,7 @@ class Guest extends Model
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'guests.status', 'guests.room')
-            ->where('location', 'apec')
+                'guests.status', 'guests.room','guests.location')
             ->whereDate('guest_times.entry', Carbon::parse($request->entry))
             ->where('status', 2)
             ->get();
@@ -227,9 +228,9 @@ class Guest extends Model
                 'guest_times.entry',
                 'guest_times.departure',
                 'guests.status', 'guests.room',
-                'guests.phone'
+                'guests.phone',
+                'guests.location'
             )
-            ->where('guests.location', 'apec')
             ->where('guests.room', '<>', null)
             ->where('guests.status', 1)
             ->get();
@@ -251,8 +252,9 @@ class Guest extends Model
                 'guests.room_type',
                 'guest_times.entry',
                 'guest_times.departure',
-                'guests.status', 'guests.room')
-            ->where('location', 'apec')
+                'guests.status', 'guests.room',
+                'guests.location'
+            )
             ->where('guests.room', '<>', null)
             ->where('status', 0);
         if ($request->entry) {

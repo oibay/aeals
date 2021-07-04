@@ -10,6 +10,7 @@
         <th>Name</th>
         <th>Phone</th>
         <th>Company</th>
+        <th>Location</th>
         <th>Room Type</th>
         <th>Room </th>
         <th>Entry</th>
@@ -24,6 +25,16 @@
             <td>{{ $item->name }}</td>
             <td>{{ $item->phone }}</td>
             <td>{{ $item->company }}</td>
+            <td>
+
+                @if($item->location == 'apec')
+                    Apec Petrotechnic
+                @elseif($item->location == 'bpark')
+                    Жангырхан 72Б 1 БЛОК
+                @elseif($item->location == 'bpark-2')
+                    Жангырхан 72Б 2 БЛОК
+                @endif
+            </td>
             <td>{{ $item->room_type}}</td>
             <td>{{ $item->room}}</td>
             <td>
