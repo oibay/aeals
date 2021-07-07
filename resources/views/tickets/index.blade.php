@@ -53,7 +53,9 @@
                                         </td>
                                         <td>
                                             @if($item->photo != '0')
-                                                <img src="{{ asset('images/'.$item->photo) }}" alt="">
+                                                <a data-fancybox="gallery" href="{{ asset('images/'.$item->photo) }}">
+                                                    <img src="{{ asset('images/'.$item->photo) }}" style='width:100px;' alt="1"></a>
+
                                             @endif
                                         </td>
                                         <td>{{ $item->description ?? '' }}</td>
@@ -175,9 +177,10 @@
     </div>
 @endsection
 @push('css')
-    <link rel="stylesheet" href="{{ asset('css/lightgallery.css') }}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.0/jquery.fancybox.min.css" />
 @endpush
 @push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.0/jquery.fancybox.min.js"></script>
     <script>
         $(document).ready( function () {
             $('#table_id').DataTable();

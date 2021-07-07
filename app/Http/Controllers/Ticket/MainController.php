@@ -49,10 +49,14 @@ class MainController extends Controller
             'file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location' => 'required',
         ]);
+
         $fileName = 0;
+
         if ($request->hasFile('file')) {
             $fileName = time().'.'.$request->file->extension();
             $request->file->move(public_path('images'), $fileName);
+            $imageUrl = 'https://aea-ls.kz/public/images/'.$fileName;
+
         }
         $ticket  = Ticket::create([
             'department_id' => $request->dep_id,
@@ -61,6 +65,18 @@ class MainController extends Controller
             'photo' => $fileName,
             'location' => $request->location,
         ]);
+
+        $department = TicketDepartment::find($request->dep_id);
+
+        $message = "Заявка № <span>".$ticket->id."</span>
+            <br/>
+            <p>Локация: ".$request->location."</p>
+            <p>Описание: ".$request->description ?? null ."</p>
+            <p>Фотография: <img src='{{ $imageUrl }}'></p>
+            <br>
+            <i>Это письмо отправлено <b>роботом</b>
+            и отвечать на него не нужно!</i>";
+         $this->sendToEmail('qwsdoam@gmail.com',$message);
 
         return redirect()->back()->with('success','Успешно добавлено!');
     }
@@ -92,5 +108,16 @@ class MainController extends Controller
         if ($dep->save()) {
             return redirect()->back()->with('success','Успешно добавлено');
         }
+    }
+
+    private function sendToEmail($to, $message)
+    {
+        $subject = "Robot - Бизнес Парк Заявки";
+        $headers = "From: AeaLS.kz <support@aea-ls.kz>\r\nContent-type: text/html; charset=utf-8 \r\n";
+        $d = mail($to, $subject, $message, $headers);
+        if ($d) {
+            return true;
+        }
+        return false;
     }
 }
