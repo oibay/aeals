@@ -48,40 +48,50 @@
 
 
                                 <td>
-
+                                    <?php
+                                    $date = date('H');?>
                                     @if ($event->eventTime($item->id,$event->id,'Завтрак'))
-                                        <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
-                                            <i class="zmdi zmdi-check"></i>
-                                        </a>
+                                        @if($date < '11')
+                                            <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
+                                                <i class="zmdi zmdi-check"></i>
+                                            </a>
+                                        @endif
 
 
                                     @else
-                                        <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
-
+                                            @if($date < '11')
+                                                <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
+                                            @endif
                                     @endif
                                 </td>
                                 <td>
                                     @if ($event->eventTime($item->id,$event->id,'Обед'))
+                                        @if($date >= '11' && $date < '15')
                                         <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                             <i class="zmdi zmdi-check"></i>
                                         </a>
+                                        @endif
 
 
                                     @else
+                                        @if($date >= '11' && $date < '16')
                                         <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
-
+                                        @endif
                                     @endif
                                 </td>
                                 <td>
                                     @if ($event->eventTime($item->id,$event->id,'Ужин'))
+                                        @if($date >= '16' && $date < '20')
                                         <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                             <i class="zmdi zmdi-check"></i>
                                         </a>
+                                        @endif
 
 
                                     @else
+                                        @if($date >= '16' && $date < '20')
                                         <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
-
+                                        @endif
                                     @endif
                                 </td>
 

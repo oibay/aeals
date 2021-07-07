@@ -461,17 +461,35 @@
                         @csrf
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="entry" class="form-control-label">Дата въезда </label>
+                            <label for="entry" class="form-control-label">От </label>
 
-                            <input id="entry" type="date" class="form-control{{ $errors->has('entry') ? ' is-invalid' : '' }}" name="entry" >
+                            <input id="entry" type="date" class="form-control{{ $errors->has('entry_to') ? ' is-invalid' : '' }}" name="entry_to" >
 
-                            @if ($errors->has('entry'))
+                            @if ($errors->has('entry_to'))
                                 <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('entry') }}</strong>
+                                                    <strong>{{ $errors->first('entry_to') }}</strong>
                                                 </span>
                             @endif
+
+
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="entry" class="form-control-label">До </label>
+
+                            <input id="entry" type="date" class="form-control{{ $errors->has('entry_from') ? ' is-invalid' : '' }}" name="entry_from" >
+
+                            @if ($errors->has('entry_from'))
+                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('entry_from') }}</strong>
+                                                </span>
+                            @endif
+
+
+                        </div>
+                    </div>
+
 
                 </div>
                 <div class="modal-footer">

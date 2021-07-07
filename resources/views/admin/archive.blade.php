@@ -105,7 +105,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('archiveReport') }}" method="POST">
+                <form action="{{ route('archiveReport') }}" method="POST" >
                     <div class="modal-body">
 
                         @csrf
@@ -113,13 +113,36 @@
                             <div class="form-group">
                                 <label for="entry" class="form-control-label">Дата въезда </label>
 
-                                <input id="entry" type="date" class="form-control{{ $errors->has('entry') ? ' is-invalid' : '' }}" name="entry" >
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="entry" class="form-control-label">От </label>
 
-                                @if ($errors->has('entry'))
-                                    <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('entry') }}</strong>
+                                        <input id="entry" type="date" class="form-control{{ $errors->has('entry_to') ? ' is-invalid' : '' }}" name="entry_to" >
+
+                                        @if ($errors->has('entry_to'))
+                                            <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('entry_to') }}</strong>
                                                 </span>
-                                @endif
+                                        @endif
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="entry" class="form-control-label">До </label>
+
+                                        <input id="entry" type="date" class="form-control{{ $errors->has('entry_from') ? ' is-invalid' : '' }}" name="entry_from" >
+
+                                        @if ($errors->has('entry_from'))
+                                            <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('entry_from') }}</strong>
+                                                </span>
+                                        @endif
+
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -127,20 +150,43 @@
                             <div class="form-group">
                                 <label for="entry" class="form-control-label">Дата отъезда </label>
 
-                                <input id="entry" type="date" class="form-control{{ $errors->has('departure') ? ' is-invalid' : '' }}" name="departure" >
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="entry" class="form-control-label">От </label>
 
-                                @if ($errors->has('departure'))
-                                    <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $errors->first('departure') }}</strong>
+                                        <input id="entry" type="date" class="form-control{{ $errors->has('entry_to_k') ? ' is-invalid' : '' }}" name="entry_to_k" >
+
+                                        @if ($errors->has('entry_to_k'))
+                                            <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('entry_to_k') }}</strong>
                                                 </span>
-                                @endif
+                                        @endif
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="entry" class="form-control-label">До </label>
+
+                                        <input id="entry" type="date" class="form-control{{ $errors->has('entry_from_k') ? ' is-invalid' : '' }}" name="entry_from_k" >
+
+                                        @if ($errors->has('entry_from_k'))
+                                            <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('entry_from_k') }}</strong>
+                                                </span>
+                                        @endif
+
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
 
-                        <button type="submit" class="btn btn-primary">Скачать</button>
+                        <button type="submit" class="btn btn-primary" >Скачать</button>
                     </div>
                 </form>
             </div>

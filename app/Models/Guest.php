@@ -213,7 +213,7 @@ class Guest extends Model
                 'guest_times.entry',
                 'guest_times.departure',
                 'guests.status', 'guests.room','guests.location')
-            ->whereDate('guest_times.entry', Carbon::parse($request->entry))
+            ->whereBetween('guest_times.entry', [Carbon::parse($request->entry_to),Carbon::parse($request->entry_from) ])
             ->where('status', 2)
             ->get();
     }
@@ -257,10 +257,10 @@ class Guest extends Model
             )
             ->where('guests.room', '<>', null)
             ->where('status', 0);
-        if ($request->entry) {
-            $data->whereDate('guest_times.entry', Carbon::parse($request->entry));
-        } elseif ($request->departure) {
-            $data->whereDate('guest_times.departure', Carbon::parse($request->departure));
+        if ($request->entry_to) {
+            $data->whereBetween('guest_times.entry', [Carbon::parse($request->entry_to),Carbon::parse($request->entry_from)]);
+        } elseif ($request->entry_to_k) {
+            $data->whereBetween('guest_times.departure', [Carbon::parse($request->entry_to_k),Carbon::parse($request->entry_from_k)]);
         }
         return $data->get();
     }
