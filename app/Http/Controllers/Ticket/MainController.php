@@ -7,7 +7,8 @@ use App\Models\Ticket;
 use App\Models\TicketDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Notification;
+use NotificationChannels\Telegram\TelegramChannel;
 class MainController extends Controller
 {
 
@@ -18,6 +19,7 @@ class MainController extends Controller
 
     public function index()
     {
+
         if (Auth::user()->profile_photo_path == 'zapros') {
             $ticket = Ticket::where('department_id',Auth::user()->type_zapros)->get();
 
@@ -76,7 +78,7 @@ class MainController extends Controller
             <br>
             <i>Это письмо отправлено <b>роботом</b>
             и отвечать на него не нужно!</i>";
-         $this->sendToEmail('qwsdoam@gmail.com',$message);
+         //$this->sendToEmail('qwsdoam@gmail.com',$message);
 
         return redirect()->back()->with('success','Успешно добавлено!');
     }

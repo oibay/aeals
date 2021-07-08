@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Guest;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\GuestController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -119,3 +121,6 @@ Route::prefix('tickets')->group(function () {
     Route::get('/approve/{id}',[\App\Http\Controllers\Ticket\MainController::class,'approve']);
 });
 
+
+Notification::route('telegram', '1882142975')
+    ->notify(new \App\Notifications\Telegram);
