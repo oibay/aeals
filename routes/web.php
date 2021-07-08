@@ -122,5 +122,3 @@ Route::prefix('tickets')->group(function () {
 });
 
 
-Notification::route('telegram', '1882142975')
-    ->notify(new \App\Notifications\Telegram);

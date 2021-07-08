@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Notification;
 use App\Models\TicketDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
-use NotificationChannels\Telegram\TelegramChannel;
+
 class MainController extends Controller
 {
 
@@ -57,7 +57,7 @@ class MainController extends Controller
         if ($request->hasFile('file')) {
             $fileName = time().'.'.$request->file->extension();
             $request->file->move(public_path('images'), $fileName);
-            $imageUrl = 'https://aea-ls.kz/public/images/'.$fileName;
+
 
         }
         $ticket  = Ticket::create([
@@ -69,16 +69,17 @@ class MainController extends Controller
         ]);
 
         $department = TicketDepartment::find($request->dep_id);
+        $message = "
+            Заявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."* \n Статус:*Ожидает* \n
+            Это письмо отправлено роботом и отвечать на него не нужно!";
 
-        $message = "Заявка № <span>".$ticket->id."</span>
-            <br/>
-            <p>Локация: ".$request->location."</p>
-            <p>Описание: ".$request->description ?? null ."</p>
-            <p>Фотография: <img src='{{ $imageUrl }}'></p>
-            <br>
-            <i>Это письмо отправлено <b>роботом</b>
-            и отвечать на него не нужно!</i>";
-         //$this->sendToEmail('qwsdoam@gmail.com',$message);
+        //$this->sendToEmail('qwsdoam@gmail.com',$message);
+        try {
+            Notification::route('telegram', '337997800')
+                ->notify(new \App\Notifications\Telegram($message));
+        }catch (\Exception $exception) {
+
+        }
 
         return redirect()->back()->with('success','Успешно добавлено!');
     }
@@ -88,6 +89,16 @@ class MainController extends Controller
         $ticket = Ticket::findOrFail($id);
         $ticket->status = 1 ;
         if ($ticket->save()) {
+            $message = "Заявка № <span>".$ticket->id."</span>
+            <br/>
+            <p>Локация: ".$ticket->location."</p>
+			<p>Отдел: ".$ticket->title."</p>
+            <p>Статус: <span style='color:green;font-size:20px;font-weight:bold;'>Закрыт</span></p>
+            <br>
+            <i>Это письмо отправлено <b>роботом</b>
+            и отвечать на него не нужно!</i>";
+
+            $this->sendToEmail('qwsdoam@gmail.com',$message);
             return redirect()->back()->with('success','Статус успешно изменено!');
         }
         return redirect()->back()->with('danger','Попробуйте заново!');

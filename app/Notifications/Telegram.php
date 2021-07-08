@@ -11,15 +11,15 @@ use NotificationChannels\Telegram\TelegramMessage;
 class Telegram extends Notification
 {
     use Queueable;
-
+    protected $message;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -65,8 +65,6 @@ class Telegram extends Notification
         $url = url('/invoice/');
 
         return TelegramMessage::create()
-            ->content("Hello there!\nYour invoice has been *PAID*")
-            ->button('View Invoice', $url)
-            ->button('Download Invoice', $url);
+            ->content($this->message);
     }
 }
