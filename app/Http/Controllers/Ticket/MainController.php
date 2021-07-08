@@ -69,16 +69,15 @@ class MainController extends Controller
         ]);
 
         $department = TicketDepartment::find($request->dep_id);
-        $message = "
-            Заявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."* \n Статус:*Ожидает* \n
-            Это письмо отправлено роботом и отвечать на него не нужно!";
+        $message = "Заявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."*\nСтатус:*Ожидает*\nЭто письмо отправлено роботом и отвечать на него не нужно!";
 
         //$this->sendToEmail('qwsdoam@gmail.com',$message);
+
         try {
             Notification::route('telegram', '337997800')
                 ->notify(new \App\Notifications\Telegram($message));
         }catch (\Exception $exception) {
-
+            $exception->getMessage();
         }
 
         return redirect()->back()->with('success','Успешно добавлено!');
