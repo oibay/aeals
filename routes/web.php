@@ -34,6 +34,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('guests')->group(function () {
         Route::get('/',[GuestController::class,'index']);
         Route::get('/remove/{id}',[GuestController::class,'remove']);
+        Route::get('/checkout/{id}',[GuestController::class,'checkOut']);
+        Route::post('/checkin',[GuestController::class,'checkIn'])->name('checkInGuest');
         Route::get('stlng',[GuestController::class,'stlng']);
         Route::get('/add/new',[GuestController::class,'showAddGuest']);
         Route::post('/new',[GuestController::class,'postGuest'])->name('postGuest');

@@ -10,8 +10,10 @@ use App\Http\Requests\AddGuestRequest;
 use App\Http\Requests\AdminGuest;
 use App\Http\Requests\GuestEditRequest;
 use App\Models\Guest;
+use App\Models\GuestTime;
 use App\Models\Material;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
@@ -83,6 +85,9 @@ class GuestController extends Controller
     public function searchGuest(Request $request)
     {
         if ($request->search_s == 1) {
+            if ($request->checkout) {
+                $this->checkOut($request->checkout);
+            }
             $search = new SearchGuest($request);
             $search = new SearchActiveGuest($search);
 
@@ -102,13 +107,17 @@ class GuestController extends Controller
             $guest = $search->getQuery()->get();
             $companies = User::companies();
             $guestCount = Guest::where(['status' => 2])->count();
-
+            if ($request->roomGuestUkaz) {
+                $this->checkIn($request);
+            }
             return view('admin.search-stlng',[
                 'companies' => $companies,
                 'guests' => $guest,
                 'guestCount' => $guestCount
             ]);
         }
+
+
 
 
     }
@@ -135,4 +144,33 @@ class GuestController extends Controller
 
 		return redirect()->back()->with('success','Успешно удалено');
 	}
+
+    public function checkOut($id)
+    {
+        $guest = Guest::find($id);
+        $guest->status = 0;
+        if ($guest->save()) {
+            $guestTime = GuestTime::where('guest_id',$guest->id)->first();
+            $guestTime->departure = Carbon::now()->toDateTimeString();
+            $guestTime->save();
+            return redirect()->back()->with('success','Успешно выселен');
+        }
+	}
+
+    public function checkIn(Request $request)
+    {
+        $request->validate([
+            'room' => 'required'
+        ]);
+        $guest = Guest::find($request->idkl);
+        $guest->room = $request->room;
+        $guest->status = 1;
+
+        if ($guest->save()) {
+            $guestTime = GuestTime::where('guest_id',$guest->id)->first();
+            $guestTime->entry = Carbon::now()->toDateTimeString();
+            $guestTime->save();
+            return redirect()->back()->with('success','Успешно обновлено');
+        }
+    }
 }

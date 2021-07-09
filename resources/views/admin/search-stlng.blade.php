@@ -43,6 +43,7 @@
                                 <th>Въезд</th>
                                 <th>Отъезд</th>
                                 <th>Регистрационный лист</th>
+                                <th>Check In</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -78,6 +79,14 @@
                                 <td>{{ $item->entry }}</td>
                                 <td>{{ $item->departure }}</td>
                                 <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
+
+                                <td>
+                                    <div class="table-data-feature">
+                                        <a href="#" data-toggle="modal" data-target="#checkIn" class="item passingID" data-id="{{ $item->id }}">
+                                            <i class="zmdi zmdi-check-circle " style="color:blue;"></i>
+                                        </a>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
@@ -376,6 +385,46 @@
         </div>
     </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="checkIn" tabindex="-1" role="dialog" aria-labelledby="checkInLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Указать комнату</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('searchGuest') }}" method="POST">
+                        @csrf
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="hidden" name="roomGuestUkaz" value="room">
+                                <label for="room" class="form-control-label">Номер комнаты </label>
+                                <input type="hidden" class="form-control" name="idkl" id="idkl" value="">
+
+                                <input id="room" type="text" required class="form-control{{ $errors->has('room') ? ' is-invalid' : '' }}" name="room" >
+
+                                @if ($errors->has('room'))
+                                    <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('room') }}</strong>
+                                                </span>
+                                @endif
+
+
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn-sm btn-primary">Сохранить</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script>
@@ -384,6 +433,13 @@
         } );
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+        });
+
+        $(".passingID").click(function () {
+            var ids = $(this).attr('data-id');
+
+            $("#idkl").val( ids );
+            $('#myModal').modal('show');
         });
     </script>
 @endpush

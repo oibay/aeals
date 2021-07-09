@@ -11,6 +11,7 @@ use NotificationChannels\Telegram\TelegramMessage;
 class Telegram extends Notification
 {
     use Queueable;
+
     protected $message;
     /**
      * Create a new notification instance.

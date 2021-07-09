@@ -40,6 +40,7 @@
                                 <th>Въезд</th>
                                 <th>Отъезд</th>
                                 <th>Регистрационный лист</th>
+                                <th>Check Out</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -75,6 +76,19 @@
                                 <td>{{ $item->entry }}</td>
                                 <td>{{ $item->departure }}</td>
                                 <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
+                                <td>
+                                    <div class="table-data-feature">
+                                        <form action="{{ route('searchGuest') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="checkout" value="{{ $item->id }}">
+                                            <input type="hidden" name="search_s" value="1">
+                                            <button type="submit" onclick="return confirm('Вы уверенны ?')" class="item" data-toggle="tooltip" data-placement="top" title="Check Out">
+                                                <i class="zmdi zmdi-close-circle " style="color:red;"></i>
+                                            </button>
+
+                                        </form>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="table-data-feature">
                                         <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
@@ -288,7 +302,7 @@
 
 
 
-
+                            <input type="hidden" name="search_s" value="1">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="entry" class="form-control-label">Въезд</label>
