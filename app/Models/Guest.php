@@ -149,7 +149,7 @@ class Guest extends Model
         return Guest::whereYear('guests.created_at', date('Y'))
             ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
             ->join('users', 'users.id', '=', 'guests.user_id')
-            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+
             ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guests.room',
@@ -170,7 +170,7 @@ class Guest extends Model
         return Guest::whereYear('guests.created_at', date('Y'))
             ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
             ->join('users', 'users.id', '=', 'guests.user_id')
-            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+
             ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
@@ -190,7 +190,7 @@ class Guest extends Model
         return Guest::whereYear('guests.created_at', date('Y'))
             ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
             ->join('users', 'users.id', '=', 'guests.user_id')
-            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+
             ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
@@ -207,7 +207,6 @@ class Guest extends Model
         $guests =  Guest::whereYear('guests.created_at', date('Y'))
             ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
             ->join('users', 'users.id', '=', 'guests.user_id')
-            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
             ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
@@ -254,7 +253,7 @@ class Guest extends Model
         $data = Guest::whereYear('guests.created_at', date('Y'))
             ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
             ->join('users', 'users.id', '=', 'guests.user_id')
-            ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
+
             ->select('guests.name', 'users.name as company',
                 'guests.room_type',
                 'guest_times.entry',
