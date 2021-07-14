@@ -13,6 +13,9 @@
                             <option value="{{ url('admin/event/view/'.$event->id.'/?location=bpark-2') }}" @if(request()->location == 'bpark-2') selected @endif>Бизнес ПАРК 2БЛОК</option>
                             <option value="{{ url('admin/event/view/'.$event->id.'/?location=apec') }}" @if(request()->location == 'apec') selected @endif>Apec Petrotechnic</option>
                         </select>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">
+                            <i class="zmdi zmdi-download"></i> Скачать репорт
+                        </button>
                     </div>
                 </div>
             </div>
@@ -35,14 +38,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if($guests->count() > 0)
-                                @foreach($guests as $item)
+                            @if($event->evTime()->count() > 0)
+                                @foreach($event->evTime as $item)
+                                    @if($item->guest['location'] == request()->location)
                             <tr>
-                                <td><a href="{{ url('admin/guests/edit',$item->id) }}">
-                                        {{ $item->name }}
+                                <td><a href="{{ url('admin/guests/edit',$item->user_id) }}">
+                                        {{ $item->guest['name'] }}
                                     </a></td>
 
-                                <td>{{ $item->company['name'] }}</td>
+                                <td>{{ $event->company($item->guest['user_id'])['name'] }}</td>
 
 
 
@@ -50,9 +54,9 @@
                                 <td>
                                     <?php
                                     $date = date('H');?>
-                                    @if ($event->eventTime($item->id,$event->id,'Завтрак'))
+                                    @if ($event->eventTime($item->user_id,$event->id,'Завтрак'))
                                         @if($date < '11')
-                                            <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
+                                            <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                                 <i class="zmdi zmdi-check"></i>
                                             </a>
                                         @endif
@@ -60,14 +64,14 @@
 
                                     @else
                                             @if($date < '11')
-                                                <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
+                                                <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
                                             @endif
                                     @endif
                                 </td>
                                 <td>
                                     @if ($event->eventTime($item->id,$event->id,'Обед'))
                                         @if($date >= '11' && $date < '15')
-                                        <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
+                                        <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                             <i class="zmdi zmdi-check"></i>
                                         </a>
                                         @endif
@@ -75,14 +79,14 @@
 
                                     @else
                                         @if($date >= '11' && $date < '16')
-                                        <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
+                                        <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
                                         @endif
                                     @endif
                                 </td>
                                 <td>
                                     @if ($event->eventTime($item->id,$event->id,'Ужин'))
                                         @if($date >= '16' && $date < '20')
-                                        <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
+                                        <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                             <i class="zmdi zmdi-check"></i>
                                         </a>
                                         @endif
@@ -90,13 +94,14 @@
 
                                     @else
                                         @if($date >= '16' && $date < '20')
-                                        <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
+                                        <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
                                         @endif
                                     @endif
                                 </td>
 
 
                             </tr>
+                            @endif
                             @endforeach
                                 @endif
 
@@ -115,6 +120,45 @@
     </div>
 
     </div>
+    <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reportModalLabel">Скачать репорт</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('foodReport') }}" method="POST">
+                    <div class="modal-body">
+
+                        @csrf
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="entry" class="form-control-label">Выберите </label>
+                                <input type="hidden" name="event_id" value="{{ request()->id }}">
+                                <select name="food" class="form-control">
+                                    <option value="Завтрак">Завтрак</option>
+                                    <option value="Обед">Обед</option>
+                                    <option value="Ужин">Ужин</option>
+                                    <option value="Все">Все</option>
+                                </select>
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-primary">Скачать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('js')
     <script>
@@ -126,5 +170,6 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });
+
     </script>
 @endpush

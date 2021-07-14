@@ -34,11 +34,11 @@ class EventFoodController extends Controller
     public function show($id)
     {
         $event = EventFood::findOrFail($id);
-        $guests = Guest::eventGuests(\request()->location);
+
+
         $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.eventfood-view',[
             'event' => $event,
-            'guests' => $guests,
             'guestCount' => $guestCount
         ]);
     }
@@ -46,9 +46,17 @@ class EventFoodController extends Controller
     public function postEvent(Request $request)
     {
         $event = new EventFood();
-        $event->title = date('Y-m-d H:i:s');
+        $event->title = date('Y-m-d');
         $event->status = 1;
         if ($event->save()) {
+            $guests = Guest::guests();
+            foreach($guests as $item) {
+                EventFoodTime::create([
+                    'user_id' => $item->id,
+                    'vouchers' => null,
+                    'event_id' => $event->id
+                ]);
+            }
             return redirect()->back()->with('success','Успешно добавлено');
         }
     }
@@ -56,12 +64,35 @@ class EventFoodController extends Controller
     public function eventFoods()
     {
 
-        EventFoodTime::create([
-            'user_id' => \request()->user,
-            'vouchers' => \request()->q,
-            'event_id' => \request()->event
-        ]);
+        $event = EventFoodTime::where(['event_id' => \request()->event,'user_id' => \request()->user])->first();
+        switch (\request()->q) {
+            case 'Завтрак':
+                $event->vouchers = \request()->q;
+                $event->save();
+            break;
+            case 'Обед':
+                $event->lunch = \request()->q;
+                $event->save();
+            break;
+            case 'Ужин':
+                $event->dinner = \request()->q;
+                $event->save();
+            break;
+        }
 
         return redirect()->back()->with('success','Успешно');
     }
+
+    public function archive()
+    {
+        $event = EventFood::where(['status' => 2])->get();
+
+        $guestCount = Guest::where(['status' => 2])->count();
+        return view('admin.eventfood',[
+            'event' => $event,
+            'guestCount' => $guestCount
+        ]);
+    }
+
+
 }

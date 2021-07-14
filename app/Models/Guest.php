@@ -204,7 +204,7 @@ class Guest extends Model
 
     public static function reportBron(Request $request)
     {
-        return Guest::whereYear('guests.created_at', date('Y'))
+        $guests =  Guest::whereYear('guests.created_at', date('Y'))
             ->join('guest_times', 'guests.id', '=', 'guest_times.guest_id')
             ->join('users', 'users.id', '=', 'guests.user_id')
             ->leftJoin('company_price', 'company_price.company_id', '=', 'users.id')
@@ -213,9 +213,16 @@ class Guest extends Model
                 'guest_times.entry',
                 'guest_times.departure',
                 'guests.status', 'guests.room','guests.location')
-            ->whereBetween('guest_times.entry', [Carbon::parse($request->entry_to),Carbon::parse($request->entry_from) ])
-            ->where('status', 2)
-            ->get();
+            ->where('status', 2);
+            if ($request->entry_to && $request->entry_from) {
+                $guests->whereBetween('guest_times.entry',
+                    [Carbon::parse($request->entry_to),Carbon::parse($request->entry_from) ]);
+
+            }else {
+                $guests->whereDate('guest_times.entry',Carbon::parse($request->entry_to ?? $request->entry_from));
+            }
+
+            return $guests->get();
     }
 
     public static function reportGuests()

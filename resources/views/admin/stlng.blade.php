@@ -510,7 +510,7 @@
             </div>
         </div>
     </div>
-    </button>
+
 
     <!-- Modal -->
     <div class="modal fade" id="checkIn" tabindex="-1" role="dialog" aria-labelledby="checkInLabel" aria-hidden="true">

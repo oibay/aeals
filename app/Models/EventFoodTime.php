@@ -10,4 +10,9 @@ class EventFoodTime extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function guest()
+    {
+        return $this->belongsTo(Guest::class,'user_id');
+    }
 }

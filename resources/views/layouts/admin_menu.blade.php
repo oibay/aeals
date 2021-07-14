@@ -25,6 +25,10 @@
             <i class="fas fa-chevron-circle-right"></i>Питание</a>
     </li>
     <li>
+        <a href="{{ url('/admin/event/archive') }}">
+            <i class="fas fa-chevron-circle-right"></i>Питание Архив</a>
+    </li>
+    <li>
         <a href="{{ url('/admin/companies') }}">
             <i class="fas fa-user"></i>Компании</a>
     </li>

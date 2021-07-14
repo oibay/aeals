@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FoodExport;
 use App\Exports\GuestExport;
 use App\Models\Guest;
 use Illuminate\Http\Request;
@@ -56,5 +57,15 @@ class ReportController extends Controller
     public function archiveReport(Request $request)
     {
         return Excel::download(new GuestExport($request,'archive'), date('Y-m-d').'_archivereport.xlsx');
+    }
+
+    public function foodReport(Request $request)
+    {
+
+        $request->validate([
+            'food' => 'required'
+        ]);
+
+        return Excel::download(new FoodExport($request, 'food'), date('Y-m-d').'_fbreport.xlsx');
     }
 }

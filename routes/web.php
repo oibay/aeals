@@ -27,6 +27,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/',[\App\Http\Controllers\Admin\MainController::class,'index']);
 
     Route::get('/event',[\App\Http\Controllers\Admin\EventFoodController::class,'index']);
+    Route::get('/event/archive',[\App\Http\Controllers\Admin\EventFoodController::class,'archive']);
     Route::get('/event/food',[\App\Http\Controllers\Admin\EventFoodController::class,'eventFoods']);
     Route::get('/event/view/{id}',[\App\Http\Controllers\Admin\EventFoodController::class,'show']);
     Route::post('/postEvent',[\App\Http\Controllers\Admin\EventFoodController::class,'postEvent'])->name('postEvent');
@@ -84,6 +85,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/stlng',[\App\Http\Controllers\ReportController::class,'stlngReport'])->name('stlngReport');
         Route::post('/archiveReport',[\App\Http\Controllers\ReportController::class,'archiveReport'])->name('archiveReport');
         Route::get('/guests',[\App\Http\Controllers\ReportController::class,'guestReport']);
+        Route::post('/foodReport/',[
+            \App\Http\Controllers\ReportController::class,'foodReport'
+        ])->name('foodReport');
+
     });
 });
 
