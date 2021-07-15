@@ -29,7 +29,7 @@ class FoodExport implements FromView
                     $food = EventFood::foodReport($this->request);
                     return view('reportFood',[
                         'food' => $food,
-                        'food_type' => $this->request
+                        'food_type' => $this->request->food,
                     ]);
                 break;
         }

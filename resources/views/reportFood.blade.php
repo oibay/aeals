@@ -15,11 +15,11 @@
         @elseif($food_type == 'Обед')
             <th>Обед</th>
         @elseif($food_type == 'Ужин')
-            <th>Ужин </th>
+            <th>Ужин</th>
         @else
             <th>Завтрак</th>
             <th>Обед</th>
-            <th>Ужин </th>
+            <th>Ужин</th>
         @endif
 
         <th>Дата</th>
@@ -32,23 +32,24 @@
             <td> {{ $loop->index + 1}}</td>
             <td>{{ $item->guest_name }}</td>
             <td>{{ $item->company }}</td>
-            @if($item->vouchers)
-                <th>+</th>
-            @elseif($item->lunch)
-                <th>+</th>
-            @elseif($item->dinner)
-                <th>+</th>
+            @if($food_type == 'Завтрак')
+                <th> @if($item->vouchers) + @endif</th>
+            @elseif($food_type == 'Обед')
+
+                <th>@if($item->lunch)+@endif</th>
+
+            @elseif($food_type == 'Ужин')
+
+                <th>@if($item->dinner)+@endif</th>
+
             @else
-                <th>@if($item->vouchers) + @else - @endif</th>
-                <th>@if($item->lunch) + @else - @endif</th>
-                <th>@if($item->dinner) + @else - @endif</th>
+                <th>@if($item->vouchers) +  @endif</th>
+                <th>@if($item->lunch) +  @endif</th>
+                <th>@if($item->dinner) +  @endif</th>
             @endif
             <td>
-
+                {{ $item->updated_at }}
             </td>
-
-
-
 
 
         </tr>
