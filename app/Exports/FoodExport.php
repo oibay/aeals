@@ -7,8 +7,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class FoodExport implements FromView
+class FoodExport implements FromView, WithColumnWidths,WithStyles
 {
     private Request $request;
     private string $options;
@@ -33,5 +36,35 @@ class FoodExport implements FromView
                     ]);
                 break;
         }
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 6,
+            'B' => 65,
+            'C' => 35,
+            'D' => 35,
+            'E' => 10,
+            'F' => 35,
+            'G' => 15,
+            'H' => 35,
+            'I' => 35,
+            'J' => 35,
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getStyle('A1')->getFont()->setBold(true);
+        $sheet->getStyle('B1')->getFont()->setBold(true);
+        $sheet->getStyle('C1')->getFont()->setBold(true);
+        $sheet->getStyle('D1')->getFont()->setBold(true);
+        $sheet->getStyle('E1')->getFont()->setBold(true);
+        $sheet->getStyle('F1')->getFont()->setBold(true);
+        $sheet->getStyle('G1')->getFont()->setBold(true);
+        $sheet->getStyle('H1')->getFont()->setBold(true);
+        $sheet->getStyle('I1')->getFont()->setBold(true);
+        $sheet->getStyle('J1')->getFont()->setBold(true);
     }
 }

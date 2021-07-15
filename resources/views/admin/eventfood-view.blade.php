@@ -7,7 +7,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h4>Питание #{{ $event->title }}</h4>
-                        <label>Фильтр по локациям</label> <select name="forma" onchange="location = this.value;">
+                        <label>Фильтр по локациям</label>
+                        <select name="forma" onchange="location = this.value;">
                             <option value="{{ url('admin/event/view/'.$event->id) }}">Общий</option>
                             <option value="{{ url('admin/event/view/'.$event->id.'/?location=bpark') }}" @if(request()->location == 'bpark') selected @endif>Бизнес ПАРК 1БЛОК</option>
                             <option value="{{ url('admin/event/view/'.$event->id.'/?location=bpark-2') }}" @if(request()->location == 'bpark-2') selected @endif>Бизнес ПАРК 2БЛОК</option>
@@ -27,6 +28,10 @@
                 <div class="row">
                     <div class="col-xl-12">
                         @include('message')
+                        <div class="alert alert-info alert-block" id="pleaseWait" style="display: none;">
+
+                            <strong>Пожалуйста подождите ...</strong>
+                        </div>
                         <table id="table_id" class="display">
                             <thead>
                             <tr>
@@ -64,12 +69,12 @@
 
                                     @else
                                             @if($date < '11')
-                                                <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
+                                                <a href="{{ url('/admin/event/food/?q=Завтрак&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-primary"  onClick="$('#pleaseWait').css('display', 'block')">+</a>
                                             @endif
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($event->eventTime($item->id,$event->id,'Обед'))
+                                    @if ($event->eventTime($item->user_id,$event->id,'Обед'))
                                         @if($date >= '11' && $date < '15')
                                         <a href="{{ url('/admin/event/food/?q=Обед&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                             <i class="zmdi zmdi-check"></i>
@@ -84,7 +89,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($event->eventTime($item->id,$event->id,'Ужин'))
+                                    @if ($event->eventTime($item->user_id,$event->id,'Ужин'))
                                         @if($date >= '16' && $date < '20')
                                         <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                             <i class="zmdi zmdi-check"></i>
@@ -147,7 +152,24 @@
 
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label >Локация</label>
+                                <select class="form-control" name="location" required>
+                                    <option value="">Не выбрано</option>
+                                    <option value="bpark" >Жангырхан 72Б 1-БЛОК</option>
+                                    <option value="bpark-2" >Жангырхан 72Б 2-БЛОК</option>
+                                    <option value="apec">Apec Petrotechnic</option>
 
+                                </select>
+                                @if ($errors->has('location'))
+                                    <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('location') }}</strong>
+                                                </span>
+                                @endif
+                            </div>
+
+                        </div>
 
 
                     </div>
@@ -160,6 +182,8 @@
         </div>
     </div>
 @endsection
+@push('css')
+@endpush
 @push('js')
     <script>
         $(document).ready( function () {

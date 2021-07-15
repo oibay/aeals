@@ -74,6 +74,7 @@ class EventFoodController extends Controller
             case 'Обед':
                 $event->lunch = \request()->q;
                 $event->save();
+
             break;
             case 'Ужин':
                 $event->dinner = \request()->q;

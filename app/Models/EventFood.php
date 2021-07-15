@@ -12,9 +12,22 @@ class EventFood extends Model
 
 
 
-    public function eventTime($userId, $event, $vouchers)
+    public function eventTime($userId, $event, $food)
     {
-        return EventFoodTime::where(['user_id' => $userId, 'event_id' => $event, 'vouchers' => $vouchers])->first();
+        switch ($food) {
+            case 'Завтрак':
+                return EventFoodTime::where(['user_id' => $userId, 'event_id' => $event, 'vouchers' => $food])->first();
+
+                break;
+            case 'Обед':
+                return EventFoodTime::where(['user_id' => $userId, 'event_id' => $event, 'lunch' => $food])->first();
+
+                break;
+            case 'Ужин':
+                return EventFoodTime::where(['user_id' => $userId, 'event_id' => $event, 'dinner' => $food])->first();
+
+                break;
+        }
     }
 
     public function evTime()
@@ -37,10 +50,13 @@ class EventFood extends Model
                     'guests.name as guest_name','users.name as company',
                     'event_food_times.vouchers','event_food_times.lunch',
                     'event_food_times.dinner',
-                    'event_food_times.updated_at'
+                    'event_food_times.updated_at',
+                    'guests.location',
                 )
             ->where('event_food.id',$request->event_id)
+            ->where('guests.location',$request->location)
             ->get();
+
             return $food;
     }
 }
