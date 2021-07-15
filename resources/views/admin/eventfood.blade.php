@@ -6,10 +6,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-
-                        <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#mediumModal">
-                            <i class="zmdi zmdi-plus"></i> Добавить
-                        </button>
+                        @if($eventArchive == 1)
+                            Питание Архив
+                        @else
+                            <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#mediumModal">
+                                <i class="zmdi zmdi-plus"></i> Добавить
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
