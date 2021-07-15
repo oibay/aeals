@@ -9,7 +9,8 @@
                         @if($eventArchive == 1)
                             Питание Архив
                         @else
-                            <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#mediumModal">
+
+                            <button type="button" class="btn btn-primary mb-1"  @if($eventNowExists) disabled @else @endif data-toggle="modal" data-target="#mediumModal">
                                 <i class="zmdi zmdi-plus"></i> Добавить
                             </button>
                         @endif
@@ -30,6 +31,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Название</th>
+                                <th>Статус</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -39,8 +41,9 @@
                             <tr>
 
                                         <td>{{ $loop->index + 1 }}</td>
-                                        <td>Питание #{{ $item->title }}</td>
-                                        <td><a href="{{ url('admin/event/view',$item->id) }}">Открыть</a></td>
+                                        <td style="font-size: 18px;">Питание #{{ $item->title }}</td>
+                                        <td><h2><span class="badge badge-success">Активен</span></h2></td>
+                                        <td><a href="{{ url('admin/event/view',$item->id) }}" style="font-size: 18px;">Открыть</a></td>
 
 
                             </tr>
@@ -75,7 +78,7 @@
                                 <div class="form-group">
                                     <label for="name" class="form-control-label">Название </label>
 
-                                    <input id="name" type="text" class="form-control" name="title" value="{{ date('Y-m-d H:i:s') }}"  disabled>
+                                    <input id="name" type="text" class="form-control" name="title" value="{{ date('Y-m-d') }}"  disabled>
 
                                 </div>
                             </div>

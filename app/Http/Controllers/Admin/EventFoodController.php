@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EventFood;
 use App\Models\EventFoodTime;
 use App\Models\Guest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventFoodController extends Controller
@@ -18,6 +19,7 @@ class EventFoodController extends Controller
     public function index()
     {
         $event = EventFood::where(['status' => 1])->get();
+
         foreach($event as $it) {
             if (date('d-m-Y',strtotime($it->created_at))
                 != date('d-m-Y')) {
@@ -28,7 +30,8 @@ class EventFoodController extends Controller
         return view('admin.eventfood',[
             'event' => $event,
             'guestCount' => $guestCount,
-            'eventArchive' => 2
+            'eventArchive' => 2,
+            'eventNowExists' => EventFood::whereDate('created_at',Carbon::now())->exists(),
         ]);
     }
 
