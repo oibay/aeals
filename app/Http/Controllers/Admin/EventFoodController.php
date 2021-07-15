@@ -27,7 +27,8 @@ class EventFoodController extends Controller
         $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.eventfood',[
             'event' => $event,
-            'guestCount' => $guestCount
+            'guestCount' => $guestCount,
+            'eventArchive' => 2
         ]);
     }
 
