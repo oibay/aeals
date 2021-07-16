@@ -13,35 +13,33 @@ class EventFoodController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','access:admin']);
+        $this->middleware(['auth', 'access:admin']);
     }
 
     public function index()
     {
         $event = EventFood::where(['status' => 1])->get();
 
-        foreach($event as $it) {
-            if (date('d-m-Y',strtotime($it->created_at))
+        foreach ($event as $it) {
+            if (date('d-m-Y', strtotime($it->created_at))
                 != date('d-m-Y')) {
-                EventFood::where('id',$it->id)->update(['status' => 2]);
+                EventFood::where('id', $it->id)->update(['status' => 2]);
             }
         }
         $guestCount = Guest::where(['status' => 2])->count();
-        return view('admin.eventfood',[
+        return view('admin.eventfood', [
             'event' => $event,
             'guestCount' => $guestCount,
             'eventArchive' => 2,
-            'eventNowExists' => EventFood::whereDate('created_at',Carbon::now())->exists(),
+            'eventNowExists' => EventFood::whereDate('created_at', Carbon::now())->exists(),
         ]);
     }
 
     public function show($id)
     {
         $event = EventFood::findOrFail($id);
-
-
         $guestCount = Guest::where(['status' => 2])->count();
-        return view('admin.eventfood-view',[
+        return view('admin.eventfood-view', [
             'event' => $event,
             'guestCount' => $guestCount
         ]);
@@ -49,43 +47,46 @@ class EventFoodController extends Controller
 
     public function postEvent(Request $request)
     {
+        if (EventFood::whereDate('created_at', Carbon::now())->exists()) {
+            return redirect()->back()->with('warning', 'Уже существует   Питание#' . date('Y-m-d'));
+        }
         $event = new EventFood();
         $event->title = date('Y-m-d');
         $event->status = 1;
         if ($event->save()) {
             $guests = Guest::guests();
-            foreach($guests as $item) {
+            foreach ($guests as $item) {
                 EventFoodTime::create([
                     'user_id' => $item->id,
                     'vouchers' => null,
                     'event_id' => $event->id
                 ]);
             }
-            return redirect()->back()->with('success','Успешно добавлено');
+            return redirect()->back()->with('success', 'Успешно добавлено');
         }
     }
 
     public function eventFoods()
     {
 
-        $event = EventFoodTime::where(['event_id' => \request()->event,'user_id' => \request()->user])->first();
+        $event = EventFoodTime::where(['event_id' => \request()->event, 'user_id' => \request()->user])->first();
         switch (\request()->q) {
             case 'Завтрак':
                 $event->vouchers = \request()->q;
                 $event->save();
-            break;
+                break;
             case 'Обед':
                 $event->lunch = \request()->q;
                 $event->save();
 
-            break;
+                break;
             case 'Ужин':
                 $event->dinner = \request()->q;
                 $event->save();
-            break;
+                break;
         }
 
-        return redirect()->back()->with('success','Успешно');
+        return redirect()->back()->with('success', 'Успешно');
     }
 
     public function archive()
@@ -93,7 +94,7 @@ class EventFoodController extends Controller
         $event = EventFood::where(['status' => 2])->get();
 
         $guestCount = Guest::where(['status' => 2])->count();
-        return view('admin.eventfood',[
+        return view('admin.eventfood', [
             'event' => $event,
             'guestCount' => $guestCount,
             'eventArchive' => 1
