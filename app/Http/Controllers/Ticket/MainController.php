@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Ticket;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use App\Models\TicketDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Uuid;
 
 class MainController extends Controller
 {
@@ -131,5 +133,33 @@ class MainController extends Controller
             return true;
         }
         return false;
+    }
+
+    public function users()
+    {
+        $users = User::where(['profile_photo_path' => 'zapros'])->get();
+        $department = TicketDepartment::all();
+
+        return view('tickets.users',[
+            'users' => $users,
+            'department' => $department
+        ]);
+    }
+
+    public function postAddUsers(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = Uuid::uuid4()->toString().'@gmail.com';
+        $user->password = bcrypt(123456);
+        $user->type_zapros = $request->dep_id;
+        $user->profile_photo_path = 'zapros';
+        $user->role = 'tickets';
+
+        if ($user->save()) {
+            return redirect()->back()->with('success','Успешно обновлено');
+        }
+
+        return redirect()->back()->with();
     }
 }

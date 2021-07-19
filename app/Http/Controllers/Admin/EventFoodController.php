@@ -38,6 +38,18 @@ class EventFoodController extends Controller
     public function show($id)
     {
         $event = EventFood::findOrFail($id);
+        $guests = Guest::where('status',1)->where('room','<>',null)->get();
+        foreach($guests as $item) {
+            $queryReq = EventFoodTime::where('user_id',$item->id);
+            if(!$queryReq->exists()) {
+                EventFoodTime::create([
+                    'user_id' => $item->id,
+                    'vouchers' => null,
+                    'event_id' => $event->id
+                ]);
+            }
+
+        }
         $guestCount = Guest::where(['status' => 2])->count();
         return view('admin.eventfood-view', [
             'event' => $event,

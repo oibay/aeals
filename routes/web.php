@@ -122,10 +122,26 @@ Route::prefix('company')->group(function () {
 Route::prefix('tickets')->group(function () {
 
     Route::get('/',[\App\Http\Controllers\Ticket\MainController::class,'index']);
+    Route::get('/users',[\App\Http\Controllers\Ticket\MainController::class,'users']);
     Route::get('department',[\App\Http\Controllers\Ticket\MainController::class,'department']);
     Route::post('/postAddTicket',[\App\Http\Controllers\Ticket\MainController::class,'postAddTicket'])->name('postAddRequestToForm');
     Route::post('/postAddDepartment',[\App\Http\Controllers\Ticket\MainController::class,'postAddDepartment'])->name('postAddDepartment');
     Route::get('/approve/{id}',[\App\Http\Controllers\Ticket\MainController::class,'approve']);
+    Route::post('/postAddUsers',[\App\Http\Controllers\Ticket\MainController::class,'postAddUsers'])
+        ->name('postAddUsers');
+
+});
+
+Route::prefix('canteenad')->group(function () {
+    Route::get('/',[App\Http\Controllers\Admin\Canteen\MainController::class,'index']);
+    Route::get('/editproduct/{id}',[App\Http\Controllers\Admin\Canteen\MainController::class,'showEditProduct']);
+    Route::post('/productAdd',[
+        App\Http\Controllers\Admin\Canteen\MainController::class,'productAdd'
+    ])->name('productAdd');
+    Route::post('/productUpdate/{id}',[
+        App\Http\Controllers\Admin\Canteen\MainController::class,'productUpdate'
+    ])->name('productUpdate');
+
 });
 
 

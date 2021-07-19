@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramChannel;
+use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramMessage;
 
 class Telegram extends Notification
@@ -65,7 +66,9 @@ class Telegram extends Notification
     {
         $url = url('/invoice/');
 
-        return TelegramMessage::create()
-            ->content($this->message);
+        return TelegramFile::create()
+            ->content($this->message)
+            ->photo('https://file-examples-com.github.io/uploads/2017/10/file_example_JPG_1MB.jpg')
+            ;
     }
 }

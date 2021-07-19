@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return self::where('role','company')->get();
     }
+
+    public function department()
+    {
+        return $this->hasOne(TicketDepartment::class, 'id','type_zapros');
+    }
 }

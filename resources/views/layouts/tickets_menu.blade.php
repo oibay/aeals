@@ -9,6 +9,11 @@
             <a href="{{ url('/tickets/department') }}">
                 <i class="fas fa-book"></i>Отдел</a>
         </li>
+
+        <li>
+            <a href="{{ url('/tickets/users') }}">
+                <i class="fas fa-user"></i>Пользователи</a>
+        </li>
     @endif
 
 
