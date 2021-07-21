@@ -144,6 +144,6 @@ Route::prefix('canteenad')->group(function () {
 
 });
 
-Route::get('qu2/{id}/{user}',[\App\Http\Controllers\Ticket\MainController::class,'qstat']);
+Route::get('qu2/{id}/{user}',[\App\Http\Controllers\CheckController::class,'qstat']);
 
 

@@ -166,13 +166,5 @@ class MainController extends Controller
         return redirect()->back()->with();
     }
 
-    public function qstat($id,$user)
-    {
-        $add = Ticket::find($id);
-        $add->qstat = 1;
-        $add->qstat_user = $user;
-        if ($add->save()) {
-            echo 'Успешно!';
-        }
-    }
+
 }
