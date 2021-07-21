@@ -14,14 +14,16 @@ class Telegram extends Notification
     use Queueable;
 
     protected $message;
+    protected $urlFile;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, $urlFile)
     {
         $this->message = $message;
+        $this->urlFile = $urlFile;
     }
 
     /**
@@ -65,10 +67,15 @@ class Telegram extends Notification
     public function toTelegram($notifiable)
     {
         $url = url('/invoice/');
+        if ($this->urlFile) {
+            return TelegramFile::create()
+                ->content($this->message)
+                ->photo($this->urlFile)
+                ;
+        }else {
+            return TelegramMessage::create()
+                ->content($this->message);
+        }
 
-        return TelegramFile::create()
-            ->content($this->message)
-            ->photo('https://file-examples-com.github.io/uploads/2017/10/file_example_JPG_1MB.jpg')
-            ;
     }
 }

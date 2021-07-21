@@ -55,11 +55,11 @@ class MainController extends Controller
         ]);
 
         $fileName = 0;
-
+        $urlFile = '';
         if ($request->hasFile('file')) {
             $fileName = time().'.'.$request->file->extension();
             $request->file->move(public_path('images'), $fileName);
-
+            $urlFile = 'https://aea-ls.kz/public/images/'.$fileName;
 
         }
         $ticket  = Ticket::create([
@@ -76,8 +76,9 @@ class MainController extends Controller
         //$this->sendToEmail('qwsdoam@gmail.com',$message);
 
         try {
+
             Notification::route('telegram', '337997800')
-                ->notify(new \App\Notifications\Telegram($message));
+                ->notify(new \App\Notifications\Telegram($message, $urlFile));
         }catch (\Exception $exception) {
             $exception->getMessage();
         }
