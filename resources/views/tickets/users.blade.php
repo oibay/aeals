@@ -74,6 +74,13 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
+                                <label for="name" class="form-control-label">TELEGRAM ID </label>
+
+                                <input type="text" name="telegramid" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <label for="name" class="form-control-label">Отдел </label>
 
                                 <select name="dep_id" id="" class="form-control">

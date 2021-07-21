@@ -34,6 +34,7 @@
                                 <th>Фотография</th>
                                 <th>Описание</th>
                                 <th>Статус</th>
+                                <th>Юзер Статус</th>
                                 <th>Время</th>
                                 <th></th>
 
@@ -66,6 +67,13 @@
                                                 <h3><span class="badge bg-success" style="color:White;border-radius: 100px;">Закрыт</span></h3>
                                             @endif
                                         </td>
+                                <td>
+                                    @if($item->qstat == 0)
+                                        <h3><span class="badge bg-danger" style="color:White;border-radius: 100px;">Ожидает</span></h3>
+                                    @elseif($item->qstat == 1)
+                                        <h3><span class="badge bg-success" style="color:White;border-radius: 100px;">Сделано</span></h3>
+                                    @endif
+                                </td>
                                         <td>
                                             Прошло: <h4><span class="badge bg-warning" style="color:White;border-radius: 100px;">
                                                             {{ round(abs(time() - strtotime($item->created_at)) / 60). " минут" }}

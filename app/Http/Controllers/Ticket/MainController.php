@@ -69,18 +69,19 @@ class MainController extends Controller
             'photo' => $fileName,
             'location' => $request->location,
         ]);
+        $user = User::where('type_zapros',$request->dep_id)->first();
 
         $department = TicketDepartment::find($request->dep_id);
-        $message = "Заявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."*\nСтатус:*Ожидает*\nЭто письмо отправлено роботом и отвечать на него не нужно!";
+        $message = "Привет! ".$user->name."\nЗаявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."*\nСтатус:*Ожидает*\nОписание:".$request->description."";
 
         //$this->sendToEmail('qwsdoam@gmail.com',$message);
 
         try {
 
-            Notification::route('telegram', '337997800')
-                ->notify(new \App\Notifications\Telegram($message, $urlFile));
+            Notification::route('telegram', $user->telegramid)
+                ->notify(new \App\Notifications\Telegram($message, $urlFile,$ticket->id,$user));
         }catch (\Exception $exception) {
-            $exception->getMessage();
+            dd($exception->getMessage());
         }
 
         return redirect()->back()->with('success','Успешно добавлено!');
@@ -153,6 +154,7 @@ class MainController extends Controller
         $user->name = $request->name;
         $user->email = Uuid::uuid4()->toString().'@gmail.com';
         $user->password = bcrypt(123456);
+        $user->telegramid = $request->telegramid;
         $user->type_zapros = $request->dep_id;
         $user->profile_photo_path = 'zapros';
         $user->role = 'tickets';
@@ -162,5 +164,15 @@ class MainController extends Controller
         }
 
         return redirect()->back()->with();
+    }
+
+    public function qstat($id,$user)
+    {
+        $add = Ticket::find($id);
+        $add->qstat = 1;
+        $add->qstat_user = $user;
+        if ($add->save()) {
+            echo 'Успешно!';
+        }
     }
 }

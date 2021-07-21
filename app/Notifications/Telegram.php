@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -15,15 +16,19 @@ class Telegram extends Notification
 
     protected $message;
     protected $urlFile;
+    protected $statusID;
+    protected $user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($message, $urlFile)
+    public function __construct($message, $urlFile, $statusID, $user)
     {
         $this->message = $message;
         $this->urlFile = $urlFile;
+        $this->statusID = $statusID;
+        $this->user = $user;
     }
 
     /**
@@ -66,15 +71,18 @@ class Telegram extends Notification
 
     public function toTelegram($notifiable)
     {
-        $url = url('/invoice/');
+        $url = 'https://aea-ls.kz/qu2/'.$this->statusID.'/'.$this->user->id;
         if ($this->urlFile) {
             return TelegramFile::create()
                 ->content($this->message)
                 ->photo($this->urlFile)
+                ->button('Сделал(а)', $url)
                 ;
         }else {
             return TelegramMessage::create()
-                ->content($this->message);
+                ->content($this->message)
+                ->button('Сделал(а)', $url)
+                ;
         }
 
     }
