@@ -236,6 +236,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <h5 class="card-header">QR-CODE</h5>
+                                    <div class="card-body">
+                                        <div style="text-align: center;">
+                                            {!! QrCode::size(300)->generate($guest->name); !!}
+                                        </div>                             </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
