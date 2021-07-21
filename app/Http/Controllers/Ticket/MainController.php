@@ -51,7 +51,7 @@ class MainController extends Controller
     public function postAddTicket(Request $request)
     {
         $request->validate([
-            'file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:5000',
             'location' => 'required',
         ]);
 
