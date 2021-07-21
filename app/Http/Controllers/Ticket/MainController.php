@@ -10,6 +10,7 @@ use App\Models\TicketDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Facades\File;
 
 class MainController extends Controller
 {
@@ -81,7 +82,7 @@ class MainController extends Controller
             Notification::route('telegram', $user->telegramid)
                 ->notify(new \App\Notifications\Telegram($message, $urlFile,$ticket->id,$user));
         }catch (\Exception $exception) {
-            dd($exception->getMessage());
+            //($exception->getMessage());
         }
 
         return redirect()->back()->with('success','Успешно добавлено!');
@@ -92,6 +93,10 @@ class MainController extends Controller
         $ticket = Ticket::findOrFail($id);
         $ticket->status = 1 ;
         if ($ticket->save()) {
+            $ticket = Ticket::find($ticket->id);
+            unlink(public_path('images/'.$ticket->photo));
+            $ticket->photo = null;
+            $ticket->save();
             $message = "Заявка № <span>".$ticket->id."</span>
             <br/>
             <p>Локация: ".$ticket->location."</p>
