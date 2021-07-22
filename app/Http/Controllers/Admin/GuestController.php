@@ -12,6 +12,7 @@ use App\Http\Requests\GuestEditRequest;
 use App\Models\Guest;
 use App\Models\GuestTime;
 use App\Models\Material;
+use App\Models\RoomNumber;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -61,12 +62,14 @@ class GuestController extends Controller
         $companies = User::companies();
         $guestCount = Guest::where(['status' => 2])->count();
         $materials = Material::all();
+        $rooms = RoomNumber::where('location',$guest->location)->get();
 
         return view('admin.guest-edit',[
             'guest' => $guest,
             'companies' => $companies,
             'guestCount' => $guestCount,
-            'materials' => $materials
+            'materials' => $materials,
+            'rooms' => $rooms
         ]);
     }
 

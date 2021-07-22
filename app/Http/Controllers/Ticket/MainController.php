@@ -32,7 +32,7 @@ class MainController extends Controller
 
             ]);
         }else {
-            $ticket = Ticket::all();
+            $ticket = Ticket::where('user_id',Auth::id());
             $department = TicketDepartment::all();
 
             return view('tickets.index',[
@@ -73,7 +73,7 @@ class MainController extends Controller
         $user = User::where('type_zapros',$request->dep_id)->first();
 
         $department = TicketDepartment::find($request->dep_id);
-        $message = "Привет! ".$user->name."\nЗаявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."*\nСтатус:*Ожидает*\nОписание:".$request->description."";
+        $message = "Привет! ".$user->name."\nЗаявка от ".Auth::user()->name."\nЗаявка № *".$ticket->id."*\nЛокация: *".$request->location."* \nОтдел: *".$department->title."*\nСтатус:*Ожидает*\nОписание:".$request->description."";
 
         //$this->sendToEmail('qwsdoam@gmail.com',$message);
 
@@ -82,7 +82,7 @@ class MainController extends Controller
             Notification::route('telegram', $user->telegramid)
                 ->notify(new \App\Notifications\Telegram($message, $urlFile,$ticket->id,$user));
         }catch (\Exception $exception) {
-            //($exception->getMessage());
+            dd($exception->getMessage());
         }
 
         return redirect()->back()->with('success','Успешно добавлено!');
@@ -93,10 +93,12 @@ class MainController extends Controller
         $ticket = Ticket::findOrFail($id);
         $ticket->status = 1 ;
         if ($ticket->save()) {
-            $ticket = Ticket::find($ticket->id);
-            unlink(public_path('images/'.$ticket->photo));
-            $ticket->photo = null;
-            $ticket->save();
+            if($ticket->photo) {
+                $ticket = Ticket::find($ticket->id);
+                unlink(public_path('images/'.$ticket->photo));
+                $ticket->photo = null;
+                $ticket->save();
+            }
             $message = "Заявка № <span>".$ticket->id."</span>
             <br/>
             <p>Локация: ".$ticket->location."</p>

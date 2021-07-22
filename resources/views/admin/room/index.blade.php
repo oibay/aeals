@@ -27,6 +27,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Номер комнаты</th>
+                                <th>Статус</th>
                                 <th>Локация</th>
                                 <th>Дата создана</th>
 
@@ -41,7 +42,17 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td><a href="{{ url('admin/room-number/edit',$item->id) }}">
                                                 {{ $item->number }}
-                                            </a></td>
+                                            </a>
+                                        </td>
+                                        <td>
+
+                                            @if($item->guestRoom()->count() > 0)
+                                                <h4><span class="badge badge-danger">Занят <strong style="font-size: 18px;">({{ $item->guestRoom()->count()  }}) </strong>место</span></h4>
+
+                                            @else
+                                                <h4><span class="badge badge-success">Свободно</span></h4>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($item->location == 'apec')
                                                 Apec Petrotechnic
@@ -141,5 +152,13 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });
+
+        jQuery(document).ready(function($) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        }
     </script>
 @endpush
