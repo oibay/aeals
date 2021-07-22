@@ -18,17 +18,19 @@ class Telegram extends Notification
     protected $urlFile;
     protected $statusID;
     protected $user;
+    protected $super;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($message, $urlFile, $statusID, $user)
+    public function __construct($message, $urlFile, $statusID, $user,$super = null)
     {
         $this->message = $message;
         $this->urlFile = $urlFile;
         $this->statusID = $statusID;
         $this->user = $user;
+        $this->super = $super;
     }
 
     /**
@@ -73,16 +75,22 @@ class Telegram extends Notification
     {
         $url = 'https://aea-ls.kz/qu2/'.$this->statusID.'/'.$this->user->id;
         if ($this->urlFile) {
-            return TelegramFile::create()
+            $telegram =  TelegramFile::create()
                 ->content($this->message)
-                ->photo($this->urlFile)
-                ->button('Сделал(а)', $url)
-                ;
+                ->photo($this->urlFile);
+            if ($this->super == null) {
+                return $telegram->button('Сделал(а)', $url);
+            }else {
+                return $telegram;
+            }
         }else {
-            return TelegramMessage::create()
-                ->content($this->message)
-                ->button('Сделал(а)', $url)
-                ;
+            $telegram =  TelegramMessage::create()
+                ->content($this->message);
+             if ($this->super == null) {
+                 return $telegram->button('Сделал(а)', $url);
+             }else {
+                 return $telegram;
+             }
         }
 
     }

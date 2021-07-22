@@ -58,6 +58,8 @@
                     @include('layouts.company_menu')
                 @elseif(Auth::user()->role == 'tickets')
                     @include('layouts.tickets_menu')
+                @elseif(Auth::user()->role == 'analytics')
+                    @include('layouts.analytics')
                 @endif
             </nav>
         </div>

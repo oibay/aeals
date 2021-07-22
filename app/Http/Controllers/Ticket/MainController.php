@@ -22,17 +22,13 @@ class MainController extends Controller
 
     public function index()
     {
-
         if (Auth::user()->profile_photo_path == 'zapros') {
             $ticket = Ticket::where('department_id',Auth::user()->type_zapros)->get();
-
-
             return view('tickets.index_cc',[
                 'ticket' => $ticket,
-
             ]);
         }else {
-            $ticket = Ticket::where('user_id',Auth::id());
+            $ticket = Ticket::where('user_id',Auth::id())->get();
             $department = TicketDepartment::all();
 
             return view('tickets.index',[
@@ -40,7 +36,6 @@ class MainController extends Controller
                 'department' => $department
             ]);
         }
-
     }
 
     public function showAddTicket()
@@ -81,6 +76,13 @@ class MainController extends Controller
 
             Notification::route('telegram', $user->telegramid)
                 ->notify(new \App\Notifications\Telegram($message, $urlFile,$ticket->id,$user));
+
+            $array = [829600339,754572114];
+            foreach($array as $item) {
+                Notification::route('telegram', $item)
+                    ->notify(new \App\Notifications\Telegram($message, $urlFile,$ticket->id,$user,1));
+            }
+
         }catch (\Exception $exception) {
             dd($exception->getMessage());
         }

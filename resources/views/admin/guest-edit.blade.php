@@ -102,19 +102,22 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="room" class="form-control-label ">Комната</label>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="room" class="form-control-label">Комната</label>
 
-                                    <select class="js-example-basic-single" name="room">
-                                        @foreach($rooms as $room)
-                                            <option value="{{ $room->id }}"> {{ $room->number }}</option>
-                                        @endforeach
-                                    </select>
+                                        <input id="room" type="text" class="form-control{{ $errors->has('room') ? ' is-invalid' : '' }}" name="room" value="{{ $guest->room }}" placeholder="Номер комнаты" >
+
+                                        @if ($errors->has('room'))
+                                            <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('room') }}</strong>
+                                                </span>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-12">
+
+                                <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="room_type">Тип комнаты</label>
                                     <select id="room_type" class="form-control{{ $errors->has('room_type') ? ' is-invalid' : '' }}" name="room_type" value="{{ old('room_type') }}" >

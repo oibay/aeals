@@ -146,4 +146,8 @@ Route::prefix('canteenad')->group(function () {
 
 Route::get('qu2/{id}/{user}',[\App\Http\Controllers\CheckController::class,'qstat']);
 
-
+Route::prefix('analytics')->group(function () {
+    Route::get('/',[\App\Http\Controllers\Ticket\AnalyticsController::class,'guests']);
+    Route::get('/checkin',[\App\Http\Controllers\Ticket\AnalyticsController::class,'index']);
+    Route::get('/requests',[\App\Http\Controllers\Ticket\AnalyticsController::class,'requests']);
+});

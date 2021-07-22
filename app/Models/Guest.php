@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Fluent\Concerns\Has;
 
 class Guest extends Model
@@ -77,6 +78,8 @@ class Guest extends Model
         $guestTime->save();
 
     }
+
+
 
 
     /**
@@ -281,6 +284,31 @@ class Guest extends Model
         }
 
         return false;
+    }
+
+    public static function checkInAnalytics()
+    {
+        $guest = Guest::where('status',2)
+                 ->join('users','guests.user_id','=','users.id')
+                 ->select('users.name as com_name',
+                  DB::raw("count(guests.id) as count"))
+                 ->groupBy('users.name')
+                 ->get();
+
+        return $guest;
+    }
+
+    public static function guestsAnalytics()
+    {
+        $guest = Guest::where('status',1)
+            ->where('room','<>',NULL)
+            ->join('users','guests.user_id','=','users.id')
+            ->select('users.name as com_name',
+                DB::raw("count(guests.id) as count"))
+            ->groupBy('users.name')
+            ->get();
+
+        return $guest;
     }
 
 }
