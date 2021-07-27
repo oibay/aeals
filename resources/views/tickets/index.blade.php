@@ -132,6 +132,7 @@
                                         <option value="">Не выбрано</option>
                                         <option value="Гостиница #1" >Гостиница #1</option>
                                         <option value="Гостиница #2" >Гостиница #2</option>
+                                        <option value="Столовой" >Столовой</option>
                                         <option value="Офис #1" >Офис #1</option>
                                         <option value="Офис #2" >Офис #2</option>
                                         <option value="Офис #3" >Офис #3</option>

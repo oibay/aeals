@@ -22,7 +22,7 @@ class GuestController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth','access:admin']);
+        $this->middleware(['auth', 'access:admin']);
     }
 
     public function index()
@@ -30,7 +30,7 @@ class GuestController extends Controller
         $guests = Guest::guests();
         $companies = User::companies();
         $guestCount = Guest::where(['status' => 2])->count();
-        return view('admin.guests',[
+        return view('admin.guests', [
             'companies' => $companies,
             'guests' => $guests,
             'guestCount' => $guestCount
@@ -41,7 +41,7 @@ class GuestController extends Controller
     {
         $companies = User::companies();
         $guestCount = Guest::where(['status' => 2])->count();
-        return view('admin.guest-add',[
+        return view('admin.guest-add', [
             'companies' => $companies,
             'guestCount' => $guestCount
         ]);
@@ -51,9 +51,9 @@ class GuestController extends Controller
     {
 
         if (Guest::createGuest($request)) {
-            return redirect()->back()->with('success','Успешно добавлено');
+            return redirect()->back()->with('success', 'Успешно добавлено');
         }
-        return redirect()->back()->with('danger','Повторите позже!');
+        return redirect()->back()->with('danger', 'Повторите позже!');
     }
 
     public function editShow(int $id)
@@ -62,9 +62,9 @@ class GuestController extends Controller
         $companies = User::companies();
         $guestCount = Guest::where(['status' => 2])->count();
         $materials = Material::all();
-        $rooms = RoomNumber::where('location',$guest->location)->get();
+        $rooms = RoomNumber::where('location', $guest->location)->get();
 
-        return view('admin.guest-edit',[
+        return view('admin.guest-edit', [
             'guest' => $guest,
             'companies' => $companies,
             'guestCount' => $guestCount,
@@ -73,16 +73,16 @@ class GuestController extends Controller
         ]);
     }
 
-    public function postEditGuest(GuestEditRequest $request,$id)
+    public function postEditGuest(GuestEditRequest $request, $id)
     {
-        if($request->status == 1) {
-            if(is_null($request->room)) {
-                return redirect()->back()->with('warning','Пустое поле (комната)');
+        if ($request->status == 1) {
+            if (is_null($request->room)) {
+                return redirect()->back()->with('warning', 'Пустое поле (комната)');
             }
         }
-        $create = Guest::updateGuest($request,$request->id);
+        $create = Guest::updateGuest($request, $request->id);
 
-        return redirect()->back()->with('success','Успешно добавлено');
+        return redirect()->back()->with('success', 'Успешно добавлено');
     }
 
     public function searchGuest(Request $request)
@@ -98,12 +98,12 @@ class GuestController extends Controller
             $companies = User::companies();
             $guestCount = Guest::where(['status' => 2])->count();
 
-            return view('admin.search-guests',[
+            return view('admin.search-guests', [
                 'companies' => $companies,
                 'guests' => $guest,
                 'guestCount' => $guestCount
             ]);
-        }else {
+        } else {
             $search = new SearchBron($request);
             $search = new SearchActiveGuest($search);
 
@@ -113,14 +113,12 @@ class GuestController extends Controller
             if ($request->roomGuestUkaz) {
                 $this->checkIn($request);
             }
-            return view('admin.search-stlng',[
+            return view('admin.search-stlng', [
                 'companies' => $companies,
                 'guests' => $guest,
                 'guestCount' => $guestCount
             ]);
         }
-
-
 
 
     }
@@ -131,7 +129,7 @@ class GuestController extends Controller
             ->get();
         $companies = User::companies();
         $guestCount = Guest::where(['status' => 2])->count();
-        return view('admin.stlng',[
+        return view('admin.stlng', [
             'guests' => $guests,
             'companies' => $companies,
             'guestCount' => $guestCount,
@@ -139,26 +137,26 @@ class GuestController extends Controller
         ]);
     }
 
-	public function remove($id)
-	{
-		$guest = Guest::find($id);
-		$guest->status = 3;
-		$guest->save();
+    public function remove($id)
+    {
+        $guest = Guest::find($id);
+        $guest->status = 3;
+        $guest->save();
 
-		return redirect()->back()->with('success','Успешно удалено');
-	}
+        return redirect()->back()->with('success', 'Успешно удалено');
+    }
 
     public function checkOut($id)
     {
         $guest = Guest::find($id);
         $guest->status = 0;
         if ($guest->save()) {
-            $guestTime = GuestTime::where('guest_id',$guest->id)->first();
+            $guestTime = GuestTime::where('guest_id', $guest->id)->first();
             $guestTime->departure = Carbon::now()->toDateTimeString();
             $guestTime->save();
-            return redirect()->back()->with('success','Успешно выселен');
+            return redirect()->back()->with('success', 'Успешно выселен');
         }
-	}
+    }
 
     public function checkIn(Request $request)
     {
@@ -170,10 +168,10 @@ class GuestController extends Controller
         $guest->status = 1;
 
         if ($guest->save()) {
-            $guestTime = GuestTime::where('guest_id',$guest->id)->first();
+            $guestTime = GuestTime::where('guest_id', $guest->id)->first();
             $guestTime->entry = Carbon::now()->toDateTimeString();
             $guestTime->save();
-            return redirect()->back()->with('success','Успешно обновлено');
+            return redirect()->back()->with('success', 'Успешно обновлено');
         }
     }
 }

@@ -19,12 +19,13 @@ class Telegram extends Notification
     protected $statusID;
     protected $user;
     protected $super;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($message, $urlFile, $statusID, $user,$super = null)
+    public function __construct($message, $urlFile, $statusID, $user, $super = null)
     {
         $this->message = $message;
         $this->urlFile = $urlFile;
@@ -36,7 +37,7 @@ class Telegram extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -47,21 +48,21 @@ class Telegram extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function toArray($notifiable)
@@ -73,24 +74,24 @@ class Telegram extends Notification
 
     public function toTelegram($notifiable)
     {
-        $url = 'https://aea-ls.kz/qu2/'.$this->statusID.'/'.$this->user->id;
+        $url = 'https://aea-ls.kz/qu2/' . $this->statusID . '/' . $this->user->id;
         if ($this->urlFile) {
-            $telegram =  TelegramFile::create()
+            $telegram = TelegramFile::create()
                 ->content($this->message)
                 ->photo($this->urlFile);
             if ($this->super == null) {
                 return $telegram->button('Сделал(а)', $url);
-            }else {
+            } else {
                 return $telegram;
             }
-        }else {
-            $telegram =  TelegramMessage::create()
+        } else {
+            $telegram = TelegramMessage::create()
                 ->content($this->message);
-             if ($this->super == null) {
-                 return $telegram->button('Сделал(а)', $url);
-             }else {
-                 return $telegram;
-             }
+            if ($this->super == null) {
+                return $telegram->button('Сделал(а)', $url);
+            } else {
+                return $telegram;
+            }
         }
 
     }
