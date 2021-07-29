@@ -15,4 +15,5 @@ class CanteenProduct extends Model
     {
         return $this->hasMany(CanteenProductDetail::class,'product_id');
     }
+
 }

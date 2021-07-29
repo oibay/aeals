@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Notification;
 use App\Models\TicketDepartment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPMailer\PHPMailer\PHPMailer;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Facades\File;
+
 
 class MainController extends Controller
 {
@@ -72,13 +74,20 @@ class MainController extends Controller
 
         if (Auth::user()->profile_photo_path == 'zakup') {
             $urlQ = "<a href='https://aea-ls.kz/approved/{$ticket->id}'>Подтвердить</a>";
-            $msgToSend = "Здравствуйте Али \nЗаявка от " . Auth::user()->name . "\nЗаявка № *" . $ticket->id . "*\nЛокация: *" . $request->location . "* \nОтдел: *" . $department->title . "*\nСтатус:*Ожидает*\nОписание:" . $request->description . "\n ".$urlQ;
-            $this->sendToEmail('qwsdoam@gmail.com',$message);
+            $message = "Заявка № <span>" . $ticket->id . "</span>
+            <br/>
+            <p>Локация: " . $ticket->location . "</p>
+			<p>Отдел: " . $ticket->title . "</p>
+            <p>Статус: <span style='color:green;font-size:20px;font-weight:bold;'>Закрыт</span></p>
+            <br>
+            <i>Это письмо отправлено <b>роботом</b>
+            и отвечать на него не нужно!</i>";
+
         }
 
 
         try {
-
+            $this->sendToEmail();
             Notification::route('telegram', $user->telegramid)
                 ->notify(new \App\Notifications\Telegram($message, $urlFile, $ticket->id, $user));
 
@@ -115,7 +124,7 @@ class MainController extends Controller
             <i>Это письмо отправлено <b>роботом</b>
             и отвечать на него не нужно!</i>";
 
-            $this->sendToEmail('qwsdoam@gmail.com', $message);
+
             return redirect()->back()->with('success', 'Статус успешно изменено!');
         }
         return redirect()->back()->with('danger', 'Попробуйте заново!');
@@ -140,16 +149,7 @@ class MainController extends Controller
         }
     }
 
-    private function sendToEmail($to, $message)
-    {
-        $subject = "Robot - Бизнес Парк Заявки";
-        $headers = "From: AeaLS.kz <support@aea-ls.kz>\r\nContent-type: text/html; charset=utf-8 \r\n";
-        $d = mail($to, $subject, $message, $headers);
-        if ($d) {
-            return true;
-        }
-        return false;
-    }
+
 
     public function users()
     {
@@ -180,5 +180,32 @@ class MainController extends Controller
         return redirect()->back()->with();
     }
 
+
+    private function sendToEmail()
+    {
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->Mailer = "smtp";
+        $mail->SMTPDebug  = 1;
+        $mail->SMTPAuth   = TRUE;
+        $mail->SMTPSecure = "tls";
+        $mail->Port       = 587;
+        $mail->Host       = "smtp.gmail.com";
+        $mail->Username   = "bizzpar0k@gmail.com";
+        $mail->Password   = "123456789AbA@";
+
+        $mail->IsHTML(true);
+        $mail->AddAddress("it@apec-tc.kz", "recipient-name");
+        $mail->SetFrom("bizzpar0k@gmail.com", "bizzpar0k");
+        $mail->Subject = "Test is Test Email sent via Gmail SMTP Server using PHP Mailer";
+        $content = "<b>This is a Test Email sent via Gmail SMTP Server using PHP mailer class.</b>";
+        $mail->MsgHTML($content);
+        if(!$mail->Send()) {
+            echo "Error while sending Email.";
+            var_dump($mail);
+        } else {
+            echo "Email sent successfully";
+        }
+    }
 
 }
