@@ -74,24 +74,34 @@ class MainController extends Controller
 
         if (Auth::user()->profile_photo_path == 'zakup') {
             $urlQ = "<a href='https://aea-ls.kz/approved/{$ticket->id}'>Подтвердить</a>";
-            $message = "Заявка № <span>" . $ticket->id . "</span>
-            <br/>
-            <p>Локация: " . $ticket->location . "</p>
-			<p>Отдел: " . $ticket->title . "</p>
-            <p>Статус: <span style='color:green;font-size:20px;font-weight:bold;'>Закрыт</span></p>
-            <br>
-            <i>Это письмо отправлено <b>роботом</b>
-            и отвечать на него не нужно!</i>";
+
 
         }
 
+        $message = "
+        <p><img src='" . $urlFile . "' alt=''></p>
+        <p>Здравствуйте <strong>Али</strong></p>
 
+            <p>Заявка № <em>" . $ticket->id . "</em></p>
+
+            <p>Локация: <u><em>" . $request->location . "</em></u></p>
+
+            <p>Отдел: <em>" . $department->title . "</em></p>
+
+            <p>Статус: <strong>Ожидает</strong> <a href='https://aea-ls.kz/req/approved/" . $ticket->id . "'><button>Подтвердить</button></a></p>
+            <p>Описание: <strong>" . $request->description . "</strong></p>
+            <p>&nbsp;</p>
+            <p><br />
+            <em>Это письмо отправлено <strong>роботом</strong> и отвечать на него не нужно!</em></p>
+
+        ";
         try {
-            $this->sendToEmail();
+            $this->sendToEmail("Новая Заявка №" . $ticket->id, $message);
+
             Notification::route('telegram', $user->telegramid)
                 ->notify(new \App\Notifications\Telegram($message, $urlFile, $ticket->id, $user));
 
-            $array = [829600339,754572114,337997800];
+            $array = [829600339, 754572114, 337997800];
             foreach ($array as $item) {
                 Notification::route('telegram', $item)
                     ->notify(new \App\Notifications\Telegram($message, $urlFile, $ticket->id, $user, 1));
@@ -150,7 +160,6 @@ class MainController extends Controller
     }
 
 
-
     public function users()
     {
         $users = User::where(['profile_photo_path' => 'zapros'])->get();
@@ -181,31 +190,32 @@ class MainController extends Controller
     }
 
 
-    private function sendToEmail()
+    private function sendToEmail($subject, $message)
     {
         $mail = new PHPMailer();
         $mail->IsSMTP();
         $mail->Mailer = "smtp";
-        $mail->SMTPDebug  = 1;
-        $mail->SMTPAuth   = TRUE;
+        $mail->SMTPDebug = 1;
+        $mail->SMTPAuth = TRUE;
         $mail->SMTPSecure = "tls";
-        $mail->Port       = 587;
-        $mail->Host       = "smtp.gmail.com";
-        $mail->Username   = "bizzpar0k@gmail.com";
-        $mail->Password   = "123456789AbA@";
-
+        $mail->Port = 587;
+        $mail->Host = "smtp.gmail.com";
+        $mail->Username = "bizzpar0k@gmail.com";
+        $mail->Password = "123456789AbA@";
+        $mail->CharSet = 'UTF-8';
         $mail->IsHTML(true);
         $mail->AddAddress("it@apec-tc.kz", "recipient-name");
         $mail->SetFrom("bizzpar0k@gmail.com", "bizzpar0k");
-        $mail->Subject = "Test is Test Email sent via Gmail SMTP Server using PHP Mailer";
-        $content = "<b>This is a Test Email sent via Gmail SMTP Server using PHP mailer class.</b>";
-        $mail->MsgHTML($content);
-        if(!$mail->Send()) {
+        $mail->Subject = $subject;
+
+        $mail->MsgHTML($message);
+        if (!$mail->Send()) {
             echo "Error while sending Email.";
-            var_dump($mail);
+            return false;
         } else {
-            echo "Email sent successfully";
+            return true;
         }
     }
+
 
 }
