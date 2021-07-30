@@ -73,12 +73,9 @@ class MainController extends Controller
         $message = "Здравствуйте " . $user->name . "\nЗаявка от " . Auth::user()->name . "\nЗаявка № *" . $ticket->id . "*\nЛокация: *" . $request->location . "* \nОтдел: *" . $department->title . "*\nСтатус:*Ожидает*\nОписание:" . $request->description . "";
 
         if (Auth::user()->profile_photo_path == 'zakup') {
-            $urlQ = "<a href='https://aea-ls.kz/approved/{$ticket->id}'>Подтвердить</a>";
 
 
-        }
-
-        $message = "
+            $message = "
         <p><img src='" . $urlFile . "' alt=''></p>
         <p>Здравствуйте <strong>Али</strong></p>
 
@@ -95,8 +92,12 @@ class MainController extends Controller
             <em>Это письмо отправлено <strong>роботом</strong> и отвечать на него не нужно!</em></p>
 
         ";
-        try {
             $this->sendToEmail("Новая Заявка №" . $ticket->id, $message);
+        }
+
+
+        try {
+
 
             Notification::route('telegram', $user->telegramid)
                 ->notify(new \App\Notifications\Telegram($message, $urlFile, $ticket->id, $user));
