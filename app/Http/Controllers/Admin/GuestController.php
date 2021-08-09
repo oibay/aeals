@@ -203,7 +203,9 @@ class GuestController extends Controller
     {
         $accept = GuestAccept::findOrFail($id);
         $accept->status = 1;
+
         if ($accept->save()) {
+            Guest::where(['accept_id' => $accept->id])->update(['status' => 2]);
             $messageSend = "
 
             <p>Здравствуйте </p>
