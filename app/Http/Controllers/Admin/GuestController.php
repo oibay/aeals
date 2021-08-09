@@ -10,6 +10,7 @@ use App\Http\Requests\AddGuestRequest;
 use App\Http\Requests\AdminGuest;
 use App\Http\Requests\GuestEditRequest;
 use App\Models\Guest;
+use App\Models\GuestAccept;
 use App\Models\GuestTime;
 use App\Models\Material;
 use App\Models\RoomNumber;
@@ -173,5 +174,63 @@ class GuestController extends Controller
             $guestTime->save();
             return redirect()->back()->with('success', 'Успешно обновлено');
         }
+    }
+
+    public function request_()
+    {
+        $request_ = GuestAccept::all();
+
+        return view('admin.guest_accept', [
+            'request_' => $request_
+        ]);
+    }
+
+    public function requestView($id)
+    {
+        $accept = GuestAccept::findOrFail($id);
+        $guests = Guest::where(['accept_id' => $accept->id])
+            ->get();
+        $guestCount = Guest::where(['status' => 2])->count();
+        $companies = User::companies();
+        return view('admin.stlng', [
+            'guests' => $guests,
+            'guestCount' => $guestCount,
+            'companies' => $companies
+        ]);
+    }
+
+    public function accessRequestSts($id)
+    {
+        $accept = GuestAccept::findOrFail($id);
+        $accept->status = 1;
+        if ($accept->save()) {
+            $messageSend = "
+
+            <p>Здравствуйте </p>
+
+            <p>Заявка № <em>" . $accept->id . "</em></p>
+
+            <p>Кол-во: <u><em>" . $accept->countGuest()->count() . "</em></u></p>
+
+            <p>Дата: <em>" . $accept->updated_at . "</em></p>
+
+            <p>Статус: <strong style='color:green;font-size:18px;'>Подтверждено</strong> </p>
+
+            <p><br />
+            <em>Это письмо отправлено <strong>роботом</strong> и отвечать на него не нужно!</em></p>
+
+        ";
+            $this->sendToEmail($accept->user['email'] , $accept->title, $messageSend);
+        }
+    }
+
+    private function sendToEmail($to, $subject, $message)
+    {
+        $headers = "From: AeaLS.kz <support@aea-ls.kz>\r\nContent-type: text/html; charset=utf-8 \r\n";
+        $d = mail($to, $subject, $message, $headers);
+        if ($d) {
+            return true;
+        }
+        return false;
     }
 }

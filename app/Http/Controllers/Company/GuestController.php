@@ -7,6 +7,7 @@ use App\Http\Requests\AdminGuest;
 use App\Http\Requests\ImportGuest;
 use App\Imports\GuestImport;
 use App\Models\Guest;
+use App\Models\GuestAccept;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,9 +70,9 @@ class GuestController extends Controller
 
     public function postGuest(AdminGuest $request)
     {
-        return redirect()->back()->with('warning','Временно недоступен');
+        //return redirect()->back()->with('warning','Временно недоступен');
         if (Guest::createGuest($request)) {
-            return redirect()->back()->with('success','Успешно добавлено');
+            return redirect()->back()->with('success','Успешно добавлено! Ожидается подтверждение пожалуйста подождите.');
         }
         return redirect()->back()->with('danger','Повторите позже!');
     }
@@ -79,14 +80,14 @@ class GuestController extends Controller
     public function importGuest(ImportGuest $request)
     {
         if (Excel::import(new GuestImport($request), $request->file)) {
-            return redirect()->back()->with('success','Успешно загружено');
+            return redirect()->back()->with('success','Успешно загружено! Ожидается подтверждение пожалуйста подождите.');
         }
         return redirect()->back()->with('danger','Повторите позже!');
     }
 
     public function showAddGuest()
     {
-        return redirect()->back()->with('warning','Временно недоступен');
+        //return redirect()->back()->with('warning','Временно недоступен');
         $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
 
         return view('company.guest-add',[
@@ -104,6 +105,28 @@ class GuestController extends Controller
         $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
 
         return view('company.archive',[
+            'guests' => $guests,
+            'guestCount' => $guestCount
+        ]);
+    }
+
+    public function request_()
+    {
+        $request_ = GuestAccept::where('user_id',Auth::id())->get();
+
+        return view('company.guest_accept',[
+            'request_' => $request_
+        ]);
+    }
+
+    public function requestView($id)
+    {
+        $accept = GuestAccept::findOrFail($id);
+        $guests = Guest::where(['accept_id'=>$accept->id])
+            ->get();
+        $guestCount = Guest::where(['status' => 2, 'user_id' => Auth::id()])->count();
+
+        return view('company.stlng',[
             'guests' => $guests,
             'guestCount' => $guestCount
         ]);

@@ -34,6 +34,9 @@ Route::prefix('admin')->group(function () {
 
     Route::prefix('guests')->group(function () {
         Route::get('/',[GuestController::class,'index']);
+        Route::get('/request_',[GuestController::class,'request_']);
+        Route::get('/request_/view/{id}',[GuestController::class,'requestView']);
+        Route::get('/request_/accept_status/{id}',[GuestController::class,'accessRequestSts']);
         Route::get('/remove/{id}',[GuestController::class,'remove']);
         Route::get('/checkout/{id}',[GuestController::class,'checkOut']);
         Route::post('/checkin',[GuestController::class,'checkIn'])->name('checkInGuest');
@@ -106,6 +109,9 @@ Route::prefix('company')->group(function () {
         Route::post('/new',[\App\Http\Controllers\Company\GuestController::class,'postGuest'])->name('postGuestCompany');
         Route::get('/edit/{id}',[\App\Http\Controllers\Company\GuestController::class,'editShow']);
         Route::post('/editGuest/{id}',[\App\Http\Controllers\Company\GuestController::class,'postEditGuest'])->name('postEditGuestCompany');
+        Route::get('/request_',[\App\Http\Controllers\Company\GuestController::class,'request_']);
+        Route::get('/request_/view/{id}',[\App\Http\Controllers\Company\GuestController::class,'requestView']);
+
     });
 
     Route::prefix('companies')->group(function () {

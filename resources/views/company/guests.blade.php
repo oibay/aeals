@@ -7,13 +7,13 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <!--<a  class="btn btn-primary mb-1" href="{{ url('company/guests/add/new') }}">
+                        <a  class="btn btn-primary mb-1" href="{{ url('company/guests/add/new') }}">
                             <i class="zmdi zmdi-plus"></i> Добавить
-                        </a>--->
-                            <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#blockedImport">
-                                <i class="zmdi zmdi-plus"></i> Добавить
-                            </button>
-                        <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#blockedImport">
+                        </a>
+                       <!-- <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#blockedImport">
+                            <i class="zmdi zmdi-plus"></i> Добавить
+                        </button>-->
+                        <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
                             <i class="zmdi zmdi-import-export"></i> Импорт
                         </button>
                     </div>

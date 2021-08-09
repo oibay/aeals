@@ -118,6 +118,10 @@ class Guest extends Model
     {
         if (Auth::user()->role == 'company') {
             $userId = Auth::id();
+            $accept = new GuestAccept();
+            $accept->title = 'Заявка к заселению-'.date('d-m-Y');
+            $accept->user_id = $userId;
+            $accept->save();
         } else {
             $userId = $request->user_id;
         }
@@ -129,7 +133,8 @@ class Guest extends Model
             'room_type' => $request->room_type,
             'phone' => $request->phone,
             'location' => $request->location,
-            'status' => 2,
+            'status' => $accept->id ? 4 : 2,
+            'accept_id' => $accept->id ?? null,
             'vouchers' => Guest::stringVouchers([$request->breakfast, $request->lunch, $request->supper])
         ]);
 

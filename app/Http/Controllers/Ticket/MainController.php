@@ -75,7 +75,7 @@ class MainController extends Controller
         if (Auth::user()->profile_photo_path == 'zakup') {
 
 
-            $message = "
+            $messageSend = "
         <p><img src='" . $urlFile . "' alt=''></p>
         <p>Здравствуйте <strong>Али</strong></p>
 
@@ -92,7 +92,7 @@ class MainController extends Controller
             <em>Это письмо отправлено <strong>роботом</strong> и отвечать на него не нужно!</em></p>
 
         ";
-            $this->sendToEmail("Новая Заявка №" . $ticket->id, $message);
+            $this->sendToEmail("Новая Заявка №" . $ticket->id, $messageSend);
         }
 
 
@@ -193,29 +193,13 @@ class MainController extends Controller
 
     private function sendToEmail($subject, $message)
     {
-        $mail = new PHPMailer();
-        $mail->IsSMTP();
-        $mail->Mailer = "smtp";
-        $mail->SMTPDebug = 1;
-        $mail->SMTPAuth = TRUE;
-        $mail->SMTPSecure = "tls";
-        $mail->Port = 587;
-        $mail->Host = "smtp.gmail.com";
-        $mail->Username = "bizzpar0k@gmail.com";
-        $mail->Password = "123456789AbA@";
-        $mail->CharSet = 'UTF-8';
-        $mail->IsHTML(true);
-        $mail->AddAddress("it@apec-tc.kz", "recipient-name");
-        $mail->SetFrom("bizzpar0k@gmail.com", "bizzpar0k");
-        $mail->Subject = $subject;
-
-        $mail->MsgHTML($message);
-        if (!$mail->Send()) {
-            echo "Error while sending Email.";
-            return false;
-        } else {
+        $subject = $subject;
+        $headers = "From: AeaLS.kz <support@aea-ls.kz>\r\nContent-type: text/html; charset=utf-8 \r\n";
+        $d = mail('bizzpar0k@gmail.com', $subject, $message, $headers);
+        if ($d) {
             return true;
         }
+        return false;
     }
 
 

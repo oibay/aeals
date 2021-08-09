@@ -6,6 +6,7 @@ namespace App\Imports;
 use App\Http\Requests\AdminGuest;
 use App\Http\Requests\ImportGuest;
 use App\Models\Guest;
+use App\Models\GuestAccept;
 use App\Models\GuestTime;
 use App\Models\GuestTimeLog;
 use Illuminate\Http\Request;
@@ -27,7 +28,10 @@ class GuestImport implements ToCollection
 
         $rows->forget(0);
 
-
+        $accept = new GuestAccept();
+        $accept->title = 'Заявка к заселению-'.date('d-m-Y');
+        $accept->user_id = Auth::id();
+        $accept->save();
         foreach ($rows as $row) {
             $checkGuest = Guest::where('passport', $row[1]);
             if ($checkGuest->exists()) {
@@ -41,7 +45,8 @@ class GuestImport implements ToCollection
                     'room_type' => $this->request->room_type,
                     'phone' => $row[2],
                     'location' => $this->request->location,
-                    'status' => 2,
+                    'status' => 4,
+                    'accept_id' => $accept->id,
                     'vouchers' => Guest::stringVouchers([$this->request->breakfast, $this->request->lunch, $this->request->supper])
                 ]);
                 $guestTime = GuestTime::where(['guest_id' => $guestEdit->id,])->first();
@@ -63,7 +68,8 @@ class GuestImport implements ToCollection
                     'room_type' => $this->request->room_type,
                     'phone' => $row[2],
                     'location' => $this->request->location,
-                    'status' => 2,
+                    'status' => $accept->id ? 4 : 2,
+                    'accept_id' => $accept->id,
                     'vouchers' => Guest::stringVouchers([$this->request->breakfast, $this->request->lunch, $this->request->supper])
                 ]);
 

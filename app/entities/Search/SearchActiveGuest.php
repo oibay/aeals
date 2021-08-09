@@ -40,6 +40,7 @@ class SearchActiveGuest implements SearchInterface
                 ->whereDate('guest_times.departure', '=', date('Y-m-d',strtotime($this->filterData['departure'])));
         }
 
+
         return $this->query;
     }
 

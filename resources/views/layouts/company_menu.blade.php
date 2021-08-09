@@ -8,6 +8,10 @@
             <i class="fas fa-users"></i>Гости</a>
     </li>
     <li>
+        <a href="{{ url('/company/guests/request_') }}">
+            <i class="fas fa-boxes"></i>Мои заявки</a>
+    </li>
+    <li>
         <a href="{{ url('/company/guests/stlng') }}">
             <i class="fas fa-calendar-times"></i>К заселению</a>
         <span class="inbox-num">

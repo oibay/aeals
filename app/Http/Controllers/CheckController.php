@@ -37,15 +37,15 @@ class CheckController extends Controller
         if ($add->save()) {
             try {
 
-                 Notification::route('telegram', $department->user['telegramid'])
-                 ->notify(new \App\Notifications\Telegram($message, $urlFile, $add->id, $user,1));
+                Notification::route('telegram', $department->user['telegramid'])
+                    ->notify(new \App\Notifications\Telegram($message, $urlFile, $add->id, $user,1));
 
-                 $array = [829600339,754572114,337997800];
-                 foreach ($array as $item) {
-                 Notification::route('telegram', $item)
-                 ->notify(new \App\Notifications\Telegram($message, $urlFile, $add->id, $user, 1));
-                 }
-
+                $array = [829600339,754572114,337997800];
+                foreach ($array as $item) {
+                    Notification::route('telegram', $item)
+                        ->notify(new \App\Notifications\Telegram($message, $urlFile, $add->id, $user, 1));
+                }
+                echo 'Успешно!';
             } catch (\Exception $exception) {
                 dd($exception->getMessage());
             }

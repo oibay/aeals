@@ -5,18 +5,11 @@
         <div class="section__content section__content--p30">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-3">
+                        <h3>Заявки</h3>
 
-                        <a  class="btn btn-primary mb-1" href="{{ url('company/guests/add/new') }}">
-                            <i class="zmdi zmdi-plus"></i> Добавить
-                        </a>
-                        <!-- <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#blockedImport">
-                             <i class="zmdi zmdi-plus"></i> Добавить
-                         </button>-->
-                        <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
-                            <i class="zmdi zmdi-import-export"></i> Импорт
-                        </button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -30,51 +23,36 @@
                         <table id="table_id" class="display">
                             <thead>
                             <tr>
-                                <th>ФИО</th>
-                                <th>ИИН</th>
-                                <th>Компания</th>
-                                <th>Номер телефона</th>
-                                <th>Локация</th>
-                                <th>Комната</th>
-                                <th>Тип комнаты</th>
-                                <th>Въезд</th>
-                                <th>Отъезд</th>
+                                <th>Название</th>
 
+                                <th>Кол-во</th>
+                                <th>Статус</th>
+
+                                <th>Дата создания</th>
+                                <th>Действие</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @if($guests->count() > 0)
-                                @foreach($guests as $item)
+                            @if($request_->count() > 0)
+                                @foreach($request_ as $item)
                             <tr>
                                 <td>
-                                       <a href="{{ url('company/guests/edit',$item->id) }}">
-                                        {{ $item->name }}
-                                    </a>
-                                   </td>
-                                <td>{{ $item->passport }}</td>
-                                <td>{{ $item->company['name'] }}</td>
-                                <td>{{ $item->phone }}</td>
+                                    <a href="{{ url('admin/guests/request_/view/'.$item->id) }}">{{ $item->title }}</a>
+                                </td>
+                                <td>{{ $item->countGuest()->count() }}</td>
                                 <td>
 
-                                    @if($item->location == 'apec')
-                                        Apec Petrotechnic
-                                    @elseif($item->location == 'bpark')
-                                        Жангырхан 72Б 1 БЛОК
-                                    @elseif($item->location == 'bpark-2')
-                                        Жангырхан 72Б 2 БЛОК
+                                    @if($item->status == 1)
+                                        <span class="badge badge-success">Подтверждено</span>
+                                    @elseif($item->status == 0)
+                                        <span class="badge badge-warning">Ожидается</span>
                                     @endif
                                 </td>
+                                <td>{{ $item->created_at }}</td>
                                 <td>
-
-                                    @if($item->room)
-                                        {{ $item->room }}
-                                    @else
-                                        <span class='badge badge-danger'>Не Указано</span>
-                                    @endif
+                                    <a href="{{ url('admin/guests/request_/accept_status/'.$item->id) }}"
+                                    class="btn btn-success">Подтвердить</a>
                                 </td>
-                                <td>{{ $item->room_type }}</td>
-                                <td>{{ $item->guestTime['entry'] ?? '' }}</td>
-                                <td>{{ $item->guestTime['departure'] ?? ''}}</td>
 
                             </tr>
                             @endforeach
@@ -432,43 +410,6 @@
     <!-- END PAGE CONTAINER-->
     </div>
 
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="blockedImport" tabindex="-1" role="dialog" aria-labelledby="blockedImportLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        Құрметті серіктестер!
-                    </p>
-                    <p>
-                        Бөлмелерді броньдауды үйлестіруші арқылы +7 771 311 2321 телефоны арқылы немесе Reservations@apec-tc.kz электрондық поштасы арқылы алуға болады.
-
-                    </p>
-                    <p>--------------------------------------------------</p>
-                    <p>
-                        Уважаемые Партнеры!
-                    </p>
-                    <p>
-                        Бронирование номеров доступно через координатора по тел.+7 771 311 2321 или емэйлу:Reservations@apec-tc.kz.
-
-                    </p>
-                    <p>--------------------------------------------------</p>
-                    <p>
-                        Dear partners!
-                    </p>
-                    <p>
-                        Room reservations are available through the coordinator by phone +7 771 311 2321 or email: Reservations@apec-tc.kz.
-                    </p>
-                </div>
-
-            </div>
-        </div>
     </div>
 @endsection
 @push('js')
