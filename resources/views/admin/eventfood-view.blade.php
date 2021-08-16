@@ -102,7 +102,7 @@
                                             </td>
                                             <td>
                                                 @if ($event->eventTime($item->user_id,$event->id,'Ужин'))
-                                                    @if($date >= '16' && $date < '20')
+                                                    @if($date >= '16' && $date < '22')
                                                         <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-success"  onclick="return false;">
                                                             <i class="zmdi zmdi-check"></i>
                                                         </a>
@@ -114,7 +114,7 @@
 
 
                                                 @else
-                                                    @if($date >= '16' && $date < '20')
+                                                    @if($date >= '16' && $date < '22')
                                                         <a href="{{ url('/admin/event/food/?q=Ужин&user='.$item->user_id.'&event='.$event->id) }}" class="btn btn btn-primary"  >+</a>
                                                     @else
                                                         <a href="" class="btn btn btn-primary"  onclick="alert('Время вышло')">+</a>

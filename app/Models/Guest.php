@@ -116,12 +116,26 @@ class Guest extends Model
      */
     public static function createGuest(AdminGuest $request): Guest
     {
+
         if (Auth::user()->role == 'company') {
             $userId = Auth::id();
             $accept = new GuestAccept();
             $accept->title = 'Заявка к заселению-'.date('d-m-Y');
             $accept->user_id = $userId;
             $accept->save();
+
+            $guest = Guest::create([
+                'name' => $request->name,
+                'passport' => null,
+                'user_id' => $userId,
+                'room' => null,
+                'room_type' => $request->room_type,
+                'phone' => $request->phone,
+                'location' => $request->location,
+                'status' => $accept->id ? 4 : 2,
+                'accept_id' => $accept->id ?? null,
+                'vouchers' => Guest::stringVouchers([$request->breakfast, $request->lunch, $request->supper])
+            ]);
         } else {
             $userId = $request->user_id;
         }
@@ -133,8 +147,8 @@ class Guest extends Model
             'room_type' => $request->room_type,
             'phone' => $request->phone,
             'location' => $request->location,
-            'status' => $accept->id ? 4 : 2,
-            'accept_id' => $accept->id ?? null,
+            'status' => 2,
+            'accept_id' =>null,
             'vouchers' => Guest::stringVouchers([$request->breakfast, $request->lunch, $request->supper])
         ]);
 
@@ -221,15 +235,15 @@ class Guest extends Model
                 'guest_times.departure',
                 'guests.status', 'guests.room','guests.location')
             ->where('status', 2);
-            if ($request->entry_to && $request->entry_from) {
-                $guests->whereBetween('guest_times.entry',
-                    [Carbon::parse($request->entry_to),Carbon::parse($request->entry_from) ]);
+        if ($request->entry_to && $request->entry_from) {
+            $guests->whereBetween('guest_times.entry',
+                [Carbon::parse($request->entry_to),Carbon::parse($request->entry_from) ]);
 
-            }else {
-                $guests->whereDate('guest_times.entry',Carbon::parse($request->entry_to ?? $request->entry_from));
-            }
+        }else {
+            $guests->whereDate('guest_times.entry',Carbon::parse($request->entry_to ?? $request->entry_from));
+        }
 
-            return $guests->get();
+        return $guests->get();
     }
 
     public static function reportGuests()
@@ -294,11 +308,11 @@ class Guest extends Model
     public static function checkInAnalytics()
     {
         $guest = Guest::where('status',2)
-                 ->join('users','guests.user_id','=','users.id')
-                 ->select('users.name as com_name',
-                  DB::raw("count(guests.id) as count"))
-                 ->groupBy('users.name')
-                 ->get();
+            ->join('users','guests.user_id','=','users.id')
+            ->select('users.name as com_name',
+                DB::raw("count(guests.id) as count"))
+            ->groupBy('users.name')
+            ->get();
 
         return $guest;
     }

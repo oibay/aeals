@@ -92,7 +92,7 @@ class MainController extends Controller
             <em>Это письмо отправлено <strong>роботом</strong> и отвечать на него не нужно!</em></p>
 
         ";
-            $this->sendToEmail("Новая Заявка №" . $ticket->id, $messageSend);
+            //$this->sendToEmail("Новая Заявка №" . $ticket->id, $messageSend);
         }
 
 
