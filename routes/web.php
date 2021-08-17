@@ -159,3 +159,12 @@ Route::prefix('analytics')->group(function () {
     Route::get('/checkin',[\App\Http\Controllers\Ticket\AnalyticsController::class,'index']);
     Route::get('/requests',[\App\Http\Controllers\Ticket\AnalyticsController::class,'requests']);
 });
+
+Route::prefix('shop')->group(function () {
+    Route::get('/',[\App\Http\Controllers\Shop\MainController::class,'index']);
+    Route::get('/approved/{id}',[\App\Http\Controllers\Shop\MainController::class,'approved']);
+    Route::get('/paytopay/{id}',[\App\Http\Controllers\Shop\MainController::class,'payToPay']);
+    Route::post('/send_to_pay',[\App\Http\Controllers\Shop\MainController::class,'sendToPay'])
+    ->name('send_to_pay');
+    Route::get('/payed',[\App\Http\Controllers\Shop\MainController::class,'payed']);
+});
