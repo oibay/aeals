@@ -36,36 +36,13 @@ class MainController extends Controller
         if ($request->checked) {
             $total = 0 ;
             $data = array();
+            $totalJson = [];
             foreach ($request->checked as $key => $value) {
                 $product = ShopMenu::find($key);
 
-                $data[] = '
-                <table class="table table-bordered" >
-                            <thead>
-                            <tr>
+                $data[] = $product;
 
-                                <th scope="col">Продукт</th>
-                                <th scope="col">Цена</th>
-                                <th scope="col">Кол-во</th>
-
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-
-                                    <td>'.$product->title.'</td>
-                                    <td>'.$product->price.' тг</td>
-                                    <td>'.$request->total[$key].' шт</td>
-                                    <td>
-                                      '.($product->price * $request->total[$key]).'
-                                    </td>
-
-                                </tr>
-                              </tbody>
-
-                        </table>
-                ';
-
+                $totalJson[] = $request->total[$key];
 
                 //echo $data =  "<p style='font-size:20px'> ".$product->title. " -<strong style='color:black;'>".($product->price * $request->total[$key])." тг</strong></p>";
                 $total += ($product->price * $request->total[$key]);
@@ -73,6 +50,7 @@ class MainController extends Controller
             }
             $preview = new PreviewToPay;
             $preview->data = '0';
+            $preview->products = json_encode(['product'=>$data,'total' => $totalJson], JSON_UNESCAPED_UNICODE);
             $preview->total = $total;
 
             $preview->save();
