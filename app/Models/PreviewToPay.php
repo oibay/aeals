@@ -10,4 +10,13 @@ class PreviewToPay extends Model
     use HasFactory;
 
     protected $table = 'preview_topay';
+
+
+
+    public function log()
+    {
+        return $this->hasMany(LogPreview::class,'pr_id');
+    }
+
+
 }

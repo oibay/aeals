@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Models\LogPreview;
 use App\Models\PreviewToPay;
 use App\Models\ShopMenu;
 use Illuminate\Http\Request;
@@ -36,24 +37,32 @@ class MainController extends Controller
         if ($request->checked) {
             $total = 0 ;
             $data = array();
-            $totalJson = [];
             foreach ($request->checked as $key => $value) {
                 $product = ShopMenu::find($key);
 
-                $data[] = $product;
+                $data[] = array('id' => $product->id,'total' => $request->total[$key]);
 
-                $totalJson[] = $request->total[$key];
 
                 //echo $data =  "<p style='font-size:20px'> ".$product->title. " -<strong style='color:black;'>".($product->price * $request->total[$key])." тг</strong></p>";
                 $total += ($product->price * $request->total[$key]);
 
             }
+
+
             $preview = new PreviewToPay;
             $preview->data = '0';
-            $preview->products = json_encode(['product'=>$data,'total' => $totalJson], JSON_UNESCAPED_UNICODE);
+
             $preview->total = $total;
 
             $preview->save();
+
+            foreach ($data as $datum) {
+                LogPreview::create([
+                    'sh_id' => $datum['id'],
+                    'pr_id' => $preview->id,
+                    'total' => $datum['total']
+                ]);
+            }
         }
 
         return redirect('shop/paytopay/'.$preview->id);

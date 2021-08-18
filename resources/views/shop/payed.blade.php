@@ -38,9 +38,11 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $item->total }}</td>
                                         <td>
-                                            <script>
-                                                console.log(JSON.parse('{"product":[{"id":1,"title":"Кока Кола 0,5 ","price":200,"created_at":"2021-08-17T06:50:08.000000Z","updated_at":"2021-08-17T06:50:08.000000Z"},{"id":2,"title":"Кока кола 1 ","price":320,"created_at":"2021-08-17T06:50:08.000000Z","updated_at":"2021-08-17T06:50:08.000000Z"}],"total":["1","1"]}'))
-                                            </script>
+                                            @foreach($item->log as $log)
+                                                <ul>
+                                                    <li> {{ $log->menu['title'] }} ( <strong>{{ $log->total }}</strong>) шт</li>
+                                                </ul>
+                                            @endforeach
                                         </td>
                                         <td>
                                             <h4><span class="badge badge-success">Оплачено</span></h4>
