@@ -86,16 +86,16 @@
             vertical-align: middle;
             text-align: center;
         }
-        input{
-            height:34px;
-            width: 100px;
+        input {
+            height: 34px;
+            width: 40px;
             text-align: center;
             font-size: 26px;
-            border:1px solid #ddd;
-            border-radius:4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             display: inline-block;
             vertical-align: middle;
-
+        }
     </style>
 @endpush
 @push('js')

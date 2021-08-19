@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Exports\GuestExport;
 use App\Http\Controllers\Controller;
 use App\Models\LogPreview;
 use App\Models\PreviewToPay;
 use App\Models\ShopMenu;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MainController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','access:shop']);
+        $this->middleware(['auth', 'access:shop']);
     }
 
     public function index()
     {
         $shop = ShopMenu::all();
-        return view('shop.index',[
+        return view('shop.index', [
             'shop' => $shop
         ]);
     }
@@ -27,7 +29,7 @@ class MainController extends Controller
     {
         $preview = PreviewToPay::find($id);
 
-        return view('shop.preview_send_to_pay',[
+        return view('shop.preview_send_to_pay', [
             'data' => $preview
         ]);
     }
@@ -35,12 +37,12 @@ class MainController extends Controller
     public function sendToPay(Request $request)
     {
         if ($request->checked) {
-            $total = 0 ;
+            $total = 0;
             $data = array();
             foreach ($request->checked as $key => $value) {
                 $product = ShopMenu::find($key);
 
-                $data[] = array('id' => $product->id,'total' => $request->total[$key]);
+                $data[] = array('id' => $product->id, 'total' => $request->total[$key]);
 
 
                 //echo $data =  "<p style='font-size:20px'> ".$product->title. " -<strong style='color:black;'>".($product->price * $request->total[$key])." тг</strong></p>";
@@ -57,15 +59,17 @@ class MainController extends Controller
             $preview->save();
 
             foreach ($data as $datum) {
+
                 LogPreview::create([
                     'sh_id' => $datum['id'],
                     'pr_id' => $preview->id,
                     'total' => $datum['total']
                 ]);
+
             }
         }
 
-        return redirect('shop/paytopay/'.$preview->id);
+        return redirect('shop/paytopay/' . $preview->id);
     }
 
     public function approved($id)
@@ -74,16 +78,21 @@ class MainController extends Controller
         $preview->data = 1;
         $preview->save();
 
-        return redirect('/shop')->with('success','Успешно подтверждено');
+        return redirect('/shop')->with('success', 'Успешно подтверждено');
     }
 
     public function payed()
     {
-        $payed = PreviewToPay::where('data',1)->get();
+        $payed = PreviewToPay::where('data', 1)->get();
 
-        return view('shop.payed',[
+        return view('shop.payed', [
             'data' => $payed
         ]);
+    }
+
+    public function paymentReport(Request $request)
+    {
+        return Excel::download(new GuestExport($request,'payment'), date('Y-m-d').'_payment_report.xlsx');
     }
 
 }

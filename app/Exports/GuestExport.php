@@ -4,8 +4,10 @@ namespace App\Exports;
 
 
 use App\Models\Guest;
+use App\Models\PreviewToPay;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -90,6 +92,16 @@ class GuestExport implements FromView, WithColumnWidths,WithStyles
                 $db = Guest::reportArchive($this->request);
                 return view('reportArchive',[
                     'db' => $db
+                ]);
+                break;
+            case 'payment':
+                $payed = PreviewToPay::where('data', 1)
+                    ->whereBetween('created_at',
+                    [Carbon::parse($this->request->entry_to),Carbon::parse($this->request->entry_from) ])
+                    ->get();
+
+                return view('reportPayment', [
+                    'data' => $payed
                 ]);
                 break;
         }

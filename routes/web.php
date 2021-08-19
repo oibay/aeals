@@ -167,4 +167,6 @@ Route::prefix('shop')->group(function () {
     Route::post('/send_to_pay',[\App\Http\Controllers\Shop\MainController::class,'sendToPay'])
     ->name('send_to_pay');
     Route::get('/payed',[\App\Http\Controllers\Shop\MainController::class,'payed']);
+    Route::post('/report_payment',[\App\Http\Controllers\Shop\MainController::class,'paymentReport'])
+        ->name('report_payment');
 });

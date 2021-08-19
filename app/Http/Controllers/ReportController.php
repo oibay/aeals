@@ -68,4 +68,6 @@ class ReportController extends Controller
 
         return Excel::download(new FoodExport($request, 'food'), date('Y-m-d').'_fbreport.xlsx');
     }
+
+
 }
