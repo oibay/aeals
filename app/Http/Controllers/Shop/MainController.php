@@ -8,6 +8,7 @@ use App\Models\LogPreview;
 use App\Models\PreviewToPay;
 use App\Models\ShopMenu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MainController extends Controller
@@ -20,6 +21,12 @@ class MainController extends Controller
     public function index()
     {
         $shop = ShopMenu::all();
+        if (Auth::user()->profile_photo_path == 'shop_history') {
+
+            return view('shop.index_2', [
+                'shop' => $shop
+            ]);
+        }
         return view('shop.index', [
             'shop' => $shop
         ]);
@@ -92,7 +99,7 @@ class MainController extends Controller
 
     public function paymentReport(Request $request)
     {
-        return Excel::download(new GuestExport($request,'payment'), date('Y-m-d').'_payment_report.xlsx');
+        return Excel::download(new GuestExport($request, 'payment'), date('Y-m-d') . '_payment_report.xlsx');
     }
 
 }
