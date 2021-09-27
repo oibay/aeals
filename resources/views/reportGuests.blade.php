@@ -33,6 +33,13 @@
                     Жангырхан 72Б 1 БЛОК
                 @elseif($item->location == 'bpark-2')
                     Жангырхан 72Б 2 БЛОК
+                @elseif($item->location == 'bpark-3')
+                    Жангырхан 72Б 3 БЛОК
+
+                @elseif($item->location == 'nomad')
+                    Nomad
+                @elseif($item->location == 'goldenrose')
+                    Golden Rose
                 @endif
             </td>
             <td>{{ $item->room_type}}</td>

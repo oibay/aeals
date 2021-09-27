@@ -7,15 +7,16 @@
                 <div class="row">
                     <div class="col-md-12">
 
-                        <a  class="btn btn-primary mb-1" href="{{ url('admin/guests/add/new') }}">
+                        <a class="btn btn-primary mb-1" href="{{ url('admin/guests/add/new') }}">
                             <i class="zmdi zmdi-plus"></i> Добавить
                         </a>
 
-                        <button type="button" class="btn btn-success mb-1" data-toggle="modal" data-target="#filterSearch">
+                        <button type="button" class="btn btn-success mb-1" data-toggle="modal"
+                                data-target="#filterSearch">
                             <i class="zmdi zmdi-search"></i> Фильтр поиск
                         </button>
 
-                        <a  class="btn btn-warning mb-1" href="{{ url('admin/report/guests') }}">
+                        <a class="btn btn-warning mb-1" href="{{ url('admin/report/guests') }}">
                             <i class="zmdi zmdi-download"></i> Скачать репорт
                         </a>
                     </div>
@@ -50,75 +51,86 @@
                             <tbody>
                             @if($guests->count() > 0)
                                 @foreach($guests as $item)
-                            <tr>
-                                <td><a href="{{ url('admin/guests/edit',$item->id) }}">
-                                        {{ $item->name }}
-                                    </a>
+                                    <tr>
+                                        <td><a href="{{ url('admin/guests/edit',$item->id) }}">
+                                                {{ $item->name }}
+                                            </a>
 
-                                    @if($item->expired($item->guestTime['departure']))
-                                        <h4><span class="badge badge-danger">Истёк</span></h4>
-                                    @endif
-                                </td>
-                                <td>{{ $item->passport }}</td>
-                                <td>{{ $item->company['name'] }}</td>
-                                <td>{{ $item->phone }}</td>
-                                <td>
+                                            @if($item->expired($item->guestTime['departure']))
+                                                <h4><span class="badge badge-danger">Истёк</span></h4>
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->passport }}</td>
+                                        <td>{{ $item->company['name'] }}</td>
+                                        <td>{{ $item->phone }}</td>
+                                        <td>
 
-                                    @if($item->location == 'apec')
-                                        Apec Petrotechnic
-                                    @elseif($item->location == 'bpark')
-                                        Жангырхан 72Б 1 БЛОК
-                                    @elseif($item->location == 'bpark-2')
-                                        Жангырхан 72Б 2 БЛОК
-                                    @endif
-                                </td>
-                                <td>
+                                            @if($item->location == 'apec')
+                                                Apec Petrotechnic
+                                            @elseif($item->location == 'bpark')
+                                                Жангырхан 72Б 1 БЛОК
+                                            @elseif($item->location == 'bpark-2')
+                                                Жангырхан 72Б 2 БЛОК
+                                            @elseif($item->location == 'bpark-3')
+                                                Жангырхан 72Б 3 БЛОК
 
-                                    @if($item->room)
-                                        {{ $item->room }}
-                                    @else
-                                        <span class='badge badge-danger'>Не Указано</span>
-                                    @endif
-                                </td>
-                                <td>{{ $item->room_type }}</td>
-                                <td>{{ $item->guestTime['entry'] }}</td>
-                                <td>{{ $item->guestTime['departure'] }}</td>
-                                <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
-                                <td>
-                                    <div class="table-data-feature">
-                                        <a href="{{ url('admin/guests/checkout',$item->id) }}" onclick="return confirm('Вы уверенны ?')" class="item" data-toggle="tooltip" data-placement="top" title="Check Out">
-                                            <i class="zmdi zmdi-close-circle " style="color:red;"></i>
-                                        </a>
+                                            @elseif($item->location == 'nomad')
+                                                Nomad
+                                            @elseif($item->location == 'goldenrose')
+                                                Golden Rose
+                                            @endif
+                                        </td>
+                                        <td>
 
-
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="table-data-feature">
-                                        <a href="{{ url('admin/guests/edit',$item->id) }}" class="item" data-toggle="tooltip" data-placement="top" title="Редактировать">
-                                            <i class="zmdi zmdi-edit " style="color:green;"></i>
-                                        </a>
-
-
-                                    </div>
+                                            @if($item->room)
+                                                {{ $item->room }}
+                                            @else
+                                                <span class='badge badge-danger'>Не Указано</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->room_type }}</td>
+                                        <td>{{ $item->guestTime['entry'] }}</td>
+                                        <td>{{ $item->guestTime['departure'] }}</td>
+                                        <td><a href="{{ url('admin/pdf',$item->id) }}" target="__blank">Открыть</a></td>
+                                        <td>
+                                            <div class="table-data-feature">
+                                                <a href="{{ url('admin/guests/checkout',$item->id) }}"
+                                                   onclick="return confirm('Вы уверенны ?')" class="item"
+                                                   data-toggle="tooltip" data-placement="top" title="Check Out">
+                                                    <i class="zmdi zmdi-close-circle " style="color:red;"></i>
+                                                </a>
 
 
-                                </td>
-                            </tr>
-                            @endforeach
-                                @endif
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="table-data-feature">
+                                                <a href="{{ url('admin/guests/edit',$item->id) }}" class="item"
+                                                   data-toggle="tooltip" data-placement="top" title="Редактировать">
+                                                    <i class="zmdi zmdi-edit " style="color:green;"></i>
+                                                </a>
+
+
+                                            </div>
+
+
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
 
                             </tbody>
                         </table>
                     </div>
 
-                    </div>
                 </div>
             </div>
         </div>
+        </div>
     </section>
 
-    <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+    <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -128,7 +140,7 @@
                     </button>
                 </div>
                 <form action="{{ route('searchGuest') }}" method="post">
-                <div class="modal-body">
+                    <div class="modal-body">
 
                         @csrf
                         <div class="row">
@@ -147,26 +159,27 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label >Локация</label>
-                                    <select class="form-control" name="location" >
+                                    <label>Локация</label>
+                                    <select class="form-control" name="location">
                                         <option value="">Не выбрано</option>
-                                        <option value="bpark" >Жангырхан 72Б 1-БЛОК</option>
-                                        <option value="bpark-2" >Жангырхан 72Б 2-БЛОК</option>
-                                        <option value="apec">Apec Petrotechnic</option>
+                                        <option value="bpark">Жангырхан 72Б 1-БЛОК</option>
+                                        <option value="bpark-2">Жангырхан 72Б 2-БЛОК</option>
+                                        <option value="bpark-3">Жангырхан 72Б 3-БЛОК</option>
 
+                                        <option value="nomad">Nomad</option>
+                                        <option value="goldenrose">Golden rose</option>
+                                        <option value="apec">Apec Petrotechnic</option>
                                     </select>
                                 </div>
 
                             </div>
 
 
-
-
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="entry" class="form-control-label">Въезд</label>
 
-                                    <input id="entry" type="datetime-local" class="form-control" name="entry" value="" >
+                                    <input id="entry" type="datetime-local" class="form-control" name="entry" value="">
 
                                 </div>
                             </div>
@@ -175,7 +188,8 @@
                                 <div class="form-group">
                                     <label for="departure" class="form-control-label">Отъезд</label>
 
-                                    <input id="departure" type="datetime-local" class="form-control" name="departure" value="" >
+                                    <input id="departure" type="datetime-local" class="form-control" name="departure"
+                                           value="">
 
                                 </div>
                             </div>
@@ -184,8 +198,8 @@
                                 <div class="form-group">
                                     <label for="room_type">Питание</label>
                                     <select id="room_type" class="form-control" name="vouchers">
-                                        <option value="" >Не выбрано</option>
-                                        <option value="1" >Есть</option>
+                                        <option value="">Не выбрано</option>
+                                        <option value="1">Есть</option>
 
 
                                     </select>
@@ -196,11 +210,11 @@
 
                         </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary">Поиск</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Поиск</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -213,10 +227,10 @@
 @endsection
 @push('js')
     <script>
-        $(document).ready( function () {
+        $(document).ready(function () {
             $('#table_id').DataTable();
-        } );
-        $(document).ready(function() {
+        });
+        $(document).ready(function () {
             $('.js-example-basic-single').select2();
         });
     </script>

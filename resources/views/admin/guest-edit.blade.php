@@ -65,6 +65,10 @@
                                         <option value="bpark-2" @if($guest->location == 'bpark-2') selected @endif>Жангырхан 72Б 2-БЛОК</option>
                                         <option value="apec" @if($guest->location == 'apec') selected @endif>Apec Petrotechnic</option>
 
+                                        <option value="bpark-3" @if($guest->location == 'bpark-3') selected @endif>Жангырхан 72Б 3-БЛОК</option>
+                                        <option value="nomad" @if($guest->location == 'nomad') selected @endif>Nomad</option>
+                                        <option value="goldenrose" @if($guest->location == 'goldenrose') selected @endif>Golden rose</option>
+
                                     </select>
                                     @if ($errors->has('location'))
                                         <span class="invalid-feedback" role="alert">

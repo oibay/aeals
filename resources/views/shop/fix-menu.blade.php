@@ -6,7 +6,10 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Меню</h3>
+                        <h4>Компания: {{ $user->company['title'] }}
+
+                        </h4>
+                        <h4> ФИО:{{ $user->name ?? '' }}</h4>
 
                     </div>
                 </div>
@@ -25,21 +28,27 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Название</th>
-                                <th scope="col">Цена</th>
-                                
+
+                                <th scope="col">Кол-во</th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <form action="{{ route('send_to_pay') }}" method="post">
+                            <form action="{{ route('send_to_sign',$user->id) }}" method="post">
                                 @csrf
 
                             @foreach($shop as $item)
                                 <tr>
                                     <th scope="row">{{ $loop->index + 1 }}</th>
                                     <td>{{ $item->title }}</td>
-                                    <td>{{ $item->price }} тг</td>
-                                    
+
+                                    <td>
+                                        <div class="number">
+                                            <span class="minus">-</span>
+                                            <input type="text" value="1" name="total[{{ $item->id }}]"/>
+                                            <span class="plus">+</span>
+                                        </div>
+                                    </td>
                                     <td>
                                         <input type="checkbox" name="checked[{{ $item->id }}]"/>
                                     </td>
@@ -49,7 +58,12 @@
                             </tbody>
 
                         </table>
-                      
+                        <br />
+                        <div class="col-xl-3 float-right" >
+                            <button class="btn btn-success" type="submit">Подписаться</button>
+                        </div>
+                        <br />
+                        <br />
                         </form>
                     </div>
 
@@ -57,6 +71,7 @@
             </div>
         </div>
         </div>
+
     </section>
 
 @endsection
@@ -105,5 +120,8 @@
                 return false;
             });
         });
+
     </script>
+
+
 @endpush

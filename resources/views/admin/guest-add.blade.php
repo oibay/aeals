@@ -62,6 +62,10 @@
                                                 <option value="">Не выбрано</option>
                                                 <option value="bpark" >Жангырхан 72Б 1-БЛОК</option>
                                                 <option value="bpark-2" >Жангырхан 72Б 2-БЛОК</option>
+                                                <option value="bpark-3" >Жангырхан 72Б 3-БЛОК</option>
+
+                                                <option value="nomad" >Nomad</option>
+                                                <option value="goldenrose">Golden rose</option>
                                                 <option value="apec">Apec Petrotechnic</option>
 
                                             </select>

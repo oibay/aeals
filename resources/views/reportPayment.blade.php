@@ -21,7 +21,7 @@
                 <td>
                     @foreach($item->log as $log)
                         <ul>
-                            <li> {{ $log->menu['title'] }} ( <strong>{{ $log->total }}</strong>) шт</li>
+                            <li> {{ $log->menu['title'] }} ( <strong>{{ $log->total }}</strong>) шт.Цена {{ $log->menu['price'] }} тг</li>
                         </ul>
                     @endforeach
                 </td>
